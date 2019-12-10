@@ -1,6 +1,7 @@
 <?php
 
 use mywishlist\controllers\HomeController;
+use mywishlist\controllers\ListeController;
 use Slim\Views\PhpRenderer;
 
 require_once 'vendor/autoload.php';
@@ -47,6 +48,12 @@ $app->get('/', function ($request, $response, array $args) {
 $app->get('/apropos', function ($request, $response, array $args) {
     $this->view->render($response, 'about.html', ["title" => "MyWishList - A Propos"]);
 })->setName('about');
+
+$app->get('/listes', function ($request, $response, array $args) {
+    global $container;
+    $controller = new ListeController($container);
+    return $controller->displayList($request, $response, $args);
+})->setName('listes');
 
 /**
  * Run of Slim
