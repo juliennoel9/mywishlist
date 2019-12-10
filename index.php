@@ -44,6 +44,10 @@ $app->get('/', function ($request, $response, array $args) {
     return $controller->displayHome($request, $response, $args);
 })->setName('home');
 
+$app->get('/apropos', function ($request, $response, array $args) {
+    $this->view->render($response, 'about.html', ["title" => "MyWishList - A Propos"]);
+})->setName('about');
+
 /**
  * Run of Slim
  */
