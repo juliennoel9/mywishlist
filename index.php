@@ -27,6 +27,7 @@ $container = $app->getContainer();
 $container['view'] = function($container) {
     $vars = [
         "rootUri" => $container->request->getUri()->getBasePath(),
+        "router" => $container->router,
         "title" => "MyWishList"
     ];
     $renderer = new PhpRenderer(__DIR__.'/src/views', $vars);
