@@ -13,7 +13,7 @@ composer install
 ```
 
 Dans le répertoire "src/config", copiez le fichier **database.ini.sample** et renommez le **database.ini** puis modifiez le pour votre configuration.
-Lancez ensuite le script **initDataase.php** pour créer la base de données.
+Lancez ensuite le script **initDatabase.php** pour créer la base de données (option '-f' pour forcer l'exécution).
 
 ```bash
 php initDatabase.php
