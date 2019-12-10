@@ -35,7 +35,8 @@ try {
     if ($result) { // si la BDD existe deja
         echo "Attention la BDD '$database' existe déjà, continuer entrainera la suppression des données de '$database'.\n";
         if (!$force) {
-            $line = readline("Entrez 'ok' pour continuer: ");
+            echo "Entrez 'ok' pour continuer: ";
+            $line = readline();
             if ($line != 'ok') {
                 echo "Annulation\n";
                 exit(2);
@@ -65,7 +66,8 @@ try {
 
 /* insertion des données */
 if (!$force) {
-    $line = strtolower(readline("Insérer les données d'exemple ? (o/n): "));
+    echo "Insérer les données d'exemple ? (o/n): ";
+    $line = strtolower(readline());
 }
 if ($force || $line == 'o' || $line == 'oui' || $line == 'y' || $line == 'yes') {
     $sql = file_get_contents('src/config/mywishlist_insert.sql');
