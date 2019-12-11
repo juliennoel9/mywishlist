@@ -1,6 +1,7 @@
 <?php
 
 use mywishlist\controllers\HomeController;
+use mywishlist\controllers\ItemController;
 use mywishlist\controllers\ListeController;
 use Slim\Views\PhpRenderer;
 
@@ -57,10 +58,14 @@ $app->get('/listes', function ($request, $response, array $args) {
 })->setName('publicList');
 
 $app->get('/l/{token:[a-zA-Z0-9]+}', function ($request, $response, array $args) {
-    $c = new ListeController($this);
-    return $c->getListe($request, $response, $args);
+    $controller = new ListeController($this);
+    return $controller->getList($request, $response, $args);
 })->setName('list');
 
+$app->get('/l/{token:[a-zA-Z0-9]+}/{id:[0-9]+}', function ($request, $response, array $args) {
+    $controller = new ItemController($this);
+    return $controller->displayItem($request, $response, $args);
+})->setName('item');
 
 /**
  * Run of Slim
