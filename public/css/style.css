@@ -1,4 +1,4 @@
-/* dark scrollbar */
+/* dark scroll bar */
 :root {
-    scrollbar-color: rgba(175, 175, 175, .5) rgba(79, 87, 94, 1);
+    scrollbar-color: rgba(130, 130, 130, .6) rgba(79, 87, 94, 1);
 }
