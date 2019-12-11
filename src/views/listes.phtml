@@ -13,7 +13,7 @@
 
         <tbody>
         <?php foreach ($listes as $liste) : ?>
-            <tr onclick="document.location='<?= $router->pathFor('about') ?>';">
+            <tr onclick="document.location='<?= $router->pathFor('showList', ['token' => $liste->token]) ?>';">
                 <th scope="row"><?= $liste->no ?></th>
                 <td><?= $liste->user_id ?></td>
                 <td><?= $liste->titre ?></td>

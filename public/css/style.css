@@ -2,3 +2,7 @@
 :root {
     scrollbar-color: rgba(130, 130, 130, .6) rgba(79, 87, 94, 1);
 }
+
+img {
+    height: 50px;
+}

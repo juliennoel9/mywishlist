@@ -1,0 +1,29 @@
+<div class="body mt-5">
+    <table class="table table-bordered table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">ID Liste</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Description</th>
+            <th scope="col">Image</th>
+            <th scope="col">URL</th>
+            <th scope="col">Tarif</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php foreach ($items as $item) : ?>
+            <tr onclick="document.location='<?= $router->pathFor('about') ?>';">
+                <th scope="row"><?= $item->id ?></th>
+                <td><?= $item->liste_id ?></td>
+                <td><?= $item->nom ?></td>
+                <td><?= $item->descr ?></td>
+                <td><img src="/public/images/<?= $item->img ?>"></td>
+                <td><?= $item->ur ?></td>
+                <td><?= $item->tarif ?>€</td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

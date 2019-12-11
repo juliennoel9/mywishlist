@@ -52,8 +52,14 @@ $app->get('/apropos', function ($request, $response, array $args) {
 $app->get('/listes', function ($request, $response, array $args) {
     global $container;
     $controller = new ListeController($container);
-    return $controller->displayList($request, $response, $args);
+    return $controller->displayLists($request, $response, $args);
 })->setName('listes');
+
+$app->get('/liste/{token:[a-zA-Z0-9]+}', function ($request, $response, array $args) {
+    global $container;
+    $c = new ListeController($container);
+    return $c->getListe($request, $response, $args);
+})->setName('showList');
 
 /**
  * Run of Slim
