@@ -10,14 +10,16 @@ session_start();
 
 \mywishlist\config\Database::connect();
 
+
 /**
  * Dev. mode to show errors in details
  */
 $config = [
     'settings' => [
-        'displayErrorDetails' => 1,
+        'displayErrorDetails' => true,
     ],
 ];
+
 
 /**
  * Instanciation of Slim
@@ -36,12 +38,12 @@ $container['view'] = function($container) {
     return $renderer;
 };
 
+
 /**
  * Routes
  */
 $app->get('/', function ($request, $response, array $args) {
-    global $container;
-    $controller = new HomeController($container);
+    $controller = new HomeController($this);
     return $controller->displayHome($request, $response, $args);
 })->setName('home');
 
@@ -50,16 +52,15 @@ $app->get('/apropos', function ($request, $response, array $args) {
 })->setName('about');
 
 $app->get('/listes', function ($request, $response, array $args) {
-    global $container;
-    $controller = new ListeController($container);
+    $controller = new ListeController($this);
     return $controller->displayLists($request, $response, $args);
-})->setName('listes');
+})->setName('publicList');
 
-$app->get('/liste/{token:[a-zA-Z0-9]+}', function ($request, $response, array $args) {
-    global $container;
-    $c = new ListeController($container);
+$app->get('/l/{token:[a-zA-Z0-9]+}', function ($request, $response, array $args) {
+    $c = new ListeController($this);
     return $c->getListe($request, $response, $args);
-})->setName('showList');
+})->setName('list');
+
 
 /**
  * Run of Slim

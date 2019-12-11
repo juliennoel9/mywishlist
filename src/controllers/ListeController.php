@@ -10,7 +10,7 @@ use mywishlist\models\Liste;
 class ListeController extends Controller {
 
     public function displayLists($request, $response, $args) {
-        $this->view->render($response, 'listes.phtml', ["title" => "MyWishList - Listes", "listes" => Liste::all()]);
+        $this->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "listes" => Liste::all()]);
         return $response;
     }
 
@@ -24,7 +24,7 @@ class ListeController extends Controller {
             if (is_null($items)) {
                 throw new Exception("Aucun item dans la liste");
             }
-            $this->view->render($response, 'liste.phtml', [
+            $this->view->render($response, 'list.phtml', [
                "liste" => $liste,
                "items" => $items
             ]);
