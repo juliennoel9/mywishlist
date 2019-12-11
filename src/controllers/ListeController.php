@@ -10,25 +10,25 @@ use mywishlist\models\Liste;
 class ListeController extends Controller {
 
     public function displayLists($request, $response, $args) {
-        $this->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "listes" => Liste::all()]);
+        $this->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => Liste::all()]);
         return $response;
     }
 
-    public function getListe($request, $response, $args) {
+    public function getList($request, $response, $args) {
         try {
-            $liste = Liste::where('token', '=', $args['token'])->first();
-            if (is_null($liste)) {
+            $list = Liste::where('token', '=', $args['token'])->first();
+            if (is_null($list)) {
                 throw new Exception("Aucune liste correspondante");
             }
-            $items = $liste->items()->get();
+            $items = $list->items()->get();
             if (is_null($items)) {
                 throw new Exception("Aucun item dans la liste");
             }
             $this->view->render($response, 'list.phtml', [
-               "liste" => $liste,
+               "list" => $list,
                "items" => $items
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
         }
         return $response;
