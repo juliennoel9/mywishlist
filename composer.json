@@ -25,7 +25,6 @@
 
   "autoload":{
     "psr-4": {
-      "src\\" : "src/",
       "mywishlist\\" : "src/"
     }
   }
