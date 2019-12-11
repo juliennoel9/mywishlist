@@ -10,9 +10,10 @@
             <th scope="col">Token</th>
         </tr>
         </thead>
+
         <tbody>
         <?php foreach ($listes as $liste) : ?>
-            <tr>
+            <tr onclick="document.location='<?= $router->pathFor('about') ?>';">
                 <th scope="row"><?= $liste->no ?></th>
                 <td><?= $liste->user_id ?></td>
                 <td><?= $liste->titre ?></td>
