@@ -32,7 +32,7 @@ $container['view'] = function($container) {
         "title" => "MyWishList"
     ];
     $renderer = new PhpRenderer(__DIR__.'/src/views', $vars);
-    $renderer->setLayout('layout.html');
+    $renderer->setLayout('layout.phtml');
     return $renderer;
 };
 
@@ -46,7 +46,7 @@ $app->get('/', function ($request, $response, array $args) {
 })->setName('home');
 
 $app->get('/apropos', function ($request, $response, array $args) {
-    $this->view->render($response, 'about.html', ["title" => "MyWishList - A Propos"]);
+    $this->view->render($response, 'about.phtml', ["title" => "MyWishList - A Propos"]);
 })->setName('about');
 
 $app->get('/listes', function ($request, $response, array $args) {
