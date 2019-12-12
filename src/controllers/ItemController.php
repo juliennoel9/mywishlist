@@ -19,7 +19,7 @@ class ItemController extends Controller {
             if (is_null($item)) {
                 throw new Exception("Aucun item correspondant dans la liste");
             }
-            $this->view->render($response, 'item.phtml', [
+            $this->container->view->render($response, 'item.phtml', [
                 "list" => $list,
                 "item" => $item
             ]);

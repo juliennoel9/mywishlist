@@ -10,7 +10,7 @@ use mywishlist\models\Liste;
 class ListController extends Controller {
 
     public function displayLists($request, $response, $args) {
-        $this->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => Liste::all()]);
+        $this->container->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => Liste::all()]);
         return $response;
     }
 
@@ -24,7 +24,7 @@ class ListController extends Controller {
             if (is_null($items)) {
                 throw new Exception("Aucun item dans la liste");
             }
-            $this->view->render($response, 'list.phtml', [
+            $this->container->view->render($response, 'list.phtml', [
                "list" => $list,
                "items" => $items
             ]);
@@ -35,7 +35,7 @@ class ListController extends Controller {
     }
 
     public function getNewList($request, $response, $args) {
-        $this->view->render($response, 'newList.phtml', ["title" => "MyWishList - Nouvelle Liste"]);
+        $this->container->view->render($response, 'newList.phtml', ["title" => "MyWishList - Nouvelle Liste"]);
         return $response;
     }
 
@@ -49,7 +49,8 @@ class ListController extends Controller {
         $list->public = 1;
         $list->save();
 
-        $this->view->render($response, 'home.phtml', ["title" => "MyWishList - Accueil"]);
-        return $response;
+        //$this->view->render($response, 'home.phtml', ["title" => "MyWishList - Accueil"]);
+        //return $response;
+        return $this->redirect($response, 'home');
     }
 }

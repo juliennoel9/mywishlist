@@ -5,9 +5,13 @@ namespace mywishlist\controllers;
 
 
 class Controller {
-    protected $view;
+    protected  $container;
 
     public function __construct($container){
-        $this->view = $container->view;
+        $this->container = $container;
+    }
+
+    public function redirect($response, $name) {
+        return $response->withStatus(302)->withHeader('Location', $this->container->router->pathFor($name));
     }
 }
