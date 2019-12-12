@@ -40,13 +40,12 @@ class ListController extends Controller {
     }
 
     public function postNewList($request, $response, $args) {
-        $maxID = Liste::all()->count();
         $list = new Liste();
         $list->user_id = $_POST['idUser'];
         $list->titre = $_POST['titre'];
         $list->description = $_POST['description'];
         $list->expiration = $_POST['expiration'];
-        $list->token = "nosecure".($maxID+1);
+        $list->token = Liste::generateToken();
         $list->public = 1;
         $list->save();
 
