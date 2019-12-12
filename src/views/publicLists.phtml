@@ -8,18 +8,20 @@
             <th scope="col">Description</th>
             <th scope="col">Expiration</th>
             <th scope="col">Token</th>
+            <th scope="col">Publique</th>
         </tr>
         </thead>
 
         <tbody>
         <?php foreach ($lists as $list) : ?>
             <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
-                <th scope="row"><?= $list->no ?></th>
+                <th scope="row"><?= $list->num ?></th>
                 <td><?= $list->user_id ?></td>
                 <td><?= $list->titre ?></td>
                 <td><?= $list->description ?></td>
                 <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
                 <td><?= $list->token ?></td>
+                <td><?= $list->public ? 'TRUE' : 'FALSE' ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

@@ -17,11 +17,12 @@ CREATE TABLE `item` (
 
 DROP TABLE IF EXISTS `liste`;
 CREATE TABLE `liste` (
-  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `num` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `titre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci,
-  `expiration` date DEFAULT NULL,
+  `expiration` TIMESTAMP DEFAULT NULL,
   `token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`no`)
+  `public` BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (`num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

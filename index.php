@@ -2,7 +2,7 @@
 
 use mywishlist\controllers\HomeController;
 use mywishlist\controllers\ItemController;
-use mywishlist\controllers\ListeController;
+use mywishlist\controllers\ListController;
 use Slim\Views\PhpRenderer;
 
 require_once 'vendor/autoload.php';
@@ -53,12 +53,12 @@ $app->get('/apropos', function ($request, $response, array $args) {
 })->setName('about');
 
 $app->get('/listes', function ($request, $response, array $args) {
-    $controller = new ListeController($this);
+    $controller = new ListController($this);
     return $controller->displayLists($request, $response, $args);
 })->setName('publicList');
 
 $app->get('/l/{token:[a-zA-Z0-9]+}', function ($request, $response, array $args) {
-    $controller = new ListeController($this);
+    $controller = new ListController($this);
     return $controller->getList($request, $response, $args);
 })->setName('list');
 

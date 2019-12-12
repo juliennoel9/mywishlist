@@ -7,7 +7,7 @@ namespace mywishlist\controllers;
 use mysql_xdevapi\Exception;
 use mywishlist\models\Liste;
 
-class ListeController extends Controller {
+class ListController extends Controller {
 
     public function displayLists($request, $response, $args) {
         $this->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => Liste::all()]);
@@ -33,4 +33,5 @@ class ListeController extends Controller {
         }
         return $response;
     }
+
 }
