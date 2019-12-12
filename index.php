@@ -75,7 +75,7 @@ $app->get('/nouvelleListe', function ($request, $response, array $args) {
 $app->post('/nouvelleListe', function ($request, $response, array $args) {
     $controller = new ListController($this);
     return $controller->postNewList($request, $response, $args);
-})->setName('postNewList');
+});
 
 /**
  * Run of Slim
