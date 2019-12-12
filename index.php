@@ -67,6 +67,16 @@ $app->get('/l/{token:[a-zA-Z0-9]+}/{id:[0-9]+}', function ($request, $response, 
     return $controller->displayItem($request, $response, $args);
 })->setName('item');
 
+$app->get('/nouvelleListe', function ($request, $response, array $args) {
+    $controller = new ListController($this);
+    return $controller->getNewList($request, $response, $args);
+})->setName('newList');
+
+$app->post('/nouvelleListe', function ($request, $response, array $args) {
+    $controller = new ListController($this);
+    return $controller->postNewList($request, $response, $args);
+})->setName('postNewList');
+
 /**
  * Run of Slim
  */

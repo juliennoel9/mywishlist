@@ -3,7 +3,7 @@
         <i style="display: block;}" class="fas fa-wrench" onclick="document.location = '<?= $router->pathFor('list', ['token' => $list->token]) ?>';"></i>
         <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
         <p class="lead text-muted"><?= $list->description ?></p>
-        <p class="lead text-muted">Liste valide jusqu'au : <?= $list->expiration ?></p>
+        <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
     </div>
 </section>
 
@@ -12,6 +12,6 @@
     <div class="text-center">
         <h5 class="text-uppercase font-weight-bold m-auto text-center"><strong><?= $item->nom ?></strong></h5>
         <p><?= $item->descr ?></p>
-        <p><strong><?= $item->tarif ?> euros </strong></p>
+        <p><strong><?= $item->tarif ?> €</strong></p>
     </div>
 </div>

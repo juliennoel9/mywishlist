@@ -34,4 +34,23 @@ class ListController extends Controller {
         return $response;
     }
 
+    public function getNewList($request, $response, $args) {
+        $this->view->render($response, 'newList.phtml', ["title" => "MyWishList - Nouvelle Liste"]);
+        return $response;
+    }
+
+    public function postNewList($request, $response, $args) {
+        $maxID = Liste::all()->count();
+        $list = new Liste();
+        $list->user_id = $_POST['idUser'];
+        $list->titre = $_POST['titre'];
+        $list->description = $_POST['description'];
+        $list->expiration = $_POST['expiration'];
+        $list->token = "nosecure".($maxID+1);
+        $list->public = 1;
+        $list->save();
+
+        $this->view->render($response, 'home.phtml', ["title" => "MyWishList - Accueil"]);
+        return $response;
+    }
 }
