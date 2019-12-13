@@ -11,7 +11,7 @@ use mywishlist\models\Liste;
 class ItemController extends Controller {
     public function displayItem($request, $response, $args) {
         try {
-            $list = Liste::where('token', '=', $args['token'])->first();
+            $list = Liste::where('num', '=', $args['num'])->first();
             if (is_null($list)) {
                 throw new Exception("Aucune liste correspondante");
             }
