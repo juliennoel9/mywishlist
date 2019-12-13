@@ -18,18 +18,18 @@ class ListController extends Controller {
         try {
             $list = Liste::where('num', '=', $args['num'])->first();
             if (is_null($list)) {
-                throw new Exception("Aucune liste correspondante");
+                throw new \Exception("Aucune liste correspondante");
             }
             $items = $list->items()->get();
             if (is_null($items)) {
-                throw new Exception("Aucun item dans la liste");
+                throw new \Exception("Aucun item dans la liste");
             }
             $this->container->view->render($response, 'list.phtml', [
                "list" => $list,
                "items" => $items
             ]);
         } catch (\Exception $e) {
-
+            $response->write($e->getMessage());
         }
         return $response;
     }
@@ -56,8 +56,8 @@ class ListController extends Controller {
         try {
             $list = Liste::where('token', '=', $args['token'])->first();
             $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list]);
-        } catch (Exception $e) {
-
+        } catch (\Exception $e) {
+            $response->write($e->getMessage());
         }
         return $response;
     }
@@ -70,8 +70,8 @@ class ListController extends Controller {
             $list->expiration = htmlentities($_POST['expiration']);
             $list->public = isset($_POST['public']) ? 1 : 0;
             $list->save();
-        } catch (Exception $e) {
-
+        } catch (\Exception $e) {
+            $response->write($e->getMessage());
         }
         return $this->redirect($response, 'home');
     }

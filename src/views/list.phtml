@@ -1,5 +1,19 @@
 <h1>Liste n°<?=$list->num?></h1>
 <div class="body mt-5">
+
+    <section class="jumbotron text-center mt-4">
+        <div class="container">
+            <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
+            <p class="lead text-muted"><?= $list->description ?></p>
+            <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+        </div>
+    </section>
+
+
+
+
+
+
     <table class="table table-bordered table-hover table-dark">
         <thead>
         <tr>
