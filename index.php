@@ -59,12 +59,12 @@ $app->get('/listes[/]', function ($request, $response, array $args) {
     return $controller->displayLists($request, $response, $args);
 })->setName('publicList');
 
-$app->get('/l/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+$app->get('/l/{num:[0-9]+}[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
     return $controller->getList($request, $response, $args);
 })->setName('list');
 
-$app->get('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
+$app->get('/l/{num:[0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
     $controller = new ItemController($this);
     return $controller->displayItem($request, $response, $args);
 })->setName('item');
@@ -77,6 +77,16 @@ $app->get('/nouvelleListe[/]', function ($request, $response, array $args) {
 $app->post('/nouvelleListe[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
     return $controller->postNewList($request, $response, $args);
+});
+
+$app->get('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+    $controller = new ListController($this);
+    return $controller->getEditList($request, $response, $args);
+})->setName('editList');
+
+$app->post('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+    $controller = new ListController($this);
+    return $controller->postEditList($request, $response, $args);
 });
 
 /**
