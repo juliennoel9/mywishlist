@@ -15,7 +15,7 @@
 
         <tbody>
         <?php foreach ($items as $item) : ?>
-            <tr onclick="document.location='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>';">
+            <tr onclick="document.location='<?= $router->pathFor('item', ['num' => $list->num, 'id' => $item->id]) ?>';">
                 <th scope="row"><?= $item->id ?></th>
                 <td><?= $item->liste_id ?></td>
                 <td><?= $item->nom ?></td>
@@ -27,4 +27,10 @@
         <?php endforeach; ?>
         </tbody>
     </table>
+
+    <?php if (isset($_GET['token']) and $_GET['token'] === $list->token) : ?>
+    <div class="modal-footer">
+        <button onclick="document.location='<?= $router->pathFor('editList', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Modifier</button>
+    </div>
+    <?php endif ?>
 </div>
