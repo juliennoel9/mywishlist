@@ -1,0 +1,23 @@
+<h1>Modifiez votre liste</h1><br>
+<form method="POST">
+    <div class="form-group">
+        <label for="titre">Donnez un nouveau titre à la liste</label>
+        <input required type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= $list->titre ?>">
+    </div>
+    <div class="form-group">
+        <label for="expiration">Indiquez une nouvelle date d'expiration</label>
+        <input required type="date" placeholder="Date expiration" name="expiration" class="form-control" id="expiration">
+    </div>
+    <div class="form-group">
+        <label for="description">Changez une description à la liste</label>
+        <textarea required class="form-control" name="description" id="description" rows="3"><?= $list->description ?></textarea>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" <?= $list->public === 1 ? 'checked=\"checked\"' : ''?> class="form-check-input" id="public" name="public">
+        <label class="form-check-label" for="public">Public</label>
+    </div>
+    <div class="modal-footer">
+        <a href="<?= $router->pathFor('list', ['num' => $list->num]) ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
+        <button type="submit" class="btn btn-primary">Modifier la liste</button>
+    </div>
+</form>

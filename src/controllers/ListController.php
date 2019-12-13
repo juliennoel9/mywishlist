@@ -16,7 +16,7 @@ class ListController extends Controller {
 
     public function getList($request, $response, $args) {
         try {
-            $list = Liste::where('token', '=', $args['token'])->first();
+            $list = Liste::where('num', '=', $args['num'])->first();
             if (is_null($list)) {
                 throw new Exception("Aucune liste correspondante");
             }
@@ -49,6 +49,30 @@ class ListController extends Controller {
         $list->public = isset($_POST['public']) ? 1 : 0;
         $list->save();
 
+        return $this->redirect($response, 'home');
+    }
+
+    public function getEditList($request, $response, $args) {
+        try {
+            $list = Liste::where('token', '=', $args['token'])->first();
+            $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list]);
+        } catch (Exception $e) {
+
+        }
+        return $response;
+    }
+
+    public function postEditList($request, $response, $args) {
+        try {
+            $list = Liste::where('token', '=', $args['token'])->first();
+            $list->titre = htmlentities($_POST['titre']);
+            $list->description = htmlentities($_POST['description']);
+            $list->expiration = htmlentities($_POST['expiration']);
+            $list->public = isset($_POST['public']) ? 1 : 0;
+            $list->save();
+        } catch (Exception $e) {
+
+        }
         return $this->redirect($response, 'home');
     }
 }
