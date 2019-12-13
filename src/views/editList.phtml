@@ -6,7 +6,7 @@
     </div>
     <div class="form-group">
         <label for="expiration">Indiquez une nouvelle date d'expiration</label>
-        <input required type="date" placeholder="Date expiration" name="expiration" class="form-control" id="expiration">
+        <input required type="date" value="<?= date("Y-m-d", strtotime($list->expiration)) ?>" name="expiration" class="form-control" id="expiration">
     </div>
     <div class="form-group">
         <label for="description">Changez une description à la liste</label>
