@@ -34,8 +34,12 @@
                 <td><?= $item->liste_id ?></td>
                 <td><?= $item->nom ?></td>
                 <td><?= $item->descr ?></td>
-                <td class="text-center"><img src="/public/images/<?= $item->img ?>"></td>
-                <td><?= $item->ur ?></td>
+                <?php if (!is_null($item->img)) : ?>
+                    <td class="text-center"><img src="/public/images/<?= $item->img ?>"></td>
+                <?php else : ?>
+                    <td class="text-center"></td>
+                <?php endif ?>
+                <td><a href="<?= $item->url ?>"><?= $item->url ?></a></td>
                 <td><?= $item->tarif ?>€</td>
             </tr>
         <?php endforeach; ?>
@@ -43,8 +47,9 @@
     </table>
 
     <?php if (isset($_GET['token']) and $_GET['token'] === $list->token) : ?>
-    <div class="modal-footer">
-        <button onclick="document.location='<?= $router->pathFor('editList', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Modifier</button>
-    </div>
+        <div class="modal-footer">
+            <button onclick="document.location='<?= $router->pathFor('newItem', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Ajouter Item</button>
+            <button onclick="document.location='<?= $router->pathFor('editList', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Modifier Liste</button>
+        </div>
     <?php endif ?>
 </div>

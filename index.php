@@ -89,6 +89,16 @@ $app->post('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function ($request, $respon
     return $controller->postEditList($request, $response, $args);
 });
 
+$app->get('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function($request, $response, array $args) {
+    $controller = new ItemController($this);
+    return $controller->getNewItem($request, $response, $args);
+})->setName('newItem');
+
+$app->post('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+    $controller = new ItemController($this);
+    return $controller->postNewItem($request, $response, $args);
+});
+
 /**
  * Run of Slim
  */

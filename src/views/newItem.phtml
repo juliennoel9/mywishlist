@@ -1,0 +1,24 @@
+<h1>Créez et ajoutez votre nouvel item à votre liste</h1><br>
+<form method="POST">
+    <div class="form-group">
+        <label for="titre">Donnez un nom à l'item</label>
+        <input required type="text" placeholder="Nom" name="nom" class="form-control" id="nom">
+    </div>
+    <div class="form-group">
+        <label for="description">Ajoutez une description à l'item</label>
+        <textarea required class="form-control" placeholder="Description" name="descr" id="descr" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="expiration">Indiquez le prix de l'item</label>
+        <input required type="number" placeholder="Prix de l'item" name="tarif" class="form-control" id="tarif">
+    </div>
+    <div class="form-group">
+        <label for="expiration">Lien externe (Optionnel)</label>
+        <input type="text" placeholder="Lien externe (Optionnel)" name="url" class="form-control" id="url">
+    </div>
+
+    <div class="modal-footer">
+        <a href="<?= $router->pathFor('list', ['num' => $list->num]) ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
+        <button type="submit" class="btn btn-primary">Ajouter l'item</button>
+    </div>
+</form>
