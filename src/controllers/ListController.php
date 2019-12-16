@@ -45,11 +45,18 @@ class ListController extends Controller {
         $list->titre = htmlentities($_POST['titre']);
         $list->description = htmlentities($_POST['description']);
         $list->expiration = htmlentities($_POST['expiration']);
-        $list->token = Liste::generateToken();
+        $token = Liste::generateToken();
+        $list->token = $token;
         $list->public = isset($_POST['public']) ? 1 : 0;
         $list->save();
 
-        return $this->redirect($response, 'home');
+        $newList = Liste::where('token', '=', $token)->first();
+        $endPath = '?token='.$newList->token;
+
+        return $this->redirect($response, 'list', [
+            'num' => $newList->num,
+            'endPath' => $endPath
+        ]);
     }
 
     public function getEditList($request, $response, $args) {
@@ -73,6 +80,10 @@ class ListController extends Controller {
         } catch (\Exception $e) {
             $response->write($e->getMessage());
         }
-        return $this->redirect($response, 'home');
+        $endPath = '?token='.$list->token;
+        return $this->redirect($response, 'list', [
+            'num' => $list->num,
+            'endPath' => $endPath
+        ]);
     }
 }

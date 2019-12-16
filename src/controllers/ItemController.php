@@ -46,6 +46,10 @@ class ItemController extends Controller {
         }
         $item->tarif = htmlentities($_POST['tarif']);
         $item->save();
-        return $this->redirect($response, 'home');
+        $endPath = '?token='.$list->token;
+        return $this->redirect($response, 'list', [
+            'num' => $list->num,
+            'endPath' => $endPath
+        ]);
     }
 }
