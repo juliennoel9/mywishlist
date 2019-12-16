@@ -17,7 +17,7 @@
         <label class="form-check-label" for="public">Public</label>
     </div>
     <div class="modal-footer">
-        <a href="<?= $router->pathFor('list', ['num' => $list->num]) ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
+        <a href="<?= $router->pathFor('list', ['num' => $list->num])."?token="?><?= $list->token?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
         <button type="submit" class="btn btn-primary">Modifier la liste</button>
     </div>
 </form>
