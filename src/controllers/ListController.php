@@ -1,10 +1,7 @@
 <?php
 
-
 namespace mywishlist\controllers;
 
-
-use mysql_xdevapi\Exception;
 use mywishlist\models\Liste;
 
 class ListController extends Controller {
