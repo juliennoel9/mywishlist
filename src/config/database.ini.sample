@@ -1,5 +1,5 @@
 driver=mysql
-host=localhost
+host=localhost:port
 database=mywishlist
 username=root
 password=****
