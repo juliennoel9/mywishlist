@@ -44,11 +44,9 @@ class ListController extends Controller {
         $list->save();
 
         $newList = Liste::where('token', '=', $token)->first();
-        $endPath = '?token='.$newList->token;
 
         return $this->redirect($response, 'list', [
-            'num' => $newList->num,
-            'endPath' => $endPath
+            'token' => $newList->token
         ]);
     }
 
