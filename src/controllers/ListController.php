@@ -6,12 +6,12 @@ use mywishlist\models\Liste;
 
 class ListController extends Controller {
 
-    public function displayList($request, $response, $args) {
+    public function displayPublicLists($request, $response, $args) {
         $this->container->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => Liste::all()]);
         return $response;
     }
 
-    public function displayPublicLists($request, $response, $args) {
+    public function displayList($request, $response, $args) {
         try {
             $list = Liste::where('num', '=', $args['num'])->first();
             if (is_null($list)) {
