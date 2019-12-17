@@ -21,7 +21,7 @@ php initDatabase.php
 
 
 ## Contributeurs
-**DEMNAGE Louis** - [Nekzuris](https://github.com/juliennoel9/mywishlist/commits?author=Nekzuris)
+**DEMANGE Louis** - [Nekzuris](https://github.com/juliennoel9/mywishlist/commits?author=Nekzuris)
 
 **NOËL Julien** - [juliennoel9](https://github.com/juliennoel9/mywishlist/commits?author=juliennoel9)
 
