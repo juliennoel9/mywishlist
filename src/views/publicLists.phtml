@@ -15,7 +15,7 @@
 
         <tbody>
         <?php foreach ($lists as $list) : ?>
-            <tr onclick="document.location='<?= $router->pathFor('list', ['num' => $list->num]) ?>';">
+            <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
                 <th scope="row"><?= $list->num ?></th>
                 <td><?= $list->user_id ?></td>
                 <td><?= $list->titre ?></td>

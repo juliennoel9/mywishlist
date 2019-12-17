@@ -58,12 +58,12 @@ $app->get('/listes[/]', function ($request, $response, array $args) {
     return $controller->displayPublicLists($request, $response, $args);
 })->setName('publicLists');
 
-$app->get('/l/{num:[0-9]+}[/]', function ($request, $response, array $args) {
+$app->get('/l/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayList($request, $response, $args);
 })->setName('list');
 
-$app->get('/l/{num:[0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
+$app->get('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
     $controller = new ItemController($this);
     return $controller->displayItem($request, $response, $args);
 })->setName('item');

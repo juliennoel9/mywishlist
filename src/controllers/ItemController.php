@@ -11,7 +11,7 @@ use mywishlist\models\Liste;
 class ItemController extends Controller {
     public function displayItem($request, $response, $args) {
         try {
-            $list = Liste::where('num', '=', $args['num'])->first();
+            $list = Liste::where('token', '=', $args['token'])->first();
             if (is_null($list)) {
                 throw new Exception("Aucune liste correspondante");
             }
@@ -46,10 +46,8 @@ class ItemController extends Controller {
         }
         $item->tarif = htmlentities($_POST['tarif']);
         $item->save();
-        $endPath = '?token='.$list->token;
         return $this->redirect($response, 'list', [
-            'num' => $list->num,
-            'endPath' => $endPath
+            'token' => $list->token
         ]);
     }
 }

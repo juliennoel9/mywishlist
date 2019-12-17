@@ -12,22 +12,18 @@ class ListController extends Controller {
     }
 
     public function displayList($request, $response, $args) {
-        try {
-            $list = Liste::where('num', '=', $args['num'])->first();
-            if (is_null($list)) {
-                throw new \Exception("Aucune liste correspondante");
-            }
-            $items = $list->items()->get();
-            if (is_null($items)) {
-                throw new \Exception("Aucun item dans la liste");
-            }
-            $this->container->view->render($response, 'list.phtml', [
-               "list" => $list,
-               "items" => $items
-            ]);
-        } catch (\Exception $e) {
-            $response->write($e->getMessage());
+        $list = Liste::where('token', '=', $args['token'])->first();
+        if (is_null($list)) {
+
         }
+        $items = $list->items()->get();
+        if (is_null($items)) {
+
+        }
+        $this->container->view->render($response, 'list.phtml', [
+           "list" => $list,
+           "items" => $items
+        ]);
         return $response;
     }
 
@@ -77,10 +73,8 @@ class ListController extends Controller {
         } catch (\Exception $e) {
             $response->write($e->getMessage());
         }
-        $endPath = '?token='.$list->token;
         return $this->redirect($response, 'list', [
-            'num' => $list->num,
-            'endPath' => $endPath
+            'token' => $list->token
         ]);
     }
 }
