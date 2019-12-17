@@ -56,12 +56,12 @@ $app->redirect('/about[/]', $container->router->pathFor('about'));
 
 $app->get('/listes[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
-    return $controller->displayLists($request, $response, $args);
-})->setName('publicList');
+    return $controller->displayList($request, $response, $args);
+})->setName('publicLists');
 
 $app->get('/l/{num:[0-9]+}[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
-    return $controller->getList($request, $response, $args);
+    return $controller->displayPublicLists($request, $response, $args);
 })->setName('list');
 
 $app->get('/l/{num:[0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
