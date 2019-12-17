@@ -10,7 +10,7 @@ CREATE TABLE `item` (
   `descr` TEXT,
   `img` TEXT,
   `url` TEXT,
-  `tarif` DECIMAL(5,2) DEFAULT NULL,
+  `tarif` DECIMAL(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
