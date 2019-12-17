@@ -53,12 +53,8 @@ class ListController extends Controller {
     }
 
     public function getEditList($request, $response, $args) {
-        try {
-            $list = Liste::where('token', '=', $args['token'])->first();
-            $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list]);
-        } catch (\Exception $e) {
-            $response->write($e->getMessage());
-        }
+        $list = Liste::where('token', '=', $args['token'])->first();
+        $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list]);
         return $response;
     }
 
