@@ -2,4 +2,3 @@
 .vscode/*
 /vendor/*
 src/config/database.ini
-composer.lock
