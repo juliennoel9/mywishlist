@@ -1,5 +1,6 @@
 <?php
 
+use mywishlist\controllers\AccountController;
 use mywishlist\controllers\HomeController;
 use mywishlist\controllers\ItemController;
 use mywishlist\controllers\ListController;
@@ -41,7 +42,7 @@ $container['view'] = function($container) {
 
 
 /**
- * Routes
+ * Main pages
  */
 $app->get('/', function ($request, $response, array $args) {
     $controller = new HomeController($this);
@@ -53,6 +54,22 @@ $app->get('/apropos[/]', function ($request, $response, array $args) {
 })->setName('about');
 $app->redirect('/about[/]', $container->router->pathFor('about'));
 
+/**
+ * Account
+ */
+$app->get('/inscription[/]', function ($request, $response, array $args){
+    $controller = new AccountController($this);
+    return $controller->getRegister($request, $response, $args);
+})->setName('register');
+
+$app->post('/inscription[/]', function ($request, $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->postRegister($request, $response, $args);
+});
+
+/**
+ * Lists
+ */
 $app->get('/listes[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayPublicLists($request, $response, $args);
@@ -62,11 +79,6 @@ $app->get('/l/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $ar
     $controller = new ListController($this);
     return $controller->displayList($request, $response, $args);
 })->setName('list');
-
-$app->get('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
-    $controller = new ItemController($this);
-    return $controller->displayItem($request, $response, $args);
-})->setName('item');
 
 $app->get('/nouvelleListe[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
@@ -87,6 +99,14 @@ $app->post('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function ($request, $respon
     $controller = new ListController($this);
     return $controller->postEditList($request, $response, $args);
 });
+
+/**
+ * Items
+ */
+$app->get('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
+    $controller = new ItemController($this);
+    return $controller->displayItem($request, $response, $args);
+})->setName('item');
 
 $app->get('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function($request, $response, array $args) {
     $controller = new ItemController($this);
