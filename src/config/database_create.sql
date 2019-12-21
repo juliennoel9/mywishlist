@@ -25,3 +25,11 @@ CREATE TABLE `liste` (
   `public` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+                         `id` TEXT NOT NULL,
+                         `email` TEXT NOT NULL,
+                         `password` TEXT NOT NULL,
+                         PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
