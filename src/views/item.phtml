@@ -12,5 +12,8 @@
         <h5 class="text-uppercase font-weight-bold m-auto text-center"><strong><?= $item->nom ?></strong></h5>
         <p><?= $item->descr ?></p>
         <p><strong><?= $item->tarif ?> €</strong></p>
+        <?php if ($item->url != '') : ?>
+            <p>Informations supplémentaires :<br><a href="<?= $item->url ?>"><?= $item->url ?></a></p>
+        <?php endif ?>
     </div>
 </div>
