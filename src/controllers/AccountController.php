@@ -14,8 +14,8 @@ class AccountController extends Controller {
 
     public function postRegister($request, $response, $args) {
         $account = new Account();
-        $account->id = htmlentities($_POST['identifiant']);
-        $account->email = htmlentities($_POST['email']);
+        $account->id = htmlentities(trim($_POST['identifiant']));
+        $account->email = htmlentities(strtolower(trim($_POST['email'])));
         $account->password = htmlentities($_POST['password']);
         $account->save();
 

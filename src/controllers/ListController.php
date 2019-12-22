@@ -35,8 +35,8 @@ class ListController extends Controller {
     public function postNewList($request, $response, $args) {
         $list = new Liste();
         $list->user_id = null;
-        $list->titre = htmlentities($_POST['titre']);
-        $list->description = htmlentities($_POST['description']);
+        $list->titre = htmlentities(trim($_POST['titre']));
+        $list->description = htmlentities(trim($_POST['description']));
         $list->expiration = htmlentities($_POST['expiration']);
         $token = Liste::generateToken();
         $list->token = $token;
@@ -58,8 +58,8 @@ class ListController extends Controller {
 
     public function postEditList($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
-        $list->titre = htmlentities($_POST['titre']);
-        $list->description = htmlentities($_POST['description']);
+        $list->titre = htmlentities(trim($_POST['titre']));
+        $list->description = htmlentities(trim($_POST['description']));
         $list->expiration = htmlentities($_POST['expiration']);
         $list->public = isset($_POST['public']) ? 1 : 0;
         $list->save();
