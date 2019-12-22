@@ -9,8 +9,10 @@
         <input required type="text" value="<?= $item->descr ?>" name="description" class="form-control" id="description">
     </div>
     <div class="form-group">
-        <label for="img">Modifier l'image de l'item</label>
+        <label for="img">Modifiez l'image de l'item</label>
         <input type="file" name="img" class="form-control-file" id="img">
+        <label class="form-check-label" for="delete">Supprimer l'image actuelle ?</label>
+        <input type="checkbox" class="form-check-inline" id="delete" name="delete">
     </div>
     <div class="form-group">
         <label for="url">Modifier l'URL externe de l'item</label>

@@ -82,28 +82,29 @@ class ItemController extends Controller {
         $item->nom = htmlentities(trim($_POST['nom']));
         $item->descr = htmlentities(trim($_POST['description']));
 
-        //Image upload
-        $fileName = $_FILES['img']['name'];
-        $fileTmpName = $_FILES['img']['tmp_name'];
-        $fileSize = $_FILES['img']['size'];
-        $fileError = $_FILES['img']['error'];
+        if (isset($_POST['delete'])){
+            $item->img = 'noimage.png';
+        }else{
+            //Image upload
+            $fileName = $_FILES['img']['name'];
+            $fileTmpName = $_FILES['img']['tmp_name'];
+            $fileSize = $_FILES['img']['size'];
+            $fileError = $_FILES['img']['error'];
 
-        $fileExt = explode('.', $fileName);
-        $fileActualExt = strtolower(end($fileExt));
+            $fileExt = explode('.', $fileName);
+            $fileActualExt = strtolower(end($fileExt));
 
-        $allowed = ['jpg', 'jpeg', 'png'];
-        if (in_array($fileActualExt, $allowed)){
-            if ($fileError === 0) {
-                // 10 Mo
-                if ($fileSize < 10000000){
-                    $fileDestination = "./public/images/".$fileName;
-                    move_uploaded_file($fileTmpName, $fileDestination);
-                    $item->img = $fileName;
+            $allowed = ['jpg', 'jpeg', 'png'];
+            if (in_array($fileActualExt, $allowed)){
+                if ($fileError === 0) {
+                    // 10 Mo
+                    if ($fileSize < 10000000){
+                        $fileDestination = "./public/images/".$fileName;
+                        move_uploaded_file($fileTmpName, $fileDestination);
+                        $item->img = $fileName;
+                    }
                 }
             }
-        }
-        if($item->img != $fileName) {
-            $item->img = 'noimage.png';
         }
 
         $item->url = isset($_POST['url']) ? htmlentities(trim($_POST['url'])) : '';
