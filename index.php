@@ -108,6 +108,11 @@ $app->get('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($request, $respo
     return $controller->displayItem($request, $response, $args);
 })->setName('item');
 
+$app->post('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function($request, $response, array $args){
+    $controller = new ItemController($this);
+    return $controller->postDeleteItem($request, $response, $args);
+})->setName('deleteItem');
+
 $app->get('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function($request, $response, array $args) {
     $controller = new ItemController($this);
     return $controller->getNewItem($request, $response, $args);

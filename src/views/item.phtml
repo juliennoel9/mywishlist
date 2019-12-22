@@ -27,5 +27,8 @@
 <?php if ($item->reserve == '') : ?>
     <div class="modal-footer">
         <button onclick="document.location='<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>';" type="button" class="btn btn-secondary">Modifier Item</button>
+        <form method="post" action="<?= $router->pathFor('deleteItem', ['token' => $list->token, 'id' => $item->id]) ?>">
+            <button type="submit" class="btn btn-secondary">Supprimer Item</button>
+        </form>
     </div>
 <?php endif ?>

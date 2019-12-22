@@ -114,4 +114,13 @@ class ItemController extends Controller {
             'id' => $item->id,
         ]);
     }
+
+    public function postDeleteItem($request, $response, $args) {
+        $list = Liste::where('token', '=', $args['token'])->first();
+        $item = Item::where('id', '=', $args['id'])->first();
+        $item->delete();
+        return $this->redirect($response, 'list', [
+            'token' => $list->token
+        ]);
+    }
 }
