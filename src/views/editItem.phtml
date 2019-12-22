@@ -1,0 +1,23 @@
+<h1>Modifiez votre item</h1><br>
+<form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="nom">Donnez un nouveau nom à l'item</label>
+        <input required type="text" placeholder="Nom de l'item" name="nom" class="form-control" id="titre" value="<?= $item->nom ?>">
+    </div>
+    <div class="form-group">
+        <label for="description">Modifiez la description</label>
+        <input required type="text" value="<?= $item->descr ?>" name="description" class="form-control" id="description">
+    </div>
+    <div class="form-group">
+        <label for="img">Modifier l'image de l'item</label>
+        <input type="file" name="img" class="form-control-file" id="img">
+    </div>
+    <div class="form-group">
+        <label for="url">Modifier l'URL externe de l'item</label>
+        <input type="url" placeholder="URL externe" value="<?= $item->url ?>" name="url" class="form-control" id="url">
+    </div>
+    <div class="modal-footer">
+        <a href="<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id])?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
+        <button type="submit" name="submit" class="btn btn-primary">Modifier l'item</button>
+    </div>
+</form>

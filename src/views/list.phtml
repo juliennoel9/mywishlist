@@ -35,11 +35,13 @@
                 <td><?= $item->liste_id ?></td>
                 <td><?= $item->nom ?></td>
                 <td><?= $item->descr ?></td>
-                <?php if (!is_null($item->img)) : ?>
-                    <td class="text-center"><img src="/public/images/<?= $item->img ?>"></td>
-                <?php else : ?>
-                    <td class="text-center"></td>
-                <?php endif ?>
+                <?php
+                    $fileName = 'noimage.png';
+                    if (file_exists('./public/images/' . $item->img)) {
+                        $fileName = $item->img;
+                    }
+                ?>
+                <td class="text-center"><img src="/public/images/<?= $fileName ?>"></td>
                 <?php if ($item->url=='') : ?>
                     <td></td>
                 <?php else : ?>
