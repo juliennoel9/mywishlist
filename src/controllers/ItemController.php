@@ -32,12 +32,13 @@ class ItemController extends Controller {
         $list = Liste::where('token', '=', $args['token'])->first();
         $item = new Item();
         $item->liste_id = $list->num;
-        $item->nom = htmlentities($_POST['nom']);
-        $item->descr = htmlentities($_POST['descr']);
+        $item->nom = htmlentities(trim($_POST['nom']));
+        $item->descr = htmlentities(trim($_POST['descr']));
+        $item->img = 'noimage.png';
         if (isset($_POST['url'])){
-            $item->url = htmlentities($_POST['url']);
+            $item->url = htmlentities(trim($_POST['url']));
         }
-        $item->tarif = htmlentities($_POST['tarif']);
+        $item->tarif = htmlentities(trim($_POST['tarif']));
         $item->save();
         return $this->redirect($response, 'list', [
             'token' => $list->token
