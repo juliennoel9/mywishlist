@@ -11,6 +11,7 @@ CREATE TABLE `item` (
   `img` TEXT,
   `url` TEXT,
   `tarif` DECIMAL(10,2) DEFAULT NULL,
+  `reserve` TEXT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
