@@ -15,6 +15,10 @@ class Liste extends Model{
         return $this->hasMany('\mywishlist\models\Item', 'liste_id');
     }
 
+    public function user() {
+        return $this->belongsTo('\mywishlist\models\Account', 'user_id');
+    }
+
     public static function generateToken($length = 8) {
         $codeAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $codeAlphabet .= 'abcdefghijklmnopqrstuvwxyz';

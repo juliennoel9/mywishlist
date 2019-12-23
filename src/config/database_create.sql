@@ -11,8 +11,9 @@ CREATE TABLE `item` (
   `img` TEXT,
   `url` TEXT,
   `tarif` DECIMAL(10,2) DEFAULT NULL,
-  `reserve` TEXT,
-  PRIMARY KEY (`id`)
+  `reserve` BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`liste_id`) REFERENCES `liste`(num) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `liste`;
@@ -24,13 +25,15 @@ CREATE TABLE `liste` (
   `expiration` TIMESTAMP NOT NULL,
   `token` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `public` BOOLEAN DEFAULT FALSE,
-  PRIMARY KEY (`num`)
+  PRIMARY KEY (`num`),
+  FOREIGN KEY (`user_id`) REFERENCES `account`(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
-                         `id` TEXT NOT NULL,
-                         `email` TEXT NOT NULL,
-                         `password` TEXT NOT NULL,
-                         PRIMARY KEY (`id`)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL UNIQUE,
+  `email` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `hash` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
