@@ -11,7 +11,7 @@ CREATE TABLE `item` (
   `img` TEXT,
   `url` TEXT,
   `tarif` DECIMAL(10,2) DEFAULT NULL,
-  `reserve` BOOLEAN DEFAULT FALSE,
+  `reserve` VARCHAR(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`liste_id`) REFERENCES `liste`(num) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
