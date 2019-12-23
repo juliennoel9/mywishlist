@@ -13,7 +13,19 @@
         <input required type="number" step="0.01" min="0" max="99999999.99" placeholder="Prix de l'item" name="tarif" class="form-control" id="tarif">
     </div>
     <div class="form-group">
-        <label for="img">Ajoutez une image à votre item</label>
+        <div>
+            <label for="img">Ajoutez une image à votre item</label>
+            <a
+                    data-trigger="focus"
+                    role="button"
+                    tabindex="0"
+                    class="rounded-circle btn-sm btn-info text-white"
+                    data-toggle="popover"
+                    title="Informations pour l'image"
+                    data-content="Formats acceptés : PNG, JPG, JPEG de taille inférieure ou égale à 10Mo. Si un autre format est sélectionné ou que l'image est trop volumineuse, aucune image ne sera importée.">
+                i
+            </a>
+        </div>
         <input type="file" name="img" class="form-control-file" id="img">
     </div>
     <div class="form-group">
@@ -26,3 +38,11 @@
         <button type="submit" name="submit" class="btn btn-primary">Ajouter l'item</button>
     </div>
 </form>
+
+<script src="/public/js/jquery.slim.min.js"></script>
+<script src="/public/js/popper.min.js"></script>
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+</script>
