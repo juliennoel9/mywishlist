@@ -44,18 +44,20 @@ class ItemController extends Controller {
         $fileExt = explode('.', $fileName);
         $fileActualExt = strtolower(end($fileExt));
 
+        $NewFileName = $fileExt[0].'-'.$list->num.'-'.Liste::generateToken().'.'.$fileActualExt;
+
         $allowed = ['jpg', 'jpeg', 'png'];
         if (in_array($fileActualExt, $allowed)){
             if ($fileError === 0) {
                 // 10 Mo
                 if ($fileSize < 10000000){
-                    $fileDestination = "./public/images/".$fileName;
+                    $fileDestination = "./public/images/".$NewFileName;
                     move_uploaded_file($fileTmpName, $fileDestination);
-                    $item->img = $fileName;
+                    $item->img = $NewFileName;
                 }
             }
         }
-        if($item->img != $fileName or $item->img == '') {
+        if($item->img != $NewFileName or $item->img == '') {
             $item->img = 'noimage.png';
         }
 
@@ -94,14 +96,16 @@ class ItemController extends Controller {
             $fileExt = explode('.', $fileName);
             $fileActualExt = strtolower(end($fileExt));
 
+            $NewFileName = $fileExt[0].'-'.$list->num.'-'.Liste::generateToken().'.'.$fileActualExt;
+
             $allowed = ['jpg', 'jpeg', 'png'];
             if (in_array($fileActualExt, $allowed)){
                 if ($fileError === 0) {
                     // 10 Mo
                     if ($fileSize < 10000000){
-                        $fileDestination = "./public/images/".$fileName;
+                        $fileDestination = "./public/images/".$NewFileName;
                         move_uploaded_file($fileTmpName, $fileDestination);
-                        $item->img = $fileName;
+                        $item->img = $NewFileName;
                     }
                 }
             }
