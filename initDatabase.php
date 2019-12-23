@@ -44,7 +44,7 @@ try {
     }
     $conn->exec("CREATE DATABASE IF NOT EXISTS $database");
     $conn->exec("USE $database");
-    echo "La BDD '$database' à bien été initialisé.\n";
+    echo "La BDD '$database' a bien été initialisé.\n";
 } catch (PDOException $e) {
     fwrite(STDERR, $e->getMessage() . "\n");
     exit(3);

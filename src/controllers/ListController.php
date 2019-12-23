@@ -13,14 +13,10 @@ class ListController extends Controller {
 
     public function displayList($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
-        if (is_null($list)) {
-
-        }
         $items = $list->items()->get();
-        if (is_null($items)) {
 
-        }
         $this->container->view->render($response, 'list.phtml', [
+           "title" => 'MyWishList - Liste n°'.$list->num,
            "list" => $list,
            "items" => $items
         ]);
