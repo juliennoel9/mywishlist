@@ -48,7 +48,7 @@
                     <td><a href="<?= $item->url ?>">URL</a></td>
                 <?php endif ?>
                 <td><?= $item->tarif ?>€</td>
-                <td><?= $item->reserve == null ? 'Non réservé' : $item->reserve?></td>
+                <td><?= $item->nomReservation == null ? 'Non réservé' : $item->nomReservation?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

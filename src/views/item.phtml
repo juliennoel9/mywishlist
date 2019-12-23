@@ -14,12 +14,12 @@
         }
     ?>
 
-    <!-- Trigger modal -->
+    <!-- Trigger modal image -->
     <a data-toggle="modal" data-target="#modalIMG">
         <img class="rounded float-left img-thumbnail" width=40% src="/public/images/<?= $fileName ?>">
     </a>
 
-    <!-- Modal -->
+    <!-- Modal image -->
     <div class="modal fade" id="modalIMG" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -46,11 +46,39 @@
     </div>
 </div>
 
-<?php if ($item->reserve == '') : ?>
+<?php if ($item->nomReservation == '') : ?>
     <div class="modal-footer">
         <button onclick="document.location='<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>';" type="button" class="btn btn-secondary">Modifier Item</button>
-        <form method="post" action="<?= $router->pathFor('deleteItem', ['token' => $list->token, 'id' => $item->id]) ?>">
-            <button type="submit" class="btn btn-danger">Supprimer Item</button>
+
+        <form method="post" action="<?= $router->pathFor('reserveItem', ['token' => $list->token, 'id' => $item->id]) ?>">
+            <!-- Trigger modal reservation -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalReservation">Réserver l'item</button>
+
+            <!-- Modal reservation -->
+            <div class="modal fade" role="dialog" id="modalReservation">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Réserver l'item</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="nom">Nom</label>
+                                <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" id="nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <input required name="message" class="form-control" placeholder="Votre message" id="message">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-success">Réserver</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 <?php endif ?>

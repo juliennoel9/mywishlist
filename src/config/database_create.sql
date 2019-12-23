@@ -11,9 +11,12 @@ CREATE TABLE `item` (
   `img` TEXT,
   `url` TEXT,
   `tarif` DECIMAL(10,2) DEFAULT NULL,
-  `reserve` VARCHAR(30) DEFAULT NULL,
+  `account_id` INT(11) DEFAULT NULL,
+  `nomReservation` VARCHAR(30) DEFAULT NULL,
+  `messageReservation` TEXT,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`liste_id`) REFERENCES `liste`(num) ON DELETE CASCADE
+  FOREIGN KEY (`liste_id`) REFERENCES `liste`(num) ON DELETE CASCADE,
+  FOREIGN KEY (`account_id`) REFERENCES `account`(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `liste`;

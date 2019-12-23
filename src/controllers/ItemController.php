@@ -81,50 +81,63 @@ class ItemController extends Controller {
     public function postEditItem($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
         $item = Item::where('id', '=', $args['id'])->first();
-        $item->nom = htmlentities(trim($_POST['nom']));
-        $item->descr = htmlentities(trim($_POST['description']));
 
-        if (isset($_POST['delete'])){
-            $item->img = 'noimage.png';
-        }else{
-            //Image upload
-            $fileName = $_FILES['img']['name'];
-            $fileTmpName = $_FILES['img']['tmp_name'];
-            $fileSize = $_FILES['img']['size'];
-            $fileError = $_FILES['img']['error'];
+        if ($_POST['submit'] == 'edit'){
+            $item->nom = htmlentities(trim($_POST['nom']));
+            $item->descr = htmlentities(trim($_POST['description']));
 
-            $fileExt = explode('.', $fileName);
-            $fileActualExt = strtolower(end($fileExt));
+            if (isset($_POST['delete'])){
+                $item->img = 'noimage.png';
+            }else{
+                //Image upload
+                $fileName = $_FILES['img']['name'];
+                $fileTmpName = $_FILES['img']['tmp_name'];
+                $fileSize = $_FILES['img']['size'];
+                $fileError = $_FILES['img']['error'];
 
-            $NewFileName = $fileExt[0].'-'.$list->num.'-'.Liste::generateToken().'.'.$fileActualExt;
+                $fileExt = explode('.', $fileName);
+                $fileActualExt = strtolower(end($fileExt));
 
-            $allowed = ['jpg', 'jpeg', 'png'];
-            if (in_array($fileActualExt, $allowed)){
-                if ($fileError === 0) {
-                    // 10 Mo
-                    if ($fileSize < 10000000){
-                        $fileDestination = "./public/images/".$NewFileName;
-                        move_uploaded_file($fileTmpName, $fileDestination);
-                        $item->img = $NewFileName;
+                $NewFileName = $fileExt[0].'-'.$list->num.'-'.Liste::generateToken().'.'.$fileActualExt;
+
+                $allowed = ['jpg', 'jpeg', 'png'];
+                if (in_array($fileActualExt, $allowed)){
+                    if ($fileError === 0) {
+                        // 10 Mo
+                        if ($fileSize < 10000000){
+                            $fileDestination = "./public/images/".$NewFileName;
+                            move_uploaded_file($fileTmpName, $fileDestination);
+                            $item->img = $NewFileName;
+                        }
                     }
                 }
             }
-        }
 
-        $item->url = isset($_POST['url']) ? htmlentities(trim($_POST['url'])) : '';
+            $item->url = isset($_POST['url']) ? htmlentities(trim($_POST['url'])) : '';
+            $item->save();
+            return $this->redirect($response, 'item', [
+                'token' => $list->token,
+                'id' => $item->id,
+            ]);
+        }elseif ($_POST['submit'] == 'delete'){
+            $item->delete();
+            return $this->redirect($response, 'list', [
+                'token' => $list->token
+            ]);
+        }
+    }
+
+    public function postReserveItem($request, $response, $args) {
+        $list = Liste::where('token', '=', $args['token'])->first();
+        $item = Item::where('id', '=', $args['id'])->first();
+
+        $item->nomReservation = htmlentities(trim($_POST['nom']));
+        $item->messageReservation = htmlentities(trim($_POST['message']));
+
         $item->save();
         return $this->redirect($response, 'item', [
             'token' => $list->token,
             'id' => $item->id,
-        ]);
-    }
-
-    public function postDeleteItem($request, $response, $args) {
-        $list = Liste::where('token', '=', $args['token'])->first();
-        $item = Item::where('id', '=', $args['id'])->first();
-        $item->delete();
-        return $this->redirect($response, 'list', [
-            'token' => $list->token
         ]);
     }
 }
