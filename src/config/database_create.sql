@@ -14,9 +14,7 @@ CREATE TABLE `item` (
   `account_id` INT(11) DEFAULT NULL,
   `nomReservation` VARCHAR(30) DEFAULT NULL,
   `messageReservation` TEXT,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`liste_id`) REFERENCES `liste`(num) ON DELETE CASCADE,
-  FOREIGN KEY (`account_id`) REFERENCES `account`(id) ON DELETE CASCADE
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `liste`;
@@ -28,8 +26,7 @@ CREATE TABLE `liste` (
   `expiration` TIMESTAMP NOT NULL,
   `token` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `public` BOOLEAN DEFAULT FALSE,
-  PRIMARY KEY (`num`),
-  FOREIGN KEY (`user_id`) REFERENCES `account`(id)
+  PRIMARY KEY (`num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `account`;
@@ -40,3 +37,11 @@ CREATE TABLE `account` (
   `hash` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*
+ALTER TABLE `item`
+ADD FOREIGN KEY (`liste_id`) REFERENCES `liste`(num) ON DELETE CASCADE,
+ADD FOREIGN KEY (`account_id`) REFERENCES `account`(id) ON DELETE CASCADE;
+  
+ALTER TABLE `liste`
+ADD FOREIGN KEY (`user_id`) REFERENCES `account`(id);
+*/
