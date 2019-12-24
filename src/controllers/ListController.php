@@ -3,6 +3,7 @@
 namespace mywishlist\controllers;
 
 use mywishlist\models\Liste;
+use mywishlist\models\Message;
 
 class ListController extends Controller {
 
@@ -13,12 +14,14 @@ class ListController extends Controller {
 
     public function displayList($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
-        $items = $list->items()->get();
+        $items = $list->items();
+        $messages = $list->messages();
 
         $this->container->view->render($response, 'list.phtml', [
            "title" => 'MyWishList - Liste n°'.$list->num,
            "list" => $list,
-           "items" => $items
+           "items" => $items,
+           "messages" => $messages
         ]);
         return $response;
     }
@@ -59,6 +62,20 @@ class ListController extends Controller {
         $list->expiration = htmlentities($_POST['expiration']);
         $list->public = isset($_POST['public']) ? 1 : 0;
         $list->save();
+        return $this->redirect($response, 'list', [
+            'token' => $list->token
+        ]);
+    }
+
+    public function postNewListMessage($request, $response, $args) {
+        $list = Liste::where('token', '=', $args['token'])->first();
+        $message = new Message();
+        $message->liste_id = $list->num;
+        $message->nomMessage = htmlentities(trim($_POST['nom']));
+        $message->message = htmlentities(trim($_POST['message']));
+        date_default_timezone_set('Europe/Paris');
+        $message->date = date('Y-m-d H:i:s');
+        $message->save();
         return $this->redirect($response, 'list', [
             'token' => $list->token
         ]);

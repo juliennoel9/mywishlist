@@ -37,6 +37,19 @@ CREATE TABLE `account` (
   `hash` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+`id` INT(11) NOT NULL AUTO_INCREMENT,
+`liste_id` INT(11) NOT NULL,
+`account_id` INT(11) DEFAULT NULL,
+`nomMessage` VARCHAR(30),
+`message` TEXT,
+`date` datetime NOT NULL,
+PRIMARY KEY (`id`),
+FOREIGN KEY (`liste_id`) REFERENCES `liste`(num),
+FOREIGN KEY (`account_id`) REFERENCES `account`(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*
 ALTER TABLE `item`
 ADD FOREIGN KEY (`liste_id`) REFERENCES `liste`(num) ON DELETE CASCADE,

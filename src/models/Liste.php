@@ -12,11 +12,15 @@ class Liste extends Model{
     public $timestamps = false;
 
     public function items() {
-        return $this->hasMany('\mywishlist\models\Item', 'liste_id');
+        return $this->hasMany('\mywishlist\models\Item', 'liste_id')->get();
     }
 
     public function user() {
         return $this->belongsTo('\mywishlist\models\Account', 'user_id');
+    }
+
+    public function messages() {
+        return $this->hasMany('\mywishlist\models\Message', 'liste_id')->get();
     }
 
     public static function generateToken($length = 8) {

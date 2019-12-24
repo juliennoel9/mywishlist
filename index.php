@@ -100,6 +100,11 @@ $app->post('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function ($request, $respon
     return $controller->postEditList($request, $response, $args);
 });
 
+$app->post('/l/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+    $controller = new ListController($this);
+    return $controller->postNewListMessage($request, $response, $args);
+})->setName('newListMessage');
+
 /**
  * Items
  */
