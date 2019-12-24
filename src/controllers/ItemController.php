@@ -85,6 +85,7 @@ class ItemController extends Controller {
         if ($_POST['submit'] == 'edit'){
             $item->nom = htmlentities(trim($_POST['nom']));
             $item->descr = htmlentities(trim($_POST['description']));
+            $item->tarif = htmlentities(trim($_POST['tarif']));
 
             if (isset($_POST['delete'])){
                 $item->img = 'noimage.png';
