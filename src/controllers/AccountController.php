@@ -16,10 +16,17 @@ class AccountController extends Controller {
         $account = new Account();
         $account->username = htmlentities(trim($_POST['identifiant']));
         $account->email = htmlentities(strtolower(trim($_POST['email'])));
-        $password = htmlentities($_POST['password']);
-        $account->hash = password_hash($password, PASSWORD_DEFAULT);
-        $account->save();
 
+        $accountTest = Account::where('email', '=', $account->email)->orwhere('username', '=', $account->username)->first();
+        if (empty($accountTest)) {
+            $password = htmlentities($_POST['password']);
+            $account->hash = password_hash($password, PASSWORD_DEFAULT);
+            $account->save();
+        } else {
+            $this->container->view->render($response, 'register.phtml', ["title" => "MyWishList - Inscription", "msg" => "Identifiant ou email déjà utilisé, réessayez."]);
+            return $response;
+        }
+        setcookie("login", serialize(['email' => $account->email, 'username' => $account->username]), time()+60*60*24, "/");
         return $this->redirect($response, 'home');
     }
 
@@ -38,7 +45,7 @@ class AccountController extends Controller {
             setcookie("login", serialize(['email' => $account->email, 'username' => $account->username]), time()+60*60*24, "/");
             return $this->redirect($response, 'home');
         }else {
-            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "Identifiant ou mot de passe incorrect, recommencez."]);
+            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "Identifiant ou mot de passe incorrect, réessayez."]);
             return $response;
         }
     }
