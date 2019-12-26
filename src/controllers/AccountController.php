@@ -28,7 +28,7 @@ class AccountController extends Controller {
             $this->container->view->render($response, 'register.phtml', ["title" => "MyWishList - Inscription", "msg" => "Identifiant ou email déjà utilisé, réessayez."]);
             return $response;
         }
-        setcookie("login", serialize(['email' => $account->email, 'username' => $account->username]), time()+60*60*24, "/");
+        setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time()+60*60*24, "/");
         return $this->redirect($response, 'home');
     }
 
@@ -44,7 +44,7 @@ class AccountController extends Controller {
         $account = Account::where('email', '=', $id)->orwhere('username', '=', $id)->first();
 
         if (isset($account) and password_verify($password, $account->hash)) {
-            setcookie("login", serialize(['email' => $account->email, 'username' => $account->username]), time()+60*60*24, "/");
+            setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time()+60*60*24, "/");
             return $this->redirect($response, 'home');
         }else {
             $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "Identifiant ou mot de passe incorrect, réessayez."]);
