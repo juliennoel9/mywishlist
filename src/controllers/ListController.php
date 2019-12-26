@@ -2,6 +2,7 @@
 
 namespace mywishlist\controllers;
 
+use mywishlist\models\Account;
 use mywishlist\models\Liste;
 use mywishlist\models\Message;
 
@@ -33,7 +34,12 @@ class ListController extends Controller {
 
     public function postNewList($request, $response, $args) {
         $list = new Liste();
-        $list->user_id = null;
+        if (isset($_COOKIE['login'])){
+            $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
+            $list->user_id = $account->id;
+        }else {
+            $list->user_id = null;
+        }
         $list->titre = htmlentities(trim($_POST['titre']));
         $list->description = htmlentities(trim($_POST['description']));
         $list->expiration = htmlentities($_POST['expiration']);
