@@ -67,6 +67,16 @@ $app->post('/inscription[/]', function ($request, $response, array $args) {
     return $controller->postRegister($request, $response, $args);
 });
 
+$app->get('/connexion[/]', function ($request, $response, array $args){
+    $controller = new AccountController($this);
+    return $controller->getLogin($request, $response, $args);
+})->setName('login');
+
+$app->post('/connexion[/]', function ($request, $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->postLogin($request, $response, $args);
+});
+
 /**
  * Lists
  */
