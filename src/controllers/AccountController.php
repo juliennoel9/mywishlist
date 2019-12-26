@@ -33,6 +33,7 @@ class AccountController extends Controller {
     }
 
     public function getLogin($request, $response, $args) {
+        $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
         $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion"]);
         return $response;
     }
@@ -45,7 +46,7 @@ class AccountController extends Controller {
 
         if (isset($account) and password_verify($password, $account->hash)) {
             setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time()+60*60*24, "/");
-            return $this->redirect($response, 'home');
+            return $response->withStatus(302)->withHeader('Location', $_SESSION['previousPage']);
         }else {
             $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "Identifiant ou mot de passe incorrect, réessayez."]);
             return $response;
