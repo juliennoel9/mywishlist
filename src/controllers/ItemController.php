@@ -16,6 +16,7 @@ class ItemController extends Controller {
 
         }
         $this->container->view->render($response, 'item.phtml', [
+            "title" => "MyWishList - Item n°".$item->id,
             "list" => $list,
             "item" => $item
         ]);

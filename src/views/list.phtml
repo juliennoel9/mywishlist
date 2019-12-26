@@ -72,10 +72,10 @@
         <button onclick="document.location='<?= $router->pathFor('editList', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Modifier Liste</button>
 
         <form method="post" action="<?= $router->pathFor('newListMessage', ['token' => $list->token]) ?>">
-            <!-- Trigger modal reservation -->
+            <!-- Trigger modal message -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalMessage">Ajouter un message</button>
 
-            <!-- Modal reservation -->
+            <!-- Modal message -->
             <div class="modal fade" role="dialog" id="modalMessage">
                 <div class="modal-dialog">
                     <div class="modal-content">
