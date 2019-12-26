@@ -35,6 +35,7 @@ class AccountController extends Controller {
         $account = Account::where('email', '=', $id)->orwhere('username', '=', $id)->first();
 
         if (isset($account) and password_verify($password, $account->hash)) {
+            setcookie("login", serialize(['email' => $account->email, 'username' => $account->username]), time()+60*60*24, "/");
             return $this->redirect($response, 'home');
         }else {
             $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "Identifiant ou mot de passe incorrect, recommencez."]);

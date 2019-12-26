@@ -31,15 +31,22 @@
             </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->pathFor('register') ?>">Inscription</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->pathFor('login') ?>">Connexion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->pathFor('home') ?>">Mon compte</a>
-                    </li>
+
+                    <?php if (isset($_COOKIE['login'])) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="" onclick="deleteCookie('login')">Déconnexion</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $router->pathFor('home') ?>">Mon compte</a>
+                        </li>
+                    <?php else : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $router->pathFor('register') ?>">Inscription</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $router->pathFor('login') ?>">Connexion</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
@@ -51,6 +58,20 @@
 
     <script src="<?= $rootUri ?>/public/js/jquery.slim.min.js"></script>
     <script src="<?= $rootUri ?>/public/js/bootstrap.min.js"></script>
+    <script>
+        function createCookie(name,value,days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                var expires = "; expires="+date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name+"="+value+expires+"; path=/";
+        }
 
+        function deleteCookie(name) {
+            createCookie(name,"",-1);
+        }
+    </script>
 </body>
 </html>
