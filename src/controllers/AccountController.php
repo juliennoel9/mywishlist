@@ -16,6 +16,8 @@ class AccountController extends Controller {
         $account = new Account();
         $account->username = htmlentities(trim($_POST['identifiant']));
         $account->email = htmlentities(strtolower(trim($_POST['email'])));
+        $account->prenom = htmlentities(trim($_POST['prenom']));
+        $account->nom = htmlentities(trim($_POST['nom']));
 
         $accountTest = Account::where('email', '=', $account->email)->orwhere('username', '=', $account->username)->first();
         if (empty($accountTest)) {

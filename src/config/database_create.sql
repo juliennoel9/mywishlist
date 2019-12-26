@@ -35,6 +35,8 @@ CREATE TABLE `account` (
   `username` VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL UNIQUE,
   `email` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `hash` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
+  `nom` VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
+  `prenom` VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
