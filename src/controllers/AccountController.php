@@ -25,11 +25,11 @@ class AccountController extends Controller {
             $account->hash = password_hash($password, PASSWORD_DEFAULT);
             $account->save();
         } else {
-            $this->container->view->render($response, 'register.phtml', ["title" => "MyWishList - Inscription", "msg" => "Identifiant ou email déjà utilisé, réessayez."]);
+            $this->container->view->render($response, 'register.phtml', ["title" => "MyWishList - Inscription", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou email déjà utilisé, réessayez.</div>"]);
             return $response;
         }
         setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time()+60*60*24, "/");
-        return $this->redirect($response, 'home');
+        return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account]);
     }
 
     public function getLogin($request, $response, $args) {
@@ -46,10 +46,51 @@ class AccountController extends Controller {
 
         if (isset($account) and password_verify($password, $account->hash)) {
             setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time()+60*60*24, "/");
-            return $response->withStatus(302)->withHeader('Location', $_SESSION['previousPage']);
+
+            if (pathinfo($_SESSION['previousPage'])['filename']=='inscription') {
+                return $this->redirect($response, 'home');
+            }else {
+                return $response->withStatus(302)->withHeader('Location', $_SESSION['previousPage']);
+            }
         }else {
-            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "Identifiant ou mot de passe incorrect, réessayez."]);
+            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>"]);
             return $response;
+        }
+    }
+
+    public function getAccount($request, $response, $args) {
+        $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
+        $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account]);
+        return $response;
+    }
+
+    public function postEditAccount($request, $response, $args) {
+        $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
+        $account->email = htmlentities(strtolower(trim($_POST['email'])));
+        $account->prenom = htmlentities(trim($_POST['prenom']));
+        $account->nom = htmlentities(trim($_POST['nom']));
+        if ($_POST['submit'] == 'editPassword') {
+            if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash)){
+                $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
+            }else {
+                $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-danger\">Ancien mot de passe incorrect, réessayez.</div>"]);
+                return $response;
+            }
+        }
+        $account->save();
+
+        if ($_POST['submit'] == 'editPassword'){
+            setcookie("login", "", time() - 1000, "/");
+            unset($_COOKIE['login']);
+            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>"]);
+            return $response;
+        }else {
+            setcookie("login", "", time() - 1000, "/");
+            unset($_COOKIE['login']);
+            setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time() + 60 * 60 * 24, "/");
+            //$this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Modifications enregistrées.</div>"]);
+            //return $response;
+            return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Modifications enregistrées.</div>"]);
         }
     }
 }

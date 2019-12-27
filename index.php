@@ -77,6 +77,16 @@ $app->post('/connexion[/]', function ($request, $response, array $args) {
     return $controller->postLogin($request, $response, $args);
 });
 
+$app->get('/moncompte[/]', function ($request, $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->getAccount($request, $response, $args);
+})->setName('account');
+
+$app->post('/moncompte[/]', function ($request, $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->postEditAccount($request, $response, $args);
+});
+
 /**
  * Lists
  */

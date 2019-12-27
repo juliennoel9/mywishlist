@@ -1,7 +1,7 @@
 <h1>Créez votre compte</h1><br>
 <form method="POST" action="<?= $router->pathFor('register') ?>" id="register">
     <?php if (isset($msg)) : ?>
-        <div class="alert alert-danger"><?= $msg ?></div>
+        <?= $msg ?>
     <?php endif; ?>
     <div class="form-group">
         <label for="identifiant">Identifiant de compte</label>
@@ -27,28 +27,24 @@
         <label for="confirmPassWord">Confirmez votre mot de passe</label>
         <input required type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord">
     </div>
-    <div class="alert alert-danger" id="erreur"></div>
+    <div id="erreur"></div>
     <div class="modal-footer">
         <a href="<?= $router->pathFor('home') ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
         <button type="submit" class="btn btn-primary">Inscription</button>
     </div>
 </form>
 
-
-
 <script>
     document.forms["register"].addEventListener("submit", function(e) {
         var erreur;
         var inputs = this;
         if (inputs["password"].value != inputs["confirmPassWord"].value) {
-            erreur = "Les deux mots de passes ne sont pas identiques.";
+            erreur = "<div class=\"alert alert-danger\">Les deux mots de passes ne sont pas identiques.</div>";
         }
         if (erreur) {
             e.preventDefault();
             document.getElementById("erreur").innerHTML = erreur;
             return false;
-        } else {
-            alert('Inscription réussie !');
         }
     });
 </script>

@@ -34,10 +34,14 @@
 
                     <?php if (isset($_COOKIE['login'])) : ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="" onclick="deleteCookie('login')">Déconnexion</a>
+                            <?php if(pathinfo($_SERVER['REQUEST_URI'])['filename']=='moncompte') : ?>
+                                <a class="nav-link" href="<?= $router->pathFor('home') ?>" onclick="deleteCookie('login')">Déconnexion</a>
+                            <?php else: ?>
+                                <a class="nav-link" href="" onclick="deleteCookie('login')">Déconnexion</a>
+                            <?php endif; ?>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= $router->pathFor('home') ?>">Mon compte</a>
+                            <a class="nav-link" href="<?= $router->pathFor('account') ?>">Mon compte</a>
                         </li>
                     <?php else : ?>
                         <li class="nav-item">
