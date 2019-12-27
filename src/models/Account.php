@@ -12,6 +12,6 @@ class Account extends Model {
     public $timestamps = false;
 
     public function lists() {
-        return $this->hasMany('\mywishlist\models\Liste', 'user_id');
+        return $this->hasMany('\mywishlist\models\Liste', 'user_id')->get();
     }
 }

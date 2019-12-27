@@ -5,6 +5,7 @@ namespace mywishlist\controllers;
 
 
 use mywishlist\models\Account;
+use mywishlist\models\Message;
 
 class AccountController extends Controller {
     public function getRegister($request, $response, $args) {
@@ -66,31 +67,57 @@ class AccountController extends Controller {
 
     public function postEditAccount($request, $response, $args) {
         $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
-        $account->email = htmlentities(strtolower(trim($_POST['email'])));
-        $account->prenom = htmlentities(trim($_POST['prenom']));
-        $account->nom = htmlentities(trim($_POST['nom']));
-        if ($_POST['submit'] == 'editPassword') {
-            if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash)){
-                $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
-            }else {
-                $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-danger\">Ancien mot de passe incorrect, réessayez.</div>"]);
+
+        if ($_POST['submit'] == 'deleteAccount'){
+            $lists = $account->lists();
+            foreach ($lists as $list) {
+                $items = $list->items();
+                foreach ($items as $item) {
+                    $item->delete();
+                }
+                $messages = $list->messages();
+                foreach ($messages as $message) {
+                    $message->delete();
+                }
+                $list->delete();
+            }
+            $allMessages = Message::all();
+            foreach ($allMessages as $message) {
+                if ($message->account_id == $account->id) {
+                    $message->account_id = null;
+                    $message->save();
+                }
+            }
+            $account->delete();
+            setcookie("login", "", time() - 1000, "/");
+            unset($_COOKIE['login']);
+            return $this->redirect($response, 'home');
+        }else{
+            $account->email = htmlentities(strtolower(trim($_POST['email'])));
+            $account->prenom = htmlentities(trim($_POST['prenom']));
+            $account->nom = htmlentities(trim($_POST['nom']));
+            if ($_POST['submit'] == 'editPassword') {
+                if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash)){
+                    $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
+                }else {
+                    $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-danger\">Ancien mot de passe incorrect, réessayez.</div>"]);
+                    return $response;
+                }
+            }
+            $account->save();
+
+            if ($_POST['submit'] == 'editPassword'){
+                setcookie("login", "", time() - 1000, "/");
+                unset($_COOKIE['login']);
+                $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>"]);
                 return $response;
+            }else {
+                setcookie("login", "", time() - 1000, "/");
+                unset($_COOKIE['login']);
+                setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time() + 60 * 60 * 24, "/");
+                return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Modifications enregistrées.</div>"]);
             }
         }
-        $account->save();
 
-        if ($_POST['submit'] == 'editPassword'){
-            setcookie("login", "", time() - 1000, "/");
-            unset($_COOKIE['login']);
-            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>"]);
-            return $response;
-        }else {
-            setcookie("login", "", time() - 1000, "/");
-            unset($_COOKIE['login']);
-            setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time() + 60 * 60 * 24, "/");
-            //$this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Modifications enregistrées.</div>"]);
-            //return $response;
-            return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Modifications enregistrées.</div>"]);
-        }
     }
 }

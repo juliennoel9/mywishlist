@@ -77,6 +77,10 @@ class ListController extends Controller {
         $list = Liste::where('token', '=', $args['token'])->first();
         $message = new Message();
         $message->liste_id = $list->num;
+        if (isset($_COOKIE['login'])){
+            $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
+            $message->account_id = $account->id;
+        }
         $message->nomMessage = htmlentities(trim($_POST['nom']));
         $message->message = htmlentities(trim($_POST['message']));
         date_default_timezone_set('Europe/Paris');
