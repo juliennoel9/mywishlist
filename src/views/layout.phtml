@@ -24,9 +24,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?= $router->pathFor('publicLists') ?>">Listes</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->pathFor('newList') ?>">Créer Liste</a>
-                    </li>
+                    <?php if (isset($_COOKIE['login'])) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $router->pathFor('newList') ?>">Créer Liste</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -34,7 +36,7 @@
 
                     <?php if (isset($_COOKIE['login'])) : ?>
                         <li class="nav-item">
-                            <?php if(pathinfo($_SERVER['REQUEST_URI'])['filename']=='moncompte') : ?>
+                            <?php if(pathinfo($_SERVER['REQUEST_URI'])['filename']=='moncompte' or pathinfo($_SERVER['REQUEST_URI'])['filename']=='nouvelleListe') : ?>
                                 <a class="nav-link" href="<?= $router->pathFor('home') ?>" onclick="deleteCookie('login')">Déconnexion</a>
                             <?php else: ?>
                                 <a class="nav-link" href="" onclick="deleteCookie('login')">Déconnexion</a>
