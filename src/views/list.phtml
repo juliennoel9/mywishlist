@@ -1,6 +1,5 @@
 <h1>Liste n°<?=$list->num?></h1>
 <div class="body mt-5">
-
     <section class="jumbotron text-center mt-4">
         <div class="container">
             <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
@@ -8,11 +7,6 @@
             <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
         </div>
     </section>
-
-
-
-
-
 
     <table class="table table-bordered table-hover table-dark">
         <thead>
@@ -67,6 +61,30 @@
     <?php endif ?>
 
     <div class="modal-footer">
+        <!-- Trigger modal URL -->
+        <button href="<?= pathinfo($_SERVER['HTTP_HOST'])['filename'].pathinfo($_SERVER['REQUEST_URI'])['dirname'].'/'.pathinfo($_SERVER['REQUEST_URI'])['filename']; ?>" type="button" class="btn btn-primary" id="url" data-toggle="modal" data-target="#modalURL">Partager URL</button>
+
+        <!-- Modal URL -->
+        <div class="modal fade" role="dialog" id="modalURL">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Partager l'URL</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="text-center js-text" id="text"><?= pathinfo($_SERVER['HTTP_HOST'])['filename'].pathinfo($_SERVER['REQUEST_URI'])['dirname'].'/'.pathinfo($_SERVER['REQUEST_URI'])['filename']; ?></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                        <button id="copy" type="button" class="btn btn-success js-copyButton">Copier l'URL</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button onclick="document.location='<?= $router->pathFor('newItem', ['token' => $list->token]) ?>';" type="button" class="btn btn-success">Ajouter Item</button>
 
         <button onclick="document.location='<?= $router->pathFor('editList', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Modifier Liste</button>
@@ -107,3 +125,21 @@
         </form>
     </div>
 </div>
+
+<script>
+    const button = document.querySelector('.js-copyButton');
+
+    button.addEventListener('click', function () {
+        const text = document.querySelector('.js-text');
+        const range = document.createRange();
+
+        range.selectNode(text);
+        window.getSelection().addRange(range);
+
+        if (document.execCommand('copy')) {
+            alert('URL copiée dans le presse-papier !');
+        }
+
+        window.getSelection().removeAllRanges();
+    })
+</script>
