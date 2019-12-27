@@ -21,5 +21,5 @@ INSERT INTO `item` (`id`, `liste_id`, `nom`, `descr`, `img`, `url`, `tarif`) VAL
 
 INSERT INTO `liste` (`num`, `user_id`, `titre`, `description`, `expiration`, `token`, `public`) VALUES
 (1, NULL, 'Pour fêter le bac !', 'Pour un week-end à Nancy qui nous fera oublier les épreuves. ', '2018-06-27', 'HOf3UXyX', TRUE),
-(2, 2, 'Liste de mariage d\'Alice et Bob', 'Nous souhaitons passer un week-end royal à Nancy pour notre lune de miel :)', '2018-06-30', '54xs1en0', TRUE),
-(3, 3, 'C\'est l\'anniversaire de Charlie', 'Pour lui préparer une fête dont il se souviendra :)', '2017-12-12', 'seab3twa', FALSE);
+(2, NULL, 'Liste de mariage d\'Alice et Bob', 'Nous souhaitons passer un week-end royal à Nancy pour notre lune de miel :)', '2018-06-30', '54xs1en0', TRUE),
+(3, NULL, 'C\'est l\'anniversaire de Charlie', 'Pour lui préparer une fête dont il se souviendra :)', '2017-12-12', 'seab3twa', FALSE);
