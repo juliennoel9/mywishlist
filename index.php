@@ -40,6 +40,18 @@ $container['view'] = function($container) {
     return $renderer;
 };
 
+/**
+ * Middleware HTTPS
+ */
+$app->add(function ($request, $response, $next) {
+    // redirect with https if not on localhost
+    if ($request->getUri()->getScheme() !== 'https' && $request->getUri()->getHost() !== 'localhost') {
+        $uri = $request->getUri()->withScheme("https");
+        return $response->withRedirect((string)$uri);
+    } else {
+        return $next($request, $response);
+    }
+});
 
 /**
  * Main pages
