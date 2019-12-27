@@ -66,6 +66,11 @@ $app->get('/apropos[/]', function ($request, $response, array $args) {
 })->setName('about');
 $app->redirect('/about[/]', $container->router->pathFor('about'));
 
+$app->get('/deconnexion', function ($request, $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->getLogout($request, $response, $args);
+})->setName('logout');
+
 /**
  * Account
  */

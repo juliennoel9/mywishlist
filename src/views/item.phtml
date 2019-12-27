@@ -65,8 +65,8 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="nom">Nom</label>
-                                <?php if (isset($_COOKIE['login'])) : ?>
-                                    <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= unserialize($_COOKIE['login'])['prenom'] ?> <?= unserialize($_COOKIE['login'])['nom'] ?>" id="nom">
+                                <?php if (isset($_SESSION['login'])) : ?>
+                                    <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= unserialize($_SESSION['login'])['prenom'] ?> <?= unserialize($_SESSION['login'])['nom'] ?>" id="nom">
                                 <?php else : ?>
                                     <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" id="nom">
                                 <?php endif; ?>

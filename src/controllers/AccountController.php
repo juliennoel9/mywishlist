@@ -29,7 +29,7 @@ class AccountController extends Controller {
             $this->container->view->render($response, 'register.phtml', ["title" => "MyWishList - Inscription", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou email déjà utilisé, réessayez.</div>"]);
             return $response;
         }
-        setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time()+60*60*24, "/");
+        $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
         return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account]);
     }
 
@@ -46,8 +46,7 @@ class AccountController extends Controller {
         $account = Account::where('email', '=', $id)->orwhere('username', '=', $id)->first();
 
         if (isset($account) and password_verify($password, $account->hash)) {
-            setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time()+60*60*24, "/");
-
+            $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
             if (pathinfo($_SESSION['previousPage'])['filename']=='inscription') {
                 return $this->redirect($response, 'home');
             }else {
@@ -60,14 +59,13 @@ class AccountController extends Controller {
     }
 
     public function getAccount($request, $response, $args) {
-        $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
+        $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
         $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account]);
         return $response;
     }
 
     public function postEditAccount($request, $response, $args) {
-        $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
-
+        $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
         if ($_POST['submit'] == 'deleteAccount'){
             $lists = $account->lists();
             foreach ($lists as $list) {
@@ -89,8 +87,7 @@ class AccountController extends Controller {
                 }
             }
             $account->delete();
-            setcookie("login", "", time() - 1000, "/");
-            unset($_COOKIE['login']);
+            unset($_SESSION['login']);
             return $this->redirect($response, 'home');
         }else{
             $account->email = htmlentities(strtolower(trim($_POST['email'])));
@@ -107,17 +104,20 @@ class AccountController extends Controller {
             $account->save();
 
             if ($_POST['submit'] == 'editPassword'){
-                setcookie("login", "", time() - 1000, "/");
-                unset($_COOKIE['login']);
+                unset($_SESSION['login']);
                 $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>"]);
                 return $response;
             }else {
-                setcookie("login", "", time() - 1000, "/");
-                unset($_COOKIE['login']);
-                setcookie("login", serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]), time() + 60 * 60 * 24, "/");
+                unset($_SESSION['login']);
+                $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
                 return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Modifications enregistrées.</div>"]);
             }
         }
+    }
 
+    public function getLogout($request, $response, $args) {
+        unset($_SESSION['login']);
+        session_destroy();
+        return $this->redirect($response, 'home');
     }
 }

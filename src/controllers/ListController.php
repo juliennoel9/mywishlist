@@ -34,8 +34,8 @@ class ListController extends Controller {
 
     public function postNewList($request, $response, $args) {
         $list = new Liste();
-        if (isset($_COOKIE['login'])){
-            $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
+        if (isset($_SESSION['login'])){
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $list->user_id = $account->id;
         }else {
             $list->user_id = null;
@@ -77,8 +77,8 @@ class ListController extends Controller {
         $list = Liste::where('token', '=', $args['token'])->first();
         $message = new Message();
         $message->liste_id = $list->num;
-        if (isset($_COOKIE['login'])){
-            $account = Account::where('username', '=', unserialize($_COOKIE['login'])['username'])->first();
+        if (isset($_SESSION['login'])){
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $message->account_id = $account->id;
         }
         $message->nomMessage = htmlentities(trim($_POST['nom']));
