@@ -9,7 +9,8 @@ use mywishlist\models\Message;
 class ListController extends Controller {
 
     public function displayPublicLists($request, $response, $args) {
-        $this->container->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => Liste::all()]);
+        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->get();
+        $this->container->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => $lists]);
         return $response;
     }
 
@@ -104,7 +105,7 @@ class ListController extends Controller {
 
     public function displayAccountLists($request, $response, $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        $lists = Liste::where('user_id', '=', $account->id)->get();
+        $lists = Liste::where('user_id', '=', $account->id)->orderBy('expiration', 'asc')->get();
 
         $this->container->view->render($response, 'accountLists.phtml', [
             "title" => 'MyWishList - Mes listes',

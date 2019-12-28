@@ -4,35 +4,47 @@
         <div class="container">
             <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
             <p class="lead text-muted"><?= $list->description ?></p>
-            <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+            <?php if (strtotime($list->expiration) < time()+3600) : ?>
+                <p class="lead text-muted">Cette liste est expirée depuis le : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+            <?php else: ?>
+                <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+            <?php endif; ?>
         </div>
     </section>
 
-    <table class="table table-bordered table-hover table-dark">
-        <thead>
-        <tr>
-            <th scope="col">Nom</th>
-            <th scope="col">Image</th>
-            <th scope="col">Réservation</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <?php foreach ($items as $item) : ?>
-            <tr onclick="document.location='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>';">
-                <th scope="row"><?= $item->nom ?></th>
-                <?php
-                    $fileName = 'noimage.png';
-                    if (file_exists('./public/images/' . $item->img)) {
-                        $fileName = $item->img;
-                    }
-                ?>
-                <td class="text-center"><img src="/public/images/<?= $fileName ?>"></td>
-                <td><?= $item->nomReservation == null ? 'Non réservé' : 'Réservé'?></td>
+    <?php if (sizeof($items) != 0) : ?>
+        <table class="table table-bordered table-hover table-dark">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Image</th>
+                <th scope="col">Réservation</th>
             </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+            <?php foreach ($items as $item) : ?>
+                <tr onclick="document.location='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>';">
+                    <th scope="row"><?= $item->nom ?></th>
+                    <?php
+                        $fileName = 'noimage.png';
+                        if (file_exists('./public/images/' . $item->img)) {
+                            $fileName = $item->img;
+                        }
+                    ?>
+                    <td class="text-center"><img src="/public/images/<?= $fileName ?>"></td>
+                    <td><?= $item->nomReservation == null ? 'Non réservé' : 'Réservé'?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
+            <p>Vous ne disposez pour le moment d'aucun produit dans votre liste. Vous pouvez en ajouter dès maintenant en cliquant sur le bouton ci-dessous.</p>
+        <?php else: ?>
+            <p>Cette liste ne contient aucun produit.</p>
+        <?php endif; ?>
+    <?php endif; ?>
 
     <?php if($messages->count() > 0 ) : ?>
         <div class="jumbotron modal-body">
@@ -71,46 +83,87 @@
             </div>
         </div>
 
-        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
+        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  strtotime($list->expiration) >= time() + 3600) : ?>
             <button onclick="document.location='<?= $router->pathFor('newItem', ['token' => $list->token]) ?>';" type="button" class="btn btn-success">Ajouter Item</button>
 
             <button onclick="document.location='<?= $router->pathFor('editList', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Modifier Liste</button>
         <?php endif; ?>
 
-        <form method="post" action="<?= $router->pathFor('newListMessage', ['token' => $list->token]) ?>">
-            <!-- Trigger modal message -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalMessage">Ajouter un message</button>
+        <?php if (strtotime($list->expiration) >= time() + 3600) : ?>
+            <?php if (isset($_SESSION['login']) ) : ?>
+                <?php if ($list->user_id != $account->id) : ?>
+                    <form method="post" action="<?= $router->pathFor('newListMessage', ['token' => $list->token]) ?>">
+                        <!-- Trigger modal message -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalMessage">Ajouter un message</button>
 
-            <!-- Modal message -->
-            <div class="modal fade" role="dialog" id="modalMessage">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Ajouter un message à la liste n°<?= $list->num ?></h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="nom">Nom</label>
-                                <?php if (isset($_SESSION['login'])) : ?>
-                                    <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= unserialize($_SESSION['login'])['prenom'] ?> <?= unserialize($_SESSION['login'])['nom'] ?>" id="nom">
-                                <?php else : ?>
-                                    <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" id="nom">
-                                <?php endif; ?>
+                        <!-- Modal message -->
+                        <div class="modal fade" role="dialog" id="modalMessage">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Ajouter un message à la liste n°<?= $list->num ?></h5>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="nom">Nom</label>
+                                            <?php if (isset($_SESSION['login'])) : ?>
+                                                <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= unserialize($_SESSION['login'])['prenom'] ?> <?= unserialize($_SESSION['login'])['nom'] ?>" id="nom">
+                                            <?php else : ?>
+                                                <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" id="nom">
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="message">Message</label>
+                                            <input required name="message" class="form-control" placeholder="Votre message" id="message">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-success">Ajouter Message</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="message">Message</label>
-                                <input required name="message" class="form-control" placeholder="Votre message" id="message">
-                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-success">Ajouter Message</button>
+                    </form>
+                <?php endif; ?>
+            <?php else: ?>
+                <form method="post" action="<?= $router->pathFor('newListMessage', ['token' => $list->token]) ?>">
+                    <!-- Trigger modal message -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalMessage">Ajouter un message</button>
+
+                    <!-- Modal message -->
+                    <div class="modal fade" role="dialog" id="modalMessage">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Ajouter un message à la liste n°<?= $list->num ?></h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="nom">Nom</label>
+                                        <?php if (isset($_SESSION['login'])) : ?>
+                                            <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= unserialize($_SESSION['login'])['prenom'] ?> <?= unserialize($_SESSION['login'])['nom'] ?>" id="nom">
+                                        <?php else : ?>
+                                            <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" id="nom">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message">Message</label>
+                                        <input required name="message" class="form-control" placeholder="Votre message" id="message">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                                    <button type="submit" class="btn btn-success">Ajouter Message</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </form>
+                </form>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -129,5 +182,5 @@
         }
 
         window.getSelection().removeAllRanges();
-    })
+    });
 </script>
