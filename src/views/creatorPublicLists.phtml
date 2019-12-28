@@ -1,24 +1,32 @@
-<h1>Listes publiques actives de l'utilisateur : <?= $account->username ?></h1>
-<div class="body mt-5">
-    <table class="table table-bordered table-hover table-dark">
-        <thead>
-        <tr>
-            <th scope="col">Titre</th>
-            <th scope="col">Description</th>
-            <th scope="col">Expiration</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <?php foreach ($lists as $list) : ?>
-            <?php if($list->public == 1) : ?>
-                <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
-                    <th scope="row"><?= $list->titre ?></th>
-                    <td><?= $list->description ?></td>
-                    <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
+<?php if ($account != null) : ?>
+    <?php if ($lists->count() > 0) : ?>
+        <h1>Listes publiques actives de l'utilisateur : <?= $account->username ?></h1>
+        <div class="body mt-5">
+            <table class="table table-bordered table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Expiration</th>
                 </tr>
-            <?php endif; ?>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+                </thead>
+
+                <tbody>
+                <?php foreach ($lists as $list) : ?>
+
+                        <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
+                            <th scope="row"><?= $list->titre ?></th>
+                            <td><?= $list->description ?></td>
+                            <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
+                        </tr>
+
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else: ?>
+        <h1>Cet utilisateur ne possède aucune liste publique en cours de validité.</h1>
+    <?php endif; ?>
+<?php else: ?>
+    <h1>Cet utilisateur est inexistant.</h1>
+<?php endif; ?>

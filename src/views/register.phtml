@@ -1,38 +1,43 @@
-<h1>Créez votre compte</h1><br>
-<form method="POST" action="<?= $router->pathFor('register') ?>" id="register">
-    <?php if (isset($msg)) : ?>
-        <?= $msg ?>
-    <?php endif; ?>
-    <div class="form-group">
-        <label for="identifiant">Identifiant de compte</label>
-        <input required type="text" placeholder="Identifiant" name="identifiant" class="form-control" id="identifiant">
-    </div>
-    <div class="form-group">
-        <label for="prenom">Prénom</label>
-        <input required type="text" placeholder="Prénom" name="prenom" class="form-control" id="prenom">
-    </div>
-    <div class="form-group">
-        <label for="nom">Nom</label>
-        <input required type="text" placeholder="Nom" name="nom" class="form-control" id="nom">
-    </div>
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input required type="email" placeholder="Votre email" name="email" class="form-control" id="email">
-    </div>
-    <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input required type="password" minlength="8" placeholder="Mot de passe (minimum 8 caractères)" name="password" class="form-control" id="password">
-    </div>
-    <div class="form-group">
-        <label for="confirmPassWord">Confirmez votre mot de passe</label>
-        <input required type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord">
-    </div>
-    <div id="erreur"></div>
-    <div class="modal-footer">
-        <a href="<?= $router->pathFor('home') ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
-        <button type="submit" class="btn btn-primary">Inscription</button>
-    </div>
-</form>
+<?php if (!isset($_SESSION['login'])) : ?>
+    <h1>Créez votre compte</h1><br>
+    <form method="POST" action="<?= $router->pathFor('register') ?>" id="register">
+        <?php if (isset($msg)) : ?>
+            <?= $msg ?>
+        <?php endif; ?>
+        <div class="form-group">
+            <label for="identifiant">Identifiant de compte</label>
+            <input required type="text" placeholder="Identifiant" name="identifiant" class="form-control" id="identifiant">
+        </div>
+        <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input required type="text" placeholder="Prénom" name="prenom" class="form-control" id="prenom">
+        </div>
+        <div class="form-group">
+            <label for="nom">Nom</label>
+            <input required type="text" placeholder="Nom" name="nom" class="form-control" id="nom">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input required type="email" placeholder="Votre email" name="email" class="form-control" id="email">
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input required type="password" minlength="8" placeholder="Mot de passe (minimum 8 caractères)" name="password" class="form-control" id="password">
+        </div>
+        <div class="form-group">
+            <label for="confirmPassWord">Confirmez votre mot de passe</label>
+            <input required type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord">
+        </div>
+        <div id="erreur"></div>
+        <div class="modal-footer">
+            <a href="<?= $router->pathFor('home') ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
+            <button type="submit" class="btn btn-primary">Inscription</button>
+        </div>
+    </form>
+<?php else: ?>
+    <h1>Vous êtes déjà connecté. Cette page n'est pas disponible.</h1>
+    <h4>Si vous voulez créer un nouveau compte, déconnectez vous auparavant.</h4>
+<?php endif; ?>
 
 <script>
     document.forms["register"].addEventListener("submit", function(e) {

@@ -34,7 +34,9 @@ class AccountController extends Controller {
     }
 
     public function getLogin($request, $response, $args) {
-        $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
+        if (isset($_SERVER['HTTP_REFERER'])){
+            $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
+        }
         $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion"]);
         return $response;
     }
@@ -47,10 +49,14 @@ class AccountController extends Controller {
 
         if (isset($account) and password_verify($password, $account->hash)) {
             $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
-            if (pathinfo($_SESSION['previousPage'])['filename']=='inscription') {
+            if (isset($_SESSION['previousPage'])) {
+                if (pathinfo($_SESSION['previousPage'])['filename']=='inscription') {
+                    return $this->redirect($response, 'home');
+                }else {
+                    return $response->withStatus(302)->withHeader('Location', $_SESSION['previousPage']);
+                }
+            }else{
                 return $this->redirect($response, 'home');
-            }else {
-                return $response->withStatus(302)->withHeader('Location', $_SESSION['previousPage']);
             }
         }else {
             $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>"]);
@@ -59,9 +65,15 @@ class AccountController extends Controller {
     }
 
     public function getAccount($request, $response, $args) {
-        $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account]);
-        return $response;
+        if (isset($_SESSION['login'])){
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+            $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account]);
+            return $response;
+        }else{
+            $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte"]);
+            return $response;
+        }
+
     }
 
     public function postEditAccount($request, $response, $args) {

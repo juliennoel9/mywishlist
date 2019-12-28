@@ -1,32 +1,36 @@
-<h1>Mes listes</h1>
-<div class="body mt-5">
-    <?php if (sizeof($lists) != 0) : ?>
-        <table class="table table-bordered table-hover table-dark">
-            <thead>
-            <tr>
-                <th scope="col">Titre</th>
-                <th scope="col">Description</th>
-                <th scope="col">Expiration</th>
-                <th scope="col">Publique</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <?php foreach ($lists as $list) : ?>
-                <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
-                    <th scope="row"><?= $list->titre ?></th>
-                    <td><?= $list->description ?></td>
-                    <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
-                    <td><?= $list->public ? 'Oui' : 'Non' ?></td>
+<?php if (isset($_SESSION['login'])) : ?>
+    <h1>Mes listes</h1>
+    <div class="body mt-5">
+        <?php if (sizeof($lists) != 0) : ?>
+            <table class="table table-bordered table-hover table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Expiration</th>
+                    <th scope="col">Publique</th>
                 </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p>Vous ne disposez pour le moment d'aucune liste. Vous pouvez en créer une dès maintenant en cliquant sur le bouton ci-dessous.</p>
-    <?php endif; ?>
-</div>
+                </thead>
 
-<div class="modal-footer">
-    <button onclick="document.location='<?= $router->pathFor('newList') ?>';" type="button" class="btn btn-success">Créer une nouvelle liste</button>
-</div>
+                <tbody>
+                <?php foreach ($lists as $list) : ?>
+                    <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
+                        <th scope="row"><?= $list->titre ?></th>
+                        <td><?= $list->description ?></td>
+                        <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
+                        <td><?= $list->public ? 'Oui' : 'Non' ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>Vous ne disposez pour le moment d'aucune liste. Vous pouvez en créer une dès maintenant en cliquant sur le bouton ci-dessous.</p>
+        <?php endif; ?>
+    </div>
+
+    <div class="modal-footer">
+        <button onclick="document.location='<?= $router->pathFor('newList') ?>';" type="button" class="btn btn-success">Créer une nouvelle liste</button>
+    </div>
+<?php else: ?>
+    <h1>Il faut être connecté pour accéder à cette page.</h1>
+<?php endif; ?>

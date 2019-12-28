@@ -80,10 +80,18 @@ class ItemController extends Controller {
     }
 
     public function getEditItem($request, $response, $args) {
-        $list = Liste::where('token', '=', $args['token'])->first();
-        $item = Item::where('id', '=', $args['id'])->first();
-        $this->container->view->render($response, 'editItem.phtml', ["title" => "MyWishList - Modification Item", "list" => $list, "item" => $item]);
-        return $response;
+        if (isset($_SESSION['login'])){
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+            $list = Liste::where('token', '=', $args['token'])->first();
+            $item = Item::where('id', '=', $args['id'])->first();
+            $this->container->view->render($response, 'editItem.phtml', ["title" => "MyWishList - Modification Item", "list" => $list, "item" => $item, "account" => $account]);
+            return $response;
+        }else{
+            $list = Liste::where('token', '=', $args['token'])->first();
+            $item = Item::where('id', '=', $args['id'])->first();
+            $this->container->view->render($response, 'editItem.phtml', ["title" => "MyWishList - Modification Item", "list" => $list, "item" => $item]);
+            return $response;
+        }
     }
 
     public function postEditItem($request, $response, $args) {

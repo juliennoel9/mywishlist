@@ -68,18 +68,30 @@ class ListController extends Controller {
     }
 
     public function getEditList($request, $response, $args) {
-        $list = Liste::where('token', '=', $args['token'])->first();
-        $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list]);
-        return $response;
+        if (isset($_SESSION['login'])){
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+            $list = Liste::where('token', '=', $args['token'])->first();
+            $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list, "account" => $account]);
+            return $response;
+        } else {
+            $list = Liste::where('token', '=', $args['token'])->first();
+            $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list]);
+            return $response;
+        }
     }
 
     public function postEditList($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
-        $list->titre = htmlentities(trim($_POST['titre']));
-        $list->description = htmlentities(trim($_POST['description']));
-        $list->expiration = htmlentities($_POST['expiration']);
-        $list->public = isset($_POST['public']) ? 1 : 0;
-        $list->save();
+        if (strtotime($list->expiration) >= time() + 3600) {
+            $list->titre = htmlentities(trim($_POST['titre']));
+            $list->description = htmlentities(trim($_POST['description']));
+            $list->expiration = htmlentities($_POST['expiration']);
+            $list->public = isset($_POST['public']) ? 1 : 0;
+            $list->save();
+        } else {
+            $list->public = isset($_POST['public']) ? 1 : 0;
+            $list->save();
+        }
         return $this->redirect($response, 'list', [
             'token' => $list->token
         ]);
@@ -104,14 +116,22 @@ class ListController extends Controller {
     }
 
     public function displayAccountLists($request, $response, $args) {
-        $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        $lists = Liste::where('user_id', '=', $account->id)->orderBy('expiration', 'asc')->get();
+        if (isset($_SESSION['login'])) {
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+            $lists = Liste::where('user_id', '=', $account->id)->orderBy('expiration', 'asc')->get();
 
-        $this->container->view->render($response, 'accountLists.phtml', [
-            "title" => 'MyWishList - Mes listes',
-            "lists" => $lists
-        ]);
-        return $response;
+            $this->container->view->render($response, 'accountLists.phtml', [
+                "title" => 'MyWishList - Mes listes',
+                "lists" => $lists,
+                "account" => $account
+            ]);
+            return $response;
+        } else {
+            $this->container->view->render($response, 'accountLists.phtml', [
+                "title" => 'MyWishList - Mes listes'
+            ]);
+            return $response;
+        }
     }
 
     public function displayCreators($request, $response, $args) {
@@ -132,8 +152,13 @@ class ListController extends Controller {
 
     public function displayCreatorPublicLists($request, $response, $args) {
         $account = Account::where('username', '=', $args['creator'])->first();
-        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->where('user_id', '=', $account->id)->get();
-        $this->container->view->render($response, 'creatorPublicLists.phtml', ["title" => "MyWishList - Listes", "lists" => $lists, "account" => $account]);
-        return $response;
+        if ($account != null) {
+            $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->where('user_id', '=', $account->id)->where('public', '=', 1)->get();
+            $this->container->view->render($response, 'creatorPublicLists.phtml', ["title" => "MyWishList - Listes publiques de ".$account->username, "lists" => $lists, "account" => $account]);
+            return $response;
+        }else{
+            $this->container->view->render($response, 'creatorPublicLists.phtml', ["title" => "MyWishList - Listes publiques", "account" => $account]);
+            return $response;
+        }
     }
 }

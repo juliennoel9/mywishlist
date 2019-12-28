@@ -21,14 +21,51 @@ php initDatabase.php
 
 Démarrez votre base de données, puis lancez un serveur de developpement à la racine du projet.
 ```bash
-php -S localhost:7777
+php -S localhost:<numPort>
 ```
-Depuis un navigateur, rendez vous sur http://localhost:7777
+Depuis un navigateur, rendez vous sur http://localhost:numPort
+
+## Fonctionnalités
+
+### Participant
+
+- [x] *Afficher une liste de souhaits* (Julien, Louis)
+- [x] *Afficher un item d'une liste* (Julien)
+- [x] *Réserver un item* (Julien)
+- [x] *Ajouter un message avec sa réservation* (Julien)
+- [x] *Ajouter un message sur une liste* (Julien)
+
+### Créateur
+- [x] *Créer une liste* (Julien, Louis)
+- [x] *Modifier les informations générales d'une de ses listes* (Julien)
+- [x] *Ajouter des items* (Julien)
+- [x] *Modifier un item* (Julien)
+- [x] *Supprimer un item* (Julien)
+- [x] *Rajouter une image à un item* (Julien)
+- [x] *Modifier une image à un item* (Julien)
+- [x] *Supprimer une image d'un item* (Julien)
+- [x] *Partager une liste* (Julien)
+- [x] *Consulter les réservations d'une de ses listes avant échéance* (Julien)
+- [x] *Consulter les réservations et messages d'une de ses listes après échéance* (Julien)
+
+### Extensions
+- [x] *Créer un compte* (Julien)
+- [x] *S'authentifier* (Julien)
+- [x] *Modifier son compte* (Julien)
+- [x] *Rendre une liste publique* (Julien, Louis)
+- [x] *Afficher les listes de souhaits publiques* (Julien, Louis)
+- [ ] *Créer une cagnotte sur un item*
+- [ ] *Participer à une cagnotte*
+- [x] *Uploader une image* (Julien)
+- [x] *Créer un compte participant* (Julien)
+- [x] *Afficher la liste des créateurs* (Julien)
+- [x] *Supprimer son compte* (Julien)
+- [x] *Joindre les listes à son compte* (Julien)
 
 ## Contributeurs
-**DEMANGE Louis** - [Nekzuris](https://github.com/juliennoel9/mywishlist/commits?author=Nekzuris)
-
 **NOËL Julien** - [juliennoel9](https://github.com/juliennoel9/mywishlist/commits?author=juliennoel9)
+
+**DEMANGE Louis** - [Nekzuris](https://github.com/juliennoel9/mywishlist/commits?author=Nekzuris)
 
 **NOSAL Loïck** - [LoickNosal](https://github.com/juliennoel9/mywishlist/commits?author=LoickNosal)
 
