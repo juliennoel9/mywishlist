@@ -1,0 +1,18 @@
+<h1>Listes des créateurs avec au moins une liste publique</h1>
+<div class="body mt-5">
+    <table class="table table-bordered table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Nom d'utilisateur</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php foreach ($accounts as $account) : ?>
+            <tr onclick="document.location='<?= $router->pathFor('creatorPublicLists', ['creator' => $account->username]) ?>';">
+                <th scope="row"><?= $account->username ?></th>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

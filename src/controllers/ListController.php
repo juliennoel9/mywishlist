@@ -9,7 +9,7 @@ use mywishlist\models\Message;
 class ListController extends Controller {
 
     public function displayPublicLists($request, $response, $args) {
-        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->get();
+        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->get();;
         $this->container->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => $lists]);
         return $response;
     }
@@ -111,6 +111,29 @@ class ListController extends Controller {
             "title" => 'MyWishList - Mes listes',
             "lists" => $lists
         ]);
+        return $response;
+    }
+
+    public function displayCreators($request, $response, $args) {
+        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->where('public', '=', 1)->get();
+        $accounts = array();
+        foreach ($lists as $list) {
+            $account = Account::where('id', '=', $list->user_id)->first();
+            $accounts += [$account->username => $account];
+        }
+
+        $this->container->view->render($response, 'creators.phtml', [
+            "title" => 'MyWishList - Créateurs',
+            "lists" => $lists,
+            "accounts" => $accounts
+        ]);
+        return $response;
+    }
+
+    public function displayCreatorPublicLists($request, $response, $args) {
+        $account = Account::where('username', '=', $args['creator'])->first();
+        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->where('user_id', '=', $account->id)->get();
+        $this->container->view->render($response, 'creatorPublicLists.phtml', ["title" => "MyWishList - Listes", "lists" => $lists, "account" => $account]);
         return $response;
     }
 }

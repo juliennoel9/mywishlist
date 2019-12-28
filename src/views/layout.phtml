@@ -24,6 +24,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?= $router->pathFor('publicLists') ?>">Listes publiques</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= $router->pathFor('creators') ?>">Créateurs</a>
+                    </li>
                     <?php if (isset($_SESSION['login'])) : ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= $router->pathFor('accountLists') ?>">Mes listes</a>
