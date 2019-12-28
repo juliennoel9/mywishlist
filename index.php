@@ -142,6 +142,11 @@ $app->post('/l/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $a
     return $controller->postNewListMessage($request, $response, $args);
 })->setName('newListMessage');
 
+$app->get('/mesListes[/]', function ($request, $response, array $args) {
+    $controller = new ListController($this);
+    return $controller->displayAccountLists($request, $response, $args);
+})->setName('accountLists');
+
 /**
  * Items
  */

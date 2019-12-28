@@ -101,4 +101,15 @@ class ListController extends Controller {
             'token' => $list->token
         ]);
     }
+
+    public function displayAccountLists($request, $response, $args) {
+        $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+        $lists = Liste::where('user_id', '=', $account->id)->get();
+
+        $this->container->view->render($response, 'accountLists.phtml', [
+            "title" => 'MyWishList - Mes listes',
+            "lists" => $lists
+        ]);
+        return $response;
+    }
 }

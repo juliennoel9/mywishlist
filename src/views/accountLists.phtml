@@ -1,0 +1,28 @@
+<h1>Mes listes</h1>
+<div class="body mt-5">
+    <table class="table table-bordered table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Titre</th>
+            <th scope="col">Description</th>
+            <th scope="col">Expiration</th>
+            <th scope="col">Publique</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php foreach ($lists as $list) : ?>
+            <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
+                <th scope="row"><?= $list->titre ?></th>
+                <td><?= $list->description ?></td>
+                <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
+                <td><?= $list->public ? 'Oui' : 'Non' ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button onclick="document.location='<?= $router->pathFor('newList') ?>';" type="button" class="btn btn-success">Créer une nouvelle liste</button>
+</div>
