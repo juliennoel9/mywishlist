@@ -1,29 +1,23 @@
-<h1>Listes existantes</h1>
+<h1>Listes publiques</h1>
 <div class="body mt-5">
     <table class="table table-bordered table-hover table-dark">
         <thead>
         <tr>
-            <th scope="col">Numéro</th>
-            <th scope="col">UserID</th>
             <th scope="col">Titre</th>
             <th scope="col">Description</th>
             <th scope="col">Expiration</th>
-            <th scope="col">Token</th>
-            <th scope="col">Publique</th>
         </tr>
         </thead>
 
         <tbody>
         <?php foreach ($lists as $list) : ?>
-            <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
-                <th scope="row"><?= $list->num ?></th>
-                <td><?= $list->user_id ?></td>
-                <td><?= $list->titre ?></td>
-                <td><?= $list->description ?></td>
-                <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
-                <td><?= $list->token ?></td>
-                <td><?= $list->public ? 'TRUE' : 'FALSE' ?></td>
-            </tr>
+            <?php if($list->public == 1) : ?>
+                <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
+                    <th scope="row"><?= $list->titre ?></th>
+                    <td><?= $list->description ?></td>
+                    <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
+                </tr>
+            <?php endif; ?>
         <?php endforeach; ?>
         </tbody>
     </table>

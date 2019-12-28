@@ -1,26 +1,30 @@
 <h1>Mes listes</h1>
 <div class="body mt-5">
-    <table class="table table-bordered table-hover table-dark">
-        <thead>
-        <tr>
-            <th scope="col">Titre</th>
-            <th scope="col">Description</th>
-            <th scope="col">Expiration</th>
-            <th scope="col">Publique</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <?php foreach ($lists as $list) : ?>
-            <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
-                <th scope="row"><?= $list->titre ?></th>
-                <td><?= $list->description ?></td>
-                <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
-                <td><?= $list->public ? 'Oui' : 'Non' ?></td>
+    <?php if (sizeof($lists) != 0) : ?>
+        <table class="table table-bordered table-hover table-dark">
+            <thead>
+            <tr>
+                <th scope="col">Titre</th>
+                <th scope="col">Description</th>
+                <th scope="col">Expiration</th>
+                <th scope="col">Publique</th>
             </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+            <?php foreach ($lists as $list) : ?>
+                <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
+                    <th scope="row"><?= $list->titre ?></th>
+                    <td><?= $list->description ?></td>
+                    <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
+                    <td><?= $list->public ? 'Oui' : 'Non' ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>Vous ne disposez pour le moment d'aucune liste. Vous pouvez en créer une dès maintenant en cliquant sur le bouton ci-dessous.</p>
+    <?php endif; ?>
 </div>
 
 <div class="modal-footer">
