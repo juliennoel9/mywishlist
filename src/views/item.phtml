@@ -7,6 +7,18 @@
 </section>
 
 <div class="container mt-4">
+    <?php if($item->nomReservation != null) : ?>
+        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
+            <?php if (strtotime($list->expiration) >= time()+3600) : ?>
+                <div class="alert alert-success">Produit réservé</div>
+            <?php else: ?>
+                <div class="alert alert-success">Produit réservé par : <?= $item->nomReservation ?> <br> Message : <?= $item->messageReservation ?></div>
+            <?php endif; ?>
+        <?php else: ?>
+            <div class="alert alert-success">Produit réservé par : <?= $item->nomReservation ?></div>
+        <?php endif; ?>
+    <?php endif; ?>
+
     <?php
         $fileName = 'noimage.png';
         if (file_exists('./public/images/'.$item->img)){
@@ -48,7 +60,9 @@
 
 <?php if ($item->nomReservation == '') : ?>
     <div class="modal-footer">
-        <button onclick="document.location='<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>';" type="button" class="btn btn-secondary">Modifier Item</button>
+        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
+            <button onclick="document.location='<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>';" type="button" class="btn btn-secondary">Modifier Item</button>
+        <?php endif; ?>
 
         <form method="post" action="<?= $router->pathFor('reserveItem', ['token' => $list->token, 'id' => $item->id]) ?>">
             <!-- Trigger modal reservation -->

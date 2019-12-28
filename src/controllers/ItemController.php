@@ -2,25 +2,32 @@
 
 namespace mywishlist\controllers;
 
+use mywishlist\models\Account;
 use mywishlist\models\Item;
 use mywishlist\models\Liste;
 
 class ItemController extends Controller {
     public function displayItem($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
-        if (is_null($list)) {
-
-        }
         $item = Item::where('id', '=', $args['id'])->first();
-        if (is_null($item)) {
 
+        if (isset($_SESSION['login'])){
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+            $this->container->view->render($response, 'item.phtml', [
+                "title" => "MyWishList - Item n°".$item->id,
+                "list" => $list,
+                "item" => $item,
+                "account" => $account
+            ]);
+            return $response;
+        }else{
+            $this->container->view->render($response, 'item.phtml', [
+                "title" => "MyWishList - Item n°".$item->id,
+                "list" => $list,
+                "item" => $item
+            ]);
+            return $response;
         }
-        $this->container->view->render($response, 'item.phtml', [
-            "title" => "MyWishList - Item n°".$item->id,
-            "list" => $list,
-            "item" => $item
-        ]);
-        return $response;
     }
 
     public function getNewItem($request, $response, $args) {

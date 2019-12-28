@@ -17,14 +17,25 @@ class ListController extends Controller {
         $list = Liste::where('token', '=', $args['token'])->first();
         $items = $list->items();
         $messages = $list->messages();
-
-        $this->container->view->render($response, 'list.phtml', [
-           "title" => 'MyWishList - Liste n°'.$list->num,
-           "list" => $list,
-           "items" => $items,
-           "messages" => $messages
-        ]);
-        return $response;
+        if (isset($_SESSION['login'])){
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+            $this->container->view->render($response, 'list.phtml', [
+                "title" => 'MyWishList - Liste n°'.$list->num,
+                "list" => $list,
+                "items" => $items,
+                "messages" => $messages,
+                "account" => $account
+            ]);
+            return $response;
+        } else {
+            $this->container->view->render($response, 'list.phtml', [
+                "title" => 'MyWishList - Liste n°'.$list->num,
+                "list" => $list,
+                "items" => $items,
+                "messages" => $messages
+            ]);
+            return $response;
+        }
     }
 
     public function getNewList($request, $response, $args) {
