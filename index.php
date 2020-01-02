@@ -107,7 +107,7 @@ $app->post('/moncompte[/]', function ($request, $response, array $args) {
 /**
  * Lists
  */
-$app->get('/listes[/]', function ($request, $response, array $args) {
+$app->get('/listesPubliques[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayPublicLists($request, $response, $args);
 })->setName('publicLists');
