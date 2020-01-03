@@ -1,6 +1,6 @@
 # MyWishList
 
-Projet WEB S3 IUT Nancy-Charlemagne
+Projet WEB S3 IUT Nancy-Charlemagne 2019-2020
 
 ## Installation
 
@@ -30,7 +30,7 @@ Depuis un navigateur, rendez vous sur http://localhost:numPort
 ### Participant
 
 - [x] *Afficher une liste de souhaits* (Julien, Louis)
-- [x] *Afficher un item d'une liste* (Julien)
+- [x] *Afficher un item d'une liste* (Julien, Louis)
 - [x] *Réserver un item* (Julien)
 - [x] *Ajouter un message avec sa réservation* (Julien)
 - [x] *Ajouter un message sur une liste* (Julien)
@@ -61,6 +61,7 @@ Depuis un navigateur, rendez vous sur http://localhost:numPort
 - [x] *Afficher la liste des créateurs* (Julien)
 - [x] *Supprimer son compte* (Julien)
 - [x] *Joindre les listes à son compte* (Julien)
+- [x] *Page d'erreur 404* (Louis)
 
 ## Liens utiles
 **Google Sheet** - Fonctionnalités, routes et méthodes - [Google Sheet](https://docs.google.com/spreadsheets/d/1NkXoVzma5kQGag3LFqx1n8IFDDFTjCObA5FDB259kMA/edit?usp=sharing)
