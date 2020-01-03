@@ -16,27 +16,41 @@
     </section>
 
     <?php if (sizeof($items) != 0) : ?>
-        <?php foreach ($items as $item) :
-                $fileName = 'noimage.png';
-                if (file_exists('./public/images/' . $item->img)) {
-                    $fileName = $item->img;
-                }
-            ?>
-            <div class="card mt-4 bg-light">
-                <div class="card-body text-center pb-1">
-                    <img class="float-left w-50" src="/public/images/<?= $fileName ?>">
-                    <h1 class="card-title"><?= $item->nom ?></h1>
-                    <p class="card-text lead"><?= $item->description ?></p>
-                    <?php if ($item->nomReservation != null) : ?>
-                        <p>Réservé</p>
-                    <?php else: ?>
-                        <p>Non réservé</p>
-                    <?php endif; ?>
-                    <a href='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>' class="stretched-link"></a>
-                </div>
+
+        <div class="container">
+            <div class="row">
+                <?php foreach ($items as $item) :
+                    $fileName = 'noimage.png';
+                    if (file_exists('./public/images/' . $item->img)) {
+                        $fileName = $item->img;
+                    }
+                    ?>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                        <div class="card mt-4 bg-light" style="height: 95%">
+                            <div class="card-body text-center pb-1">
+                                <img class="w-75" src="/public/images/<?= $fileName ?>">
+                                <h3 class="card-title"><?= $item->nom ?></h3>
+                                <p class="card-text"><?= $item->description ?></p>
+                                <?php if ($item->nomReservation != null) : ?>
+                                    <p class="text-success">Réservé</p>
+                                <?php else: ?>
+                                    <p class="text-danger">Non réservé</p>
+                                <?php endif; ?>
+                                <a href='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>' class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
-        <?php endforeach; ?>
-    <br>
+        </div>
+
+
+
+
+
+
+
+        <br>
     <?php else: ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
             <p>Vous ne disposez pour le moment d'aucun produit dans votre liste. Vous pouvez en ajouter dès maintenant en cliquant sur le bouton ci-dessous.</p>
@@ -177,9 +191,7 @@
         range.selectNode(text);
         window.getSelection().addRange(range);
 
-        if (document.execCommand('copy')) {
-            alert('URL copiée dans le presse-papier !');
-        }
+        document.execCommand('copy')
 
         window.getSelection().removeAllRanges();
     });
