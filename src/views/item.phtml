@@ -12,7 +12,7 @@
 <div class="container mt-4">
     <?php if($item->nomReservation != null) : ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
-            <?php if (strtotime($list->expiration) >= time()+3600) : ?>
+            <?php if (strtotime($list->expiration) >= time()) : ?>
                 <div class="alert alert-success">Produit réservé</div>
             <?php else: ?>
                 <div class="alert alert-success">Produit réservé par : <?= $item->nomReservation ?> <br> Message : <?= $item->messageReservation ?></div>
