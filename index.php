@@ -160,7 +160,7 @@ $app->get('/createurs[/]', function ($request, $response, array $args) {
     return $controller->displayCreators($request, $response, $args);
 })->setName('creators');
 
-$app->get('/{creator:[a-zA-Z0-9]+}/listes[/]', function ($request, $response, array $args) {
+$app->get('/{creator:[a-zA-Z0-9_]+}/listes[/]', function ($request, $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayCreatorPublicLists($request, $response, $args);
 })->setName('creatorPublicLists');
