@@ -23,6 +23,27 @@
             </thead>
 
             <tbody>
+            <?php foreach ($items as $item) :
+                    $fileName = 'noimage.png';
+                    if (file_exists('./public/images/' . $item->img)) {
+                        $fileName = $item->img;
+                    }
+                ?>
+                <div class="card mt-4 bg-light">
+                    <div class="card-body text-center pb-1">
+                        <img class="float-left w-50" src="/public/images/<?= $fileName ?>">
+                        <h1 class="card-title"><?= $item->nom ?></h1>
+                        <p class="card-text lead"><?= $item->description ?></p>
+                        <?php if (strtotime($list->nomReservation)) : ?>
+                            <p><?= $list->nomReservation ?></p>
+                        <?php else: ?>
+                            <p>Non réservé</p>
+                        <?php endif; ?>
+                        <a href='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>' class="stretched-link"></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
             <?php foreach ($items as $item) : ?>
                 <tr onclick="document.location='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>';">
                     <th scope="row"><?= $item->nom ?></th>
@@ -32,7 +53,7 @@
                             $fileName = $item->img;
                         }
                     ?>
-                    <td class="text-center"><img src="/public/images/<?= $fileName ?>"></td>
+                    <td class="text-center"><img class="img-fluid" src="/public/images/<?= $fileName ?>"></td>
                     <td><?= $item->nomReservation == null ? 'Non réservé' : 'Réservé'?></td>
                 </tr>
             <?php endforeach; ?>
