@@ -1,33 +1,30 @@
 <?php if (isset($_SESSION['login'])) : ?>
     <h1>Mes listes</h1>
-    <div class="body mt-5">
-        <?php if (sizeof($lists) != 0) : ?>
-            <table class="table table-bordered table-hover table-dark">
-                <thead>
-                <tr>
-                    <th scope="col">Titre</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Expiration</th>
-                    <th scope="col">Publique</th>
-                </tr>
-                </thead>
+    <div class="body">
 
-                <tbody>
-                <?php foreach ($lists as $list) : ?>
-                    <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
-                        <th scope="row"><?= $list->titre ?></th>
-                        <td><?= $list->description ?></td>
-                        <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
-                        <td><?= $list->public ? 'Oui' : 'Non' ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+        <?php if (sizeof($lists) > 0) : ?>
+            <?php foreach ($lists as $list) : ?>
+                <div class="card mt-4 bg-light">
+                    <div class="card-body text-center pb-1">
+                    <?php if (!$list->public) : ?>
+                        <p class="float-left">&#x1F512</p>
+                    <?php endif; ?>
+                        <h1 class="card-title"><?= $list->titre ?></h1>
+                        <p class="card-text lead"><?= $list->description ?></p>
+                        <?php if (strtotime($list->expiration) > time()) : ?>
+                            <p class="text-success">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+                        <?php else: ?>
+                            <p class="text-danger">Expirée depuis le : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+                        <?php endif; ?>
+                        <a href='<?= $router->pathFor('list', ['token' => $list->token]) ?>' class="stretched-link"></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         <?php else: ?>
             <p>Vous ne disposez pour le moment d'aucune liste. Vous pouvez en créer une dès maintenant en cliquant sur le bouton ci-dessous.</p>
         <?php endif; ?>
     </div>
-
+    <br>
     <div class="modal-footer">
         <button onclick="document.location='<?= $router->pathFor('newList') ?>';" type="button" class="btn btn-success">Créer une nouvelle liste</button>
     </div>

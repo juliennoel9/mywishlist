@@ -1,4 +1,4 @@
-<?php if (isset($_SESSION['login']) and $list->user_id==$account->id and strtotime($list->expiration) >= time() + 3600) : ?>
+<?php if (isset($_SESSION['login']) and $list->user_id==$account->id and strtotime($list->expiration) >= time()) : ?>
     <form method="POST" enctype="multipart/form-data">
         <h1>Modifiez votre item</h1><br>
         <div class="form-group">

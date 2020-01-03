@@ -2,27 +2,20 @@
     <?php if ($lists->count() > 0) : ?>
         <h1>Listes publiques actives de l'utilisateur : <?= $account->username ?></h1>
         <div class="body mt-5">
-            <table class="table table-bordered table-hover table-dark">
-                <thead>
-                <tr>
-                    <th scope="col">Titre</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Expiration</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <?php foreach ($lists as $list) : ?>
-
-                        <tr onclick="document.location='<?= $router->pathFor('list', ['token' => $list->token]) ?>';">
-                            <th scope="row"><?= $list->titre ?></th>
-                            <td><?= $list->description ?></td>
-                            <td><?= date("d/m/Y", strtotime($list->expiration)) ?></td>
-                        </tr>
-
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+            <?php foreach ($lists as $list) : ?>
+                <div class="card mt-4 bg-light">
+                    <div class="card-body text-center pb-1">
+                        <h1 class="card-title"><?= $list->titre ?></h1>
+                        <p class="card-text lead"><?= $list->description ?></p>
+                        <?php if (strtotime($list->expiration) > time()) : ?>
+                            <p class="text-success">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+                        <?php else: ?>
+                            <p class="text-danger">Expirée depuis le : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+                        <?php endif; ?>
+                        <a href='<?= $router->pathFor('list', ['token' => $list->token]) ?>' class="stretched-link"></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     <?php else: ?>
         <h1>Cet utilisateur ne possède aucune liste publique en cours de validité.</h1>

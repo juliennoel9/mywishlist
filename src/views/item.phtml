@@ -60,7 +60,7 @@
 
 <?php if ($item->nomReservation == '') : ?>
     <div class="modal-footer">
-        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  strtotime($list->expiration) >= time() + 3600) : ?>
+        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  strtotime($list->expiration) >= time()) : ?>
             <button onclick="document.location='<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>';" type="button" class="btn btn-secondary">Modifier Item</button>
         <?php endif; ?>
 

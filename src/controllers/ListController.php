@@ -10,7 +10,7 @@ use Slim\Exception\NotFoundException;
 class ListController extends Controller {
 
     public function displayPublicLists($request, $response, $args) {
-        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->get();;
+        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()))->where('public', true)->orderBy('expiration', 'asc')->get();;
         $this->container->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => $lists]);
         return $response;
     }
@@ -85,7 +85,7 @@ class ListController extends Controller {
 
     public function postEditList($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
-        if (strtotime($list->expiration) >= time() + 3600) {
+        if (strtotime($list->expiration) >= time()) {
             $list->titre = htmlentities(trim($_POST['titre']));
             $list->description = htmlentities(trim($_POST['description']));
             $list->expiration = htmlentities($_POST['expiration']);
@@ -110,7 +110,6 @@ class ListController extends Controller {
         }
         $message->nomMessage = htmlentities(trim($_POST['nom']));
         $message->message = htmlentities(trim($_POST['message']));
-        date_default_timezone_set('Europe/Paris');
         $message->date = date('Y-m-d H:i:s');
         $message->save();
         return $this->redirect($response, 'list', [
@@ -138,7 +137,7 @@ class ListController extends Controller {
     }
 
     public function displayCreators($request, $response, $args) {
-        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->where('public', '=', 1)->get();
+        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()))->orderBy('expiration', 'asc')->where('public', '=', 1)->get();
         $accounts = array();
         foreach ($lists as $list) {
             $account = Account::where('id', '=', $list->user_id)->first();
@@ -156,7 +155,7 @@ class ListController extends Controller {
     public function displayCreatorPublicLists($request, $response, $args) {
         $account = Account::where('username', '=', $args['creator'])->first();
         if ($account != null) {
-            $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()+3600))->orderBy('expiration', 'asc')->where('user_id', '=', $account->id)->where('public', '=', 1)->get();
+            $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', time()))->orderBy('expiration', 'asc')->where('user_id', '=', $account->id)->where('public', '=', 1)->get();
             $this->container->view->render($response, 'creatorPublicLists.phtml', ["title" => "MyWishList - Listes publiques de ".$account->username, "lists" => $lists, "account" => $account]);
             return $response;
         }else{

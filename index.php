@@ -9,6 +9,7 @@ use Slim\Views\PhpRenderer;
 require_once 'vendor/autoload.php';
 
 session_start();
+date_default_timezone_set('Europe/Paris');
 
 \mywishlist\config\Database::connect();
 

@@ -1,13 +1,13 @@
 <h1>Liste n°<?=$list->num?></h1>
 <div class="body mt-5">
-    <section class="jumbotron text-center mt-4">
+    <section class="jumbotron text-center mt-4 pt-3 pb-2">
         <div class="container">
             <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
             <p class="lead text-muted"><?= $list->description ?></p>
-            <?php if (strtotime($list->expiration) < time()+3600) : ?>
-                <p class="lead text-muted">Cette liste est expirée depuis le : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+            <?php if (strtotime($list->expiration) > time()) : ?>
+                <p class="text-success">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
             <?php else: ?>
-                <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+                <p class="text-danger">Expirée depuis le : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
             <?php endif; ?>
         </div>
     </section>
@@ -84,13 +84,13 @@
         </div>
 
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
-            <?php if (strtotime($list->expiration) >= time() + 3600) : ?>
+            <?php if (strtotime($list->expiration) >= time()) : ?>
                 <button onclick="document.location='<?= $router->pathFor('newItem', ['token' => $list->token]) ?>';" type="button" class="btn btn-success">Ajouter Item</button>
             <?php endif; ?>
             <button onclick="document.location='<?= $router->pathFor('editList', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Modifier Liste</button>
         <?php endif; ?>
 
-        <?php if (strtotime($list->expiration) >= time() + 3600) : ?>
+        <?php if (strtotime($list->expiration) >= time()) : ?>
             <?php if (isset($_SESSION['login']) ) : ?>
                 <?php if ($list->user_id != $account->id) : ?>
                     <form method="post" action="<?= $router->pathFor('newListMessage', ['token' => $list->token]) ?>">

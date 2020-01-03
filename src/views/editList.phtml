@@ -1,7 +1,7 @@
 <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
     <form method="POST">
         <h1>Modifiez votre liste</h1><br>
-        <?php if (strtotime($list->expiration) >= time() + 3600) : ?>
+        <?php if (strtotime($list->expiration) >= time()) : ?>
             <div class="form-group">
                 <label for="titre">Donnez un nouveau titre à la liste</label>
                 <input required type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= $list->titre ?>">
