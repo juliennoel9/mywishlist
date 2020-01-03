@@ -1,5 +1,8 @@
-<section class="jumbotron text-center mt-4">
-    <div class="container">
+<section class="jumbotron text-center mt-4 pt-3 pb-2">
+<div class="container">
+        <?php if (!$list->public) : ?>
+            <p class="float-left">&#x1F512</p>
+        <?php endif; ?>
         <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
         <p class="lead text-muted"><?= $list->description ?></p>
         <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
