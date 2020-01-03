@@ -16,52 +16,27 @@
     </section>
 
     <?php if (sizeof($items) != 0) : ?>
-        <table class="table table-bordered table-hover table-dark">
-            <thead>
-            <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Image</th>
-                <th scope="col">Réservation</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <?php foreach ($items as $item) :
-                    $fileName = 'noimage.png';
-                    if (file_exists('./public/images/' . $item->img)) {
-                        $fileName = $item->img;
-                    }
-                ?>
-                <div class="card mt-4 bg-light">
-                    <div class="card-body text-center pb-1">
-                        <img class="float-left w-50" src="/public/images/<?= $fileName ?>">
-                        <h1 class="card-title"><?= $item->nom ?></h1>
-                        <p class="card-text lead"><?= $item->description ?></p>
-                        <?php if (strtotime($list->nomReservation)) : ?>
-                            <p><?= $list->nomReservation ?></p>
-                        <?php else: ?>
-                            <p>Non réservé</p>
-                        <?php endif; ?>
-                        <a href='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>' class="stretched-link"></a>
-                    </div>
+        <?php foreach ($items as $item) :
+                $fileName = 'noimage.png';
+                if (file_exists('./public/images/' . $item->img)) {
+                    $fileName = $item->img;
+                }
+            ?>
+            <div class="card mt-4 bg-light">
+                <div class="card-body text-center pb-1">
+                    <img class="float-left w-50" src="/public/images/<?= $fileName ?>">
+                    <h1 class="card-title"><?= $item->nom ?></h1>
+                    <p class="card-text lead"><?= $item->description ?></p>
+                    <?php if ($item->nomReservation != null) : ?>
+                        <p>Réservé</p>
+                    <?php else: ?>
+                        <p>Non réservé</p>
+                    <?php endif; ?>
+                    <a href='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>' class="stretched-link"></a>
                 </div>
-            <?php endforeach; ?>
-
-            <?php foreach ($items as $item) : ?>
-                <tr onclick="document.location='<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id]) ?>';">
-                    <th scope="row"><?= $item->nom ?></th>
-                    <?php
-                        $fileName = 'noimage.png';
-                        if (file_exists('./public/images/' . $item->img)) {
-                            $fileName = $item->img;
-                        }
-                    ?>
-                    <td class="text-center"><img class="img-fluid" src="/public/images/<?= $fileName ?>"></td>
-                    <td><?= $item->nomReservation == null ? 'Non réservé' : 'Réservé'?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+            </div>
+        <?php endforeach; ?>
+    <br>
     <?php else: ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
             <p>Vous ne disposez pour le moment d'aucun produit dans votre liste. Vous pouvez en ajouter dès maintenant en cliquant sur le bouton ci-dessous.</p>
