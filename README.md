@@ -62,6 +62,11 @@ Depuis un navigateur, rendez vous sur http://localhost:numPort
 - [x] *Supprimer son compte* (Julien)
 - [x] *Joindre les listes à son compte* (Julien)
 
+## Liens utiles
+**Google Sheet** - Fonctionnalités, routes et méthodes - [Google Sheet](https://docs.google.com/spreadsheets/d/1NkXoVzma5kQGag3LFqx1n8IFDDFTjCObA5FDB259kMA/edit?usp=sharing)
+
+**Trello** - Fonctionnalités et répartitions des tâches - [Trello](https://trello.com/b/V2bNWbbd/mywishlist)
+
 ## Contributeurs
 **NOËL Julien** - [juliennoel9](https://github.com/juliennoel9/mywishlist/commits?author=juliennoel9)
 
