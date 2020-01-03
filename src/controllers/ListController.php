@@ -5,6 +5,7 @@ namespace mywishlist\controllers;
 use mywishlist\models\Account;
 use mywishlist\models\Liste;
 use mywishlist\models\Message;
+use Slim\Exception\NotFoundException;
 
 class ListController extends Controller {
 
@@ -16,6 +17,8 @@ class ListController extends Controller {
 
     public function displayList($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
+        if (is_null($list))
+            throw new NotFoundException($request, $response);
         $items = $list->items();
         $messages = $list->messages();
         if (isset($_SESSION['login'])){

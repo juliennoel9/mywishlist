@@ -53,7 +53,6 @@ $app->add(function ($request, $response, $next) {
     }
 });
 
-unset($container['notFoundHandler']);
 $container['notFoundHandler'] = function ($container) {
     return function ($request, $response) use ($container) {
         $container->view->render($response, 'errors/404.phtml', ["title" => "404 Not Found"]);

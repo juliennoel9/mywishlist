@@ -5,11 +5,14 @@ namespace mywishlist\controllers;
 use mywishlist\models\Account;
 use mywishlist\models\Item;
 use mywishlist\models\Liste;
+use Slim\Exception\NotFoundException;
 
 class ItemController extends Controller {
     public function displayItem($request, $response, $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
         $item = Item::where('id', '=', $args['id'])->first();
+        if (is_null($list) || is_null($item))
+            throw new NotFoundException($request, $response);
 
         if (isset($_SESSION['login'])){
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
