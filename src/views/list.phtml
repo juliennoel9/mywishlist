@@ -15,7 +15,6 @@
     </section>
 
     <?php if (sizeof($items) != 0) : ?>
-
         <div class="container">
             <div class="row">
                 <?php foreach ($items as $item) :
@@ -42,13 +41,6 @@
                 <?php endforeach; ?>
             </div>
         </div>
-
-
-
-
-
-
-
         <br>
     <?php else: ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
@@ -72,7 +64,7 @@
 
     <div class="modal-footer">
         <!-- Trigger modal URL -->
-        <button href="<?= pathinfo($_SERVER['HTTP_HOST'])['filename'].pathinfo($_SERVER['REQUEST_URI'])['dirname'].'/'.pathinfo($_SERVER['REQUEST_URI'])['filename']; ?>" type="button" class="btn btn-primary" id="url" data-toggle="modal" data-target="#modalURL">Partager URL</button>
+        <button href="<?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" type="button" class="btn btn-primary" id="url" data-toggle="modal" data-target="#modalURL">Partager URL</button>
 
         <!-- Modal URL -->
         <div class="modal fade" role="dialog" id="modalURL">
@@ -84,7 +76,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <div class="text-center js-text" id="text"><?= pathinfo($_SERVER['HTTP_HOST'])['filename'].pathinfo($_SERVER['REQUEST_URI'])['dirname'].'/'.pathinfo($_SERVER['REQUEST_URI'])['filename']; ?></div>
+                            <div class="text-center js-text" id="text"><?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?></div>
                         </div>
                     </div>
                     <div class="modal-footer">
