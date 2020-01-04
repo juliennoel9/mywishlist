@@ -30,7 +30,7 @@ class AccountController extends Controller {
             return $response;
         }
         $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
-        return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account]);
+        return $this->redirect($response, 'account', ["account" => $account]);
     }
 
     public function getLogin($request, $response, $args) {
