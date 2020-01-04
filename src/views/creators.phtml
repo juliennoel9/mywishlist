@@ -1,18 +1,22 @@
-<h1>Listes des créateurs avec au moins une liste publique</h1>
-<div class="body mt-5">
-    <div class="container">
-        <div class="row">
-            <?php foreach ($accounts as $account) : ?>
-                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                    <div class="card mt-4 bg-light">
-                        <div class="card-body text-center pb-1">
-                            <img class="w-25" src="/public/images/user.png">
-                            <h3 class="card-title"><?= $account->username ?></h3>
-                            <a href='<?= $router->pathFor('creatorPublicLists', ['creator' => $account->username]) ?>' class="stretched-link"></a>
+<?php if (sizeof($accounts) > 0) : ?>
+    <h1>Listes des créateurs avec au moins une liste publique</h1>
+    <div class="body mt-5">
+        <div class="container">
+            <div class="row">
+                <?php foreach ($accounts as $account) : ?>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                        <div class="card mt-4 bg-light">
+                            <div class="card-body text-center pb-1">
+                                <img class="w-25" src="/public/images/user.png">
+                                <h3 class="card-title"><?= $account->username ?></h3>
+                                <a href='<?= $router->pathFor('creatorPublicLists', ['creator' => $account->username]) ?>' class="stretched-link"></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
-</div>
+<?php else : ?>
+    <h4>Aucun utilisateur possède actuellement au moins une liste publique en cours de validité.</h4>
+<?php endif; ?>
