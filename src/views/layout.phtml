@@ -19,9 +19,6 @@
                         <a class="nav-link" href="<?= $router->pathFor('home') ?>">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->pathFor('about') ?>">A propos</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="<?= $router->pathFor('publicLists') ?>">Listes publiques</a>
                     </li>
                     <li class="nav-item">
@@ -35,6 +32,9 @@
                             <a class="nav-link" href="<?= $router->pathFor('newList') ?>">Créer liste</a>
                         </li>
                     <?php endif; ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= $router->pathFor('about') ?>">A propos</a>
+                    </li>
                 </ul>
             </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
