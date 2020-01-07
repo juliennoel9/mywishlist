@@ -33,10 +33,10 @@ DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL UNIQUE,
-  `email` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL UNIQUE,
   `hash` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
-  `nom` VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
-  `prenom` VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
+  `nom` VARCHAR(30) COLLATE utf8_unicode_ci NOT NULL,
+  `prenom` VARCHAR(30) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
