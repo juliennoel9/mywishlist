@@ -211,6 +211,11 @@ $app->get('/check_email', function ($request, $response, array $args) {
     return $controller->liveCheckEmail($request, $response, $args);
 });
 
+$app->get('/check_login', function ($request, $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->liveCheckLogin($request, $response, $args);
+});
+
 /**
  * Run of Slim
  */

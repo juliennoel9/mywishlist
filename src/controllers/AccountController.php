@@ -180,4 +180,19 @@ class AccountController extends Controller {
     public function fullMatch($pattern, $str) {
         return preg_match($pattern, $str, $matches) === 1 && $matches[0] === $str;
     }
+
+    public function liveCheckLogin($request, $response, array $args) {
+        $response = $response->withHeader('Content-type', 'application/json');
+        $res = ['valide' => false, 'msg' => 'Utilisateur inexistant.'];
+        if (isset($_GET['login'])) {
+            $login = trim($_GET['login']);
+            $user = Account::select('id')->where('email', '=', $login)->orwhere('username', '=', $login)->first();
+            if (isset($user)) {
+                $res['valide'] = true;
+                $res['msg'] = '';
+            }
+        }
+        $response->write(json_encode($res));
+        return $response;
+    }
 }
