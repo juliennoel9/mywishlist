@@ -25,7 +25,6 @@ $collation = $conf['collation'];
 try {
     $conn = new PDO("$driver:host=$host", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // TODO set charset & collation from .ini
     $stmt = $conn->prepare("SHOW DATABASES LIKE '$database'");
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_NUM);
@@ -81,4 +80,3 @@ if ($force || $line == 'o' || $line == 'y') {
 $conn = null;
 echo "Terminé\n";
 exit(0);
-?>

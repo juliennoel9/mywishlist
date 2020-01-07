@@ -15,16 +15,16 @@ CREATE TABLE `item` (
   `nomReservation` VARCHAR(30) DEFAULT NULL,
   `messageReservation` TEXT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `liste`;
 CREATE TABLE `liste` (
   `num` INT(11) NOT NULL AUTO_INCREMENT,
   `user_id` INT(11) DEFAULT NULL,
-  `titre` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-  `description` TEXT COLLATE utf8_unicode_ci,
+  `titre` VARCHAR(255) NOT NULL,
+  `description` TEXT,
   `expiration` TIMESTAMP NOT NULL,
-  `token` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `token` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
   `public` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -32,11 +32,11 @@ CREATE TABLE `liste` (
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(20) COLLATE utf8_unicode_ci NOT NULL UNIQUE,
-  `email` VARCHAR(100) COLLATE utf8_unicode_ci NOT NULL UNIQUE,
-  `hash` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
-  `nom` VARCHAR(30) COLLATE utf8_unicode_ci NOT NULL,
-  `prenom` VARCHAR(30) COLLATE utf8_unicode_ci NOT NULL,
+  `username` VARCHAR(20) NOT NULL UNIQUE,
+  `email` VARCHAR(100) NOT NULL UNIQUE,
+  `hash` VARCHAR(256) NOT NULL,
+  `nom` VARCHAR(30) NOT NULL,
+  `prenom` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
