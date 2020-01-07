@@ -15,7 +15,7 @@ CREATE TABLE `item` (
   `nomReservation` VARCHAR(30) DEFAULT NULL,
   `messageReservation` TEXT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `liste`;
 CREATE TABLE `liste` (
@@ -24,10 +24,10 @@ CREATE TABLE `liste` (
   `titre` VARCHAR(255) NOT NULL,
   `description` TEXT,
   `expiration` TIMESTAMP NOT NULL,
-  `token` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  `token` VARCHAR(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `public` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`num`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
@@ -38,7 +38,7 @@ CREATE TABLE `account` (
   `nom` VARCHAR(30) NOT NULL,
   `prenom` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
@@ -51,7 +51,7 @@ CREATE TABLE `message` (
 PRIMARY KEY (`id`),
 FOREIGN KEY (`liste_id`) REFERENCES `liste`(num),
 FOREIGN KEY (`account_id`) REFERENCES `account`(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*
 ALTER TABLE `item`
 ADD FOREIGN KEY (`liste_id`) REFERENCES `liste`(num) ON DELETE CASCADE,
