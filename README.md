@@ -49,15 +49,15 @@ Depuis un navigateur, rendez vous sur http://localhost:numPort
 - [x] *Consulter les réservations et messages d'une de ses listes après échéance* (Julien)
 
 ### Extensions
-- [x] *Créer un compte* (Julien)
-- [x] *S'authentifier* (Julien)
+- [x] *Créer un compte* (Julien, Louis)
+- [x] *S'authentifier* (Julien, Louis)
 - [x] *Modifier son compte* (Julien)
 - [x] *Rendre une liste publique* (Julien, Louis)
 - [x] *Afficher les listes de souhaits publiques* (Julien, Louis)
 - [ ] *Créer une cagnotte sur un item*
 - [ ] *Participer à une cagnotte*
 - [x] *Uploader une image* (Julien)
-- [x] *Créer un compte participant* (Julien)
+- [x] *Créer un compte participant* (Julien, Louis)
 - [x] *Afficher la liste des créateurs* (Julien)
 - [x] *Supprimer son compte* (Julien)
 - [x] *Joindre les listes à son compte* (Julien)
