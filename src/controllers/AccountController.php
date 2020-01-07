@@ -59,7 +59,7 @@ class AccountController extends Controller {
                 return $this->redirect($response, 'home');
             }
         }else {
-            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>"]);
+            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>", "id" => $id]);
             return $response;
         }
     }
