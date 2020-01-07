@@ -199,6 +199,19 @@ $app->post('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($r
 });
 
 /**
+ * Validator
+ */
+$app->get('/check_username', function ($request, $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->liveCheckUsername($request, $response, $args);
+});
+
+$app->get('/check_email', function ($request, $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->liveCheckEmail($request, $response, $args);
+});
+
+/**
  * Run of Slim
  */
 $app->run();

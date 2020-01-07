@@ -1,37 +1,49 @@
 <?php if (!isset($_SESSION['login'])) : ?>
-    <h1>Créez votre compte</h1><br>
     <form method="POST" action="<?= $router->pathFor('register') ?>" id="register">
         <?php if (isset($msg)) : ?>
             <?= $msg ?>
         <?php endif; ?>
-        <div class="form-group">
-            <label for="identifiant">Identifiant de compte</label>
-            <input required type="text" placeholder="Identifiant" name="identifiant" class="form-control" id="identifiant">
-        </div>
-        <div class="form-group">
-            <label for="prenom">Prénom</label>
-            <input required type="text" placeholder="Prénom" name="prenom" class="form-control" id="prenom">
-        </div>
-        <div class="form-group">
-            <label for="nom">Nom</label>
-            <input required type="text" placeholder="Nom" name="nom" class="form-control" id="nom">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input required type="email" placeholder="Votre email" name="email" class="form-control" id="email">
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input required type="password" minlength="8" placeholder="Mot de passe (minimum 8 caractères)" name="password" class="form-control" id="password">
-        </div>
-        <div class="form-group">
-            <label for="confirmPassWord">Confirmez votre mot de passe</label>
-            <input required type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord">
-        </div>
-        <div id="erreur"></div>
-        <div class="modal-footer">
-            <a href="<?= $router->pathFor('home') ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
-            <button type="submit" class="btn btn-primary">Inscription</button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Inscription</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="identifiant">Identifiant de compte</label>
+                        <input required type="text" placeholder="Identifiant" name="identifiant" class="form-control" id="identifiant" maxlength="20" autofocus>
+                        <div class="invalid-feedback" id="identifiantErr">Invalide</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="prenom">Prénom</label>
+                        <input required type="text" placeholder="Prénom" name="prenom" class="form-control" id="prenom" maxlength="30">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input required type="text" placeholder="Nom" name="nom" class="form-control" id="nom" maxlength="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input required type="email" placeholder="Votre email" name="email" class="form-control" id="email" maxlength="100">
+                        <div class="invalid-feedback" id="emailErr">Invalide</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input required type="password" minlength="8" placeholder="Mot de passe (minimum 8 caractères)" name="password" class="form-control" id="password" maxlength="50">
+                        <div class="invalid-feedback" id="passwordErr">Invalide</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassWord">Confirmez votre mot de passe</label>
+                        <input required type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord" maxlength="50">
+                        <div class="invalid-feedback" id="confirmPassWordErr">Invalide</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="<?= $router->pathFor('home') ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
+                    <button type="submit" class="btn btn-primary">Inscription</button>
+                </div>
+            </div>
         </div>
     </form>
 <?php else: ?>
@@ -39,17 +51,99 @@
     <h4>Si vous voulez créer un nouveau compte, déconnectez vous auparavant.</h4>
 <?php endif; ?>
 
+
 <script>
-    document.forms["register"].addEventListener("submit", function(e) {
-        var erreur;
-        var inputs = this;
-        if (inputs["password"].value != inputs["confirmPassWord"].value) {
-            erreur = "<div class=\"alert alert-danger\">Les deux mots de passes ne sont pas identiques.</div>";
-        }
-        if (erreur) {
-            e.preventDefault();
-            document.getElementById("erreur").innerHTML = erreur;
-            return false;
-        }
+    /* pour lancer le check apres 1 sec d'inactivité dans l'input */
+    let timer1, timer2, timer3, timer4;
+    const finishTyping = 1000;
+    let pseudo = document.getElementById('identifiant');
+    let pseudoErr = document.getElementById('identifiantErr');
+    let email = document.getElementById('email');
+    let emailErr = document.getElementById('emailErr');
+    let password = document.getElementById('password');
+    let passwordErr = document.getElementById('passwordErr');
+    let confirm = document.getElementById('confirmPassWord');
+    let confirmErr = document.getElementById('confirmPassWordErr');
+
+    pseudo.addEventListener('input', function(e) {
+        clearTimeout(timer1);
+        pseudo.className = 'form-control';
+        pseudo.setCustomValidity('');
+        timer1 = setTimeout(checkPseudo, finishTyping);
     });
+    email.addEventListener('input', function(e) {
+        clearTimeout(timer2);
+        email.className = 'form-control';
+        email.setCustomValidity('');
+        timer2 = setTimeout(checkEmail, finishTyping);
+    });
+    password.addEventListener('input', function(e) {
+        clearTimeout(timer3);
+        password.className = 'form-control';
+        password.setCustomValidity('');
+        timer3 = setTimeout(checkPassword, finishTyping);
+    });
+    confirm.addEventListener('input', function(e) {
+        clearTimeout(timer4);
+        confirm.className = 'form-control';
+        confirm.setCustomValidity('');
+        timer4 = setTimeout(checkConfirm, finishTyping);
+    });
+
+    function checkPseudo() {
+        fetch('/check_username?username=' + pseudo.value)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                //console.log(pseudo.value);
+                //console.log(data);
+                if (data.valide) {
+                    pseudo.className = 'form-control is-valid';
+                } else {
+                    pseudo.className = 'form-control is-invalid';
+                    pseudoErr.innerText = data.msg;
+                    pseudo.setCustomValidity(data.msg);
+                }
+            })
+    }
+
+    function checkEmail() {
+        fetch('/check_email?email=' + email.value)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                //console.log(email.value);
+                //console.log(data);
+                if (!data.valide) {
+                    email.className = 'form-control is-invalid';
+                    emailErr.innerText = data.msg;
+                    email.setCustomValidity(data.msg);
+                }
+            })
+    }
+
+    function checkPassword() {
+        if (password.value.length < 8) {
+            password.className = 'form-control is-invalid';
+            password.setCustomValidity('Veuillez utiliser au moins 8 caractères.');
+            passwordErr.innerText = 'Veuillez utiliser au moins 8 caractères.';
+            return;
+        }
+        if (password.value.length > 50) {
+            password.className = 'form-control is-invalid';
+            password.setCustomValidity('Vous ne pouvez pas utiliser plus de 50 caractères.');
+            passwordErr.innerText = 'Vous ne pouvez pas utiliser plus de 50 caractères.';
+        }
+    }
+
+    function checkConfirm() {
+        if (password.value !== confirm.value) {
+            confirm.className = 'form-control is-invalid';
+            confirm.setCustomValidity('Les deux mots de passe ne corresponde pas.');
+            confirmErr.innerText = 'Les deux mots de passe ne corresponde pas.';
+        }
+    }
+
 </script>

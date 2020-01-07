@@ -132,4 +132,52 @@ class AccountController extends Controller {
         session_destroy();
         return $this->redirect($response, 'home');
     }
+
+    public function liveCheckUsername($request, $response, array $args) {
+        $response = $response->withHeader('Content-type', 'application/json');
+        $res = ['valide' => true, 'msg' => ''];
+        if (isset($_GET['username'])) {
+            $username = trim($_GET['username']);
+            if ($this->fullMatch('/[a-zA-Z0-9_]{1,20}/', $username)) {
+                $user = Account::select('username')->where('username', '=', $username)->first();
+                if ($user != null) {
+                    $res['valide'] = false;
+                    $res['msg'] = 'Ce nom d\'utilisateur est déjà utilisé.';
+                }
+            } else {
+                $res['valide'] = false;
+                $res['msg'] = 'Utilisez uniquement des lettres, chiffres et underscore.';
+            }
+        } else {
+            $res['valide'] = false;
+        }
+        $response->write(json_encode($res));
+        return $response;
+    }
+
+    public function liveCheckEmail($request, $response, array $args) {
+        $response = $response->withHeader('Content-type', 'application/json');
+        $res = ['valide' => true, 'msg' => ''];
+        if (isset($_GET['email'])) {
+            $email = trim($_GET['email']);
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $user = Account::select('email')->where('email', '=', $email)->first();
+                if ($user != null) {
+                    $res['valide'] = false;
+                    $res['msg'] = 'Email déjà utilisé.';
+                }
+            } else {
+                $res['valide'] = false;
+                $res['msg'] = 'Cet email n\'est pas valide.';
+            }
+        } else {
+            $res['valide'] = false;
+        }
+        $response->write(json_encode($res));
+        return $response;
+    }
+
+    public function fullMatch($pattern, $str) {
+        return preg_match($pattern, $str, $matches) === 1 && $matches[0] === $str;
+    }
 }
