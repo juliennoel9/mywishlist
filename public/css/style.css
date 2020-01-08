@@ -19,8 +19,8 @@ meter::-webkit-meter-bar {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-meter[value="0"]::-moz-meter-bar { background: darkred; }
-meter[value="1"]::-moz-meter-bar { background: orangered; }
-meter[value="2"]::-moz-meter-bar { background: orange; }
-meter[value="3"]::-moz-meter-bar { background: yellowgreen; }
-meter[value="4"]::-moz-meter-bar { background: limegreen; }
+meter[value="0"]::-webkit-meter-optimum-value { background: darkred; }
+meter[value="1"]::-webkit-meter-optimum-value { background: orangered; }
+meter[value="2"]::-webkit-meter-optimum-value { background: orange; }
+meter[value="3"]::-webkit-meter-optimum-value { background: yellowgreen; }
+meter[value="4"]::-webkit-meter-optimum-value { background: limegreen; }
