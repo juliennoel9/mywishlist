@@ -50,7 +50,7 @@
         <?php endif; ?>
     <?php endif; ?>
 
-    <?php if($messages->count() > 0 ) : ?>
+    <?php if($messages->count() > 0) : ?>
         <div class="jumbotron modal-body">
             <div class="modal-title"><h3>Messages des participants</h3></div>
             <div class="modal-body">
@@ -95,7 +95,7 @@
         <?php endif; ?>
 
         <?php if (strtotime($list->expiration) >= time()) : ?>
-            <?php if (isset($_SESSION['login']) ) : ?>
+            <?php if (isset($_SESSION['login'])) : ?>
                 <?php if ($list->user_id != $account->id) : ?>
                     <form method="post" action="<?= $router->pathFor('newListMessage', ['token' => $list->token]) ?>">
                         <!-- Trigger modal message -->

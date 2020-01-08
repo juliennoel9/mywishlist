@@ -23,7 +23,7 @@ class ListController extends Controller {
             throw new NotFoundException($request, $response);
         $items = $list->items();
         $messages = $list->messages();
-        if (isset($_SESSION['login']) ) {
+        if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $this->container->view->render($response, 'list.phtml', [
                 "title" => 'MyWishList - Liste n°'.$list->num,
@@ -51,7 +51,7 @@ class ListController extends Controller {
 
     public function postNewList(Request $request, Response $response, array $args) {
         $list = new Liste();
-        if (isset($_SESSION['login']) ) {
+        if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $list->user_id = $account->id;
         } else {
@@ -73,7 +73,7 @@ class ListController extends Controller {
     }
 
     public function getEditList(Request $request, Response $response, array $args) {
-        if (isset($_SESSION['login']) ) {
+        if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $list = Liste::where('token', '=', $args['token'])->first();
             $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list, "account" => $account]);
@@ -106,7 +106,7 @@ class ListController extends Controller {
         $list = Liste::where('token', '=', $args['token'])->first();
         $message = new Message();
         $message->liste_id = $list->num;
-        if (isset($_SESSION['login']) ) {
+        if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $message->account_id = $account->id;
         }

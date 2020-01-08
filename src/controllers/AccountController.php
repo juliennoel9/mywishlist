@@ -34,7 +34,7 @@ class AccountController extends Controller {
     }
 
     public function getLogin(Request $request, Response $response, array $args) {
-        if (isset($_SERVER['HTTP_REFERER']) ) {
+        if (isset($_SERVER['HTTP_REFERER'])) {
             $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
         }
         $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion"]);
@@ -65,7 +65,7 @@ class AccountController extends Controller {
     }
 
     public function getAccount(Request $request, Response $response, array $args) {
-        if (isset($_SESSION['login']) ) {
+        if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account]);
             return $response;
@@ -78,7 +78,7 @@ class AccountController extends Controller {
 
     public function postEditAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        if ($_POST['submit'] == 'deleteAccount' ) {
+        if ($_POST['submit'] == 'deleteAccount') {
             $lists = $account->lists();
             foreach ($lists as $list) {
                 $items = $list->items();
@@ -106,7 +106,7 @@ class AccountController extends Controller {
             $account->prenom = htmlentities(trim($_POST['prenom']));
             $account->nom = htmlentities(trim($_POST['nom']));
             if ($_POST['submit'] == 'editPassword') {
-                if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash) ) {
+                if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash)) {
                     $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
                 } else {
                     $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-danger\">Ancien mot de passe incorrect, réessayez.</div>"]);
@@ -115,7 +115,7 @@ class AccountController extends Controller {
             }
             $account->save();
 
-            if ($_POST['submit'] == 'editPassword' ) {
+            if ($_POST['submit'] == 'editPassword') {
                 unset($_SESSION['login']);
                 $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>"]);
                 return $response;

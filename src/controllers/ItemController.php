@@ -16,7 +16,7 @@ class ItemController extends Controller {
         if (is_null($list) || is_null($item))
             throw new NotFoundException($request, $response);
 
-        if (isset($_SESSION['login']) ) {
+        if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $this->container->view->render($response, 'item.phtml', [
                 "title" => "MyWishList - Item n°".$item->id,
@@ -60,10 +60,10 @@ class ItemController extends Controller {
         $NewFileName = $fileExt[0].'-'.$list->num.'-'.Liste::generateToken().'.'.$fileActualExt;
 
         $allowed = ['jpg', 'jpeg', 'png'];
-        if (in_array($fileActualExt, $allowed) ) {
+        if (in_array($fileActualExt, $allowed)) {
             if ($fileError === 0) {
                 // 10 Mo
-                if ($fileSize < 10000000 ) {
+                if ($fileSize < 10000000) {
                     $fileDestination = "./public/images/".$NewFileName;
                     move_uploaded_file($fileTmpName, $fileDestination);
                     $item->img = $NewFileName;
@@ -74,7 +74,7 @@ class ItemController extends Controller {
             $item->img = 'noimage.png';
         }
 
-        if (isset($_POST['url']) ) {
+        if (isset($_POST['url'])) {
             $item->url = htmlentities(trim($_POST['url']));
         }
         $item->tarif = htmlentities(trim($_POST['tarif']));
@@ -85,7 +85,7 @@ class ItemController extends Controller {
     }
 
     public function getEditItem(Request $request, Response $response, array $args) {
-        if (isset($_SESSION['login']) ) {
+        if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $list = Liste::where('token', '=', $args['token'])->first();
             $item = Item::where('id', '=', $args['id'])->first();
@@ -103,12 +103,12 @@ class ItemController extends Controller {
         $list = Liste::where('token', '=', $args['token'])->first();
         $item = Item::where('id', '=', $args['id'])->first();
 
-        if ($_POST['submit'] == 'edit' ) {
+        if ($_POST['submit'] == 'edit') {
             $item->nom = htmlentities(trim($_POST['nom']));
             $item->descr = htmlentities(trim($_POST['description']));
             $item->tarif = htmlentities(trim($_POST['tarif']));
 
-            if (isset($_POST['delete']) ) {
+            if (isset($_POST['delete'])) {
                 $item->img = 'noimage.png';
             } else {
                 //Image upload
@@ -123,10 +123,10 @@ class ItemController extends Controller {
                 $NewFileName = $fileExt[0].'-'.$list->num.'-'.Liste::generateToken().'.'.$fileActualExt;
 
                 $allowed = ['jpg', 'jpeg', 'png'];
-                if (in_array($fileActualExt, $allowed) ) {
+                if (in_array($fileActualExt, $allowed)) {
                     if ($fileError === 0) {
                         // 10 Mo
-                        if ($fileSize < 10000000 ) {
+                        if ($fileSize < 10000000) {
                             $fileDestination = "./public/images/".$NewFileName;
                             move_uploaded_file($fileTmpName, $fileDestination);
                             $item->img = $NewFileName;
@@ -141,7 +141,7 @@ class ItemController extends Controller {
                 'token' => $list->token,
                 'id' => $item->id,
             ]);
-        } elseif ($_POST['submit'] == 'delete' ) {
+        } elseif ($_POST['submit'] == 'delete') {
             $item->delete();
             return $this->redirect($response, 'list', [
                 'token' => $list->token

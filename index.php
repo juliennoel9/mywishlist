@@ -43,6 +43,7 @@ $container['view'] = function($container) {
     return $renderer;
 };
 
+
 /**
  * Middleware HTTPS
  */
@@ -63,6 +64,7 @@ $container['notFoundHandler'] = function ($container) {
     };
 };
 
+
 /**
  * Main pages
  */
@@ -80,6 +82,7 @@ $app->get('/deconnexion', function (Request $request, Response $response, array 
     $controller = new AccountController($this);
     return $controller->getLogout($request, $response, $args);
 })->setName('logout');
+
 
 /**
  * Account
@@ -113,6 +116,7 @@ $app->post('/moncompte[/]', function (Request $request, Response $response, arra
     $controller = new AccountController($this);
     return $controller->postEditAccount($request, $response, $args);
 });
+
 
 /**
  * Lists
@@ -167,6 +171,7 @@ $app->get('/{creator:[a-zA-Z0-9_-]+}/listes[/]', function (Request $request, Res
     return $controller->displayCreatorPublicLists($request, $response, $args);
 })->setName('creatorPublicLists');
 
+
 /**
  * Items
  */
@@ -199,6 +204,7 @@ $app->post('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Re
     $controller = new ItemController($this);
     return $controller->postEditItem($request, $response, $args);
 });
+
 
 /**
  * Validator

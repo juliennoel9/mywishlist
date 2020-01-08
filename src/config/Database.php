@@ -4,7 +4,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class Database {
 
-    public static function connect( ) {
+    public static function connect() {
         if(file_exists('src/config/database.ini')) {
             $data = parse_ini_file('src/config/database.ini');
         } else {
