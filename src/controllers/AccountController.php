@@ -146,7 +146,7 @@ class AccountController extends Controller {
                 }
             } else {
                 $res['valide'] = false;
-                $res['msg'] = 'Utilisez uniquement des lettres, chiffres et underscore.';
+                $res['msg'] = 'Utilisez uniquement des lettres (sans accents), des chiffres, tirets et underscores.';
             }
         } else {
             $res['valide'] = false;
