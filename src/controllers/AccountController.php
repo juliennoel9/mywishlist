@@ -50,7 +50,7 @@ class AccountController extends Controller {
         if (isset($account) and password_verify($password, $account->hash)) {
             $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
             if (isset($_SESSION['previousPage'])) {
-                if (pathinfo($_SESSION['previousPage'])['filename']=='inscription') {
+                if (pathinfo($_SESSION['previousPage'])['filename']=='inscription' or pathinfo($_SESSION['previousPage'])['filename']=='connexion') {
                     return $this->redirect($response, 'home');
                 }else {
                     return $response->withStatus(302)->withHeader('Location', $_SESSION['previousPage']);
