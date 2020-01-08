@@ -10,8 +10,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="identifiant">Identifiant de compte</label>
-                        <input required type="text" placeholder="Identifiant" name="identifiant" class="form-control" id="identifiant" maxlength="20" autofocus>
+                        <label for="identifiant">Nom d'utilisateur</label>
+                        <input required type="text" placeholder="Nom d'utilisateur" name="identifiant" class="form-control" id="identifiant" maxlength="20" autofocus>
                         <div class="invalid-feedback" id="identifiantErr">Invalide</div>
                     </div>
                     <div class="form-group">
@@ -37,7 +37,7 @@
                         <label for="confirmPassWord">Confirmez votre mot de passe</label>
                         <input required type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord" maxlength="50">
                     </div>
-                    <div id="confirmPassWordErr" class="alert alert-danger" style="display: none">Les deux mots de passe ne corresponde pas.</div>
+                    <div id="confirmPassWordErr" class="alert alert-danger" style="display: none">Les deux mots de passe ne correspondent pas.</div>
                 </div>
                 <div class="modal-footer">
                     <a href="<?= $router->pathFor('home') ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
@@ -151,7 +151,7 @@
             password.setCustomValidity('');
             passwordErr.innerText = '';
             confirm.className = 'form-control is-invalid';
-            confirm.setCustomValidity('Les deux mots de passe ne corresponde pas.');
+            confirm.setCustomValidity('Les deux mots de passe ne correspondent pas.');
             confirmErr.style.display = "block";
         }
     }
