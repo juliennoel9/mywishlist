@@ -138,7 +138,7 @@ class AccountController extends Controller {
         $res = ['valide' => true, 'msg' => ''];
         if (isset($_GET['username'])) {
             $username = trim($_GET['username']);
-            if ($this->fullMatch('/[a-zA-Z0-9_]{1,20}/', $username)) {
+            if ($this->fullMatch('/[a-zA-Z0-9_-]{1,20}/', $username)) {
                 $user = Account::select('username')->where('username', '=', $username)->first();
                 if ($user != null) {
                     $res['valide'] = false;
