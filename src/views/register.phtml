@@ -70,7 +70,7 @@
 
     pseudo.addEventListener('input', function() {
         clearTimeout(timer1);
-        pseudo.className = 'form-control';
+        pseudo.className = 'form-control is-pending';
         pseudo.setCustomValidity('');
         timer1 = setTimeout(checkPseudo, finishTyping);
     });
@@ -105,7 +105,7 @@
     function checkPseudo() {
         fetch('/check_username?username=' + pseudo.value)
             .then(response => {
-                return response.json()
+                return response.json();
             })
             .then(data => {
                 //console.log(pseudo.value);
@@ -123,7 +123,7 @@
     function checkEmail() {
         fetch('/check_email?email=' + email.value)
             .then(response => {
-                return response.json()
+                return response.json();
             })
             .then(data => {
                 //console.log(email.value);
@@ -139,8 +139,8 @@
     function checkPassword() {
         if (password.value.length < 8) {
             password.className = 'form-control is-invalid';
-            password.setCustomValidity('Veuillez utiliser au moins 8 caractères.');
             passwordErr.innerText = 'Veuillez utiliser au moins 8 caractères.';
+            password.setCustomValidity(passwordErr.innerText);
         }
     }
 
