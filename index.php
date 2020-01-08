@@ -5,6 +5,8 @@ use mywishlist\controllers\HomeController;
 use mywishlist\controllers\ItemController;
 use mywishlist\controllers\ListController;
 use Slim\Views\PhpRenderer;
+use Slim\Http\Response;
+use Slim\Http\Request;
 
 require_once 'vendor/autoload.php';
 
@@ -44,7 +46,7 @@ $container['view'] = function($container) {
 /**
  * Middleware HTTPS
  */
-$app->add(function ($request, $response, $next) {
+$app->add(function (Request $request, Response $response, $next) {
     // redirect with https if not on localhost
     if ($request->getUri()->getScheme() !== 'https' && $request->getUri()->getHost() !== 'localhost') {
         $uri = $request->getUri()->withScheme("https");
@@ -55,7 +57,7 @@ $app->add(function ($request, $response, $next) {
 });
 
 $container['notFoundHandler'] = function ($container) {
-    return function ($request, $response) use ($container) {
+    return function ($request, Response $response) use ($container) {
         $container->view->render($response, 'errors/404.phtml', ["title" => "404 Not Found"]);
         return $response->withStatus(404);
     };
@@ -64,17 +66,17 @@ $container['notFoundHandler'] = function ($container) {
 /**
  * Main pages
  */
-$app->get('/', function ($request, $response, array $args) {
+$app->get('/', function (Request $request, Response $response, array $args) {
     $controller = new HomeController($this);
     return $controller->displayHome($request, $response, $args);
 })->setName('home');
 
-$app->get('/apropos[/]', function ($request, $response, array $args) {
+$app->get('/apropos[/]', function (Request $request, Response $response, array $args) {
     $this->view->render($response, 'about.phtml', ["title" => "MyWishList - A Propos"]);
 })->setName('about');
 $app->redirect('/about[/]', $container->router->pathFor('about'));
 
-$app->get('/deconnexion', function ($request, $response, array $args) {
+$app->get('/deconnexion', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->getLogout($request, $response, $args);
 })->setName('logout');
@@ -82,32 +84,32 @@ $app->get('/deconnexion', function ($request, $response, array $args) {
 /**
  * Account
  */
-$app->get('/inscription[/]', function ($request, $response, array $args){
+$app->get('/inscription[/]', function (Request $request, Response $response, array $args){
     $controller = new AccountController($this);
     return $controller->getRegister($request, $response, $args);
 })->setName('register');
 
-$app->post('/inscription[/]', function ($request, $response, array $args) {
+$app->post('/inscription[/]', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->postRegister($request, $response, $args);
 });
 
-$app->get('/connexion[/]', function ($request, $response, array $args){
+$app->get('/connexion[/]', function (Request $request, Response $response, array $args){
     $controller = new AccountController($this);
     return $controller->getLogin($request, $response, $args);
 })->setName('login');
 
-$app->post('/connexion[/]', function ($request, $response, array $args) {
+$app->post('/connexion[/]', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->postLogin($request, $response, $args);
 });
 
-$app->get('/moncompte[/]', function ($request, $response, array $args) {
+$app->get('/moncompte[/]', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->getAccount($request, $response, $args);
 })->setName('account');
 
-$app->post('/moncompte[/]', function ($request, $response, array $args) {
+$app->post('/moncompte[/]', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->postEditAccount($request, $response, $args);
 });
@@ -115,52 +117,52 @@ $app->post('/moncompte[/]', function ($request, $response, array $args) {
 /**
  * Lists
  */
-$app->get('/listesPubliques[/]', function ($request, $response, array $args) {
+$app->get('/listesPubliques[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayPublicLists($request, $response, $args);
 })->setName('publicLists');
 
-$app->get('/l/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+$app->get('/l/{token:[a-zA-Z0-9]+}[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayList($request, $response, $args);
 })->setName('list');
 
-$app->get('/nouvelleListe[/]', function ($request, $response, array $args) {
+$app->get('/nouvelleListe[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->getNewList($request, $response, $args);
 })->setName('newList');
 
-$app->post('/nouvelleListe[/]', function ($request, $response, array $args) {
+$app->post('/nouvelleListe[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->postNewList($request, $response, $args);
 });
 
-$app->get('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+$app->get('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->getEditList($request, $response, $args);
 })->setName('editList');
 
-$app->post('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+$app->post('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->postEditList($request, $response, $args);
 });
 
-$app->post('/l/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+$app->post('/l/{token:[a-zA-Z0-9]+}[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->postNewListMessage($request, $response, $args);
 })->setName('newListMessage');
 
-$app->get('/mesListes[/]', function ($request, $response, array $args) {
+$app->get('/mesListes[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayAccountLists($request, $response, $args);
 })->setName('accountLists');
 
-$app->get('/createurs[/]', function ($request, $response, array $args) {
+$app->get('/createurs[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayCreators($request, $response, $args);
 })->setName('creators');
 
-$app->get('/{creator:[a-zA-Z0-9_-]+}/listes[/]', function ($request, $response, array $args) {
+$app->get('/{creator:[a-zA-Z0-9_-]+}/listes[/]', function (Request $request, Response $response, array $args) {
     $controller = new ListController($this);
     return $controller->displayCreatorPublicLists($request, $response, $args);
 })->setName('creatorPublicLists');
@@ -168,7 +170,7 @@ $app->get('/{creator:[a-zA-Z0-9_-]+}/listes[/]', function ($request, $response, 
 /**
  * Items
  */
-$app->get('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
+$app->get('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Request $request, Response $response, array $args) {
     $controller = new ItemController($this);
     return $controller->displayItem($request, $response, $args);
 })->setName('item');
@@ -183,17 +185,17 @@ $app->get('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function($request, $response, 
     return $controller->getNewItem($request, $response, $args);
 })->setName('newItem');
 
-$app->post('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function ($request, $response, array $args) {
+$app->post('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function (Request $request, Response $response, array $args) {
     $controller = new ItemController($this);
     return $controller->postNewItem($request, $response, $args);
 });
 
-$app->get('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
+$app->get('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Request $request, Response $response, array $args) {
     $controller = new ItemController($this);
     return $controller->getEditItem($request, $response, $args);
 })->setName('editItem');
 
-$app->post('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($request, $response, array $args) {
+$app->post('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Request $request, Response $response, array $args) {
     $controller = new ItemController($this);
     return $controller->postEditItem($request, $response, $args);
 });
@@ -201,17 +203,17 @@ $app->post('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function ($r
 /**
  * Validator
  */
-$app->get('/check_username', function ($request, $response, array $args) {
+$app->get('/check_username', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->liveCheckUsername($request, $response, $args);
 });
 
-$app->get('/check_email', function ($request, $response, array $args) {
+$app->get('/check_email', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->liveCheckEmail($request, $response, $args);
 });
 
-$app->get('/check_login', function ($request, $response, array $args) {
+$app->get('/check_login', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->liveCheckLogin($request, $response, $args);
 });

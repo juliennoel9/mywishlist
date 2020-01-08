@@ -67,7 +67,6 @@
     let confirmErr = document.getElementById('confirmPassWordErr');
     let meter = document.getElementById('password-strength-meter');
 
-
     pseudo.addEventListener('input', function() {
         clearTimeout(timer1);
         pseudo.className = 'form-control is-pending';
@@ -108,8 +107,6 @@
                 return response.json();
             })
             .then(data => {
-                //console.log(pseudo.value);
-                //console.log(data);
                 if (data.valide) {
                     pseudo.className = 'form-control is-valid';
                 } else {
@@ -126,8 +123,6 @@
                 return response.json();
             })
             .then(data => {
-                //console.log(email.value);
-                //console.log(data);
                 if (!data.valide) {
                     email.className = 'form-control is-invalid';
                     emailErr.innerText = data.msg;
@@ -154,5 +149,4 @@
             confirmErr.style.display = "block";
         }
     }
-
 </script>

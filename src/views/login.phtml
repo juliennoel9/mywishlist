@@ -36,8 +36,6 @@
     <h4>Si vous voulez vous connecter avec un autre compte, déconnectez vous auparavant.</h4>
 <?php endif; ?>
 
-
-
 <script>
     /* pour lancer le check apres 1 sec d'inactivité dans l'input */
     let timer;
@@ -55,11 +53,9 @@
     function checkLogin() {
         fetch('/check_login?login=' + login.value)
             .then(response => {
-                return response.json()
+                return response.json();
             })
             .then(data => {
-                //console.log(login.value);
-                //console.log(data);
                 if (!data.valide) {
                     login.className = 'form-control is-invalid';
                     loginErr.innerText = data.msg;

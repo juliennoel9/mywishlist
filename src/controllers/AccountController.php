@@ -1,19 +1,19 @@
 <?php
 
-
 namespace mywishlist\controllers;
-
 
 use mywishlist\models\Account;
 use mywishlist\models\Message;
+use Slim\Http\Response;
+use Slim\Http\Request;
 
 class AccountController extends Controller {
-    public function getRegister($request, $response, $args) {
+    public function getRegister(Request $request, Response $response, array $args) {
         $this->container->view->render($response, 'register.phtml', ["title" => "MyWishList - Inscription"]);
         return $response;
     }
 
-    public function postRegister($request, $response, $args) {
+    public function postRegister(Request $request, Response $response, array $args) {
         $account = new Account();
         $account->username = htmlentities(trim($_POST['identifiant']));
         $account->email = htmlentities(strtolower(trim($_POST['email'])));
@@ -33,15 +33,15 @@ class AccountController extends Controller {
         return $this->redirect($response, 'account', ["account" => $account]);
     }
 
-    public function getLogin($request, $response, $args) {
-        if (isset($_SERVER['HTTP_REFERER'])){
+    public function getLogin(Request $request, Response $response, array $args) {
+        if (isset($_SERVER['HTTP_REFERER']) ) {
             $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
         }
         $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion"]);
         return $response;
     }
 
-    public function postLogin($request, $response, $args) {
+    public function postLogin(Request $request, Response $response, array $args) {
         $id = htmlentities(trim($_POST['id']));
         $password = htmlentities($_POST['password']);
 
@@ -52,33 +52,33 @@ class AccountController extends Controller {
             if (isset($_SESSION['previousPage'])) {
                 if (pathinfo($_SESSION['previousPage'])['filename']=='inscription' or pathinfo($_SESSION['previousPage'])['filename']=='connexion') {
                     return $this->redirect($response, 'home');
-                }else {
+                } else {
                     return $response->withStatus(302)->withHeader('Location', $_SESSION['previousPage']);
                 }
-            }else{
+            } else {
                 return $this->redirect($response, 'home');
             }
-        }else {
+        } else {
             $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>", "id" => $id]);
             return $response;
         }
     }
 
-    public function getAccount($request, $response, $args) {
-        if (isset($_SESSION['login'])){
+    public function getAccount(Request $request, Response $response, array $args) {
+        if (isset($_SESSION['login']) ) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account]);
             return $response;
-        }else{
+        } else {
             $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte"]);
             return $response;
         }
 
     }
 
-    public function postEditAccount($request, $response, $args) {
+    public function postEditAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        if ($_POST['submit'] == 'deleteAccount'){
+        if ($_POST['submit'] == 'deleteAccount' ) {
             $lists = $account->lists();
             foreach ($lists as $list) {
                 $items = $list->items();
@@ -101,25 +101,25 @@ class AccountController extends Controller {
             $account->delete();
             unset($_SESSION['login']);
             return $this->redirect($response, 'home');
-        }else{
+        } else {
             $account->email = htmlentities(strtolower(trim($_POST['email'])));
             $account->prenom = htmlentities(trim($_POST['prenom']));
             $account->nom = htmlentities(trim($_POST['nom']));
             if ($_POST['submit'] == 'editPassword') {
-                if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash)){
+                if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash) ) {
                     $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
-                }else {
+                } else {
                     $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-danger\">Ancien mot de passe incorrect, réessayez.</div>"]);
                     return $response;
                 }
             }
             $account->save();
 
-            if ($_POST['submit'] == 'editPassword'){
+            if ($_POST['submit'] == 'editPassword' ) {
                 unset($_SESSION['login']);
                 $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>"]);
                 return $response;
-            }else {
+            } else {
                 unset($_SESSION['login']);
                 $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
                 return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Modifications enregistrées.</div>"]);
@@ -127,7 +127,7 @@ class AccountController extends Controller {
         }
     }
 
-    public function getLogout($request, $response, $args) {
+    public function getLogout(Request $request, Response $response, array $args) {
         unset($_SESSION['login']);
         session_destroy();
         return $this->redirect($response, 'home');
