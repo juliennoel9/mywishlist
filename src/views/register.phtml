@@ -36,8 +36,8 @@
                     <div class="form-group">
                         <label for="confirmPassWord">Confirmez votre mot de passe</label>
                         <input required type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord" maxlength="50">
-                        <div class="invalid-feedback" id="confirmPassWordErr">Invalide</div>
                     </div>
+                    <div id="confirmPassWordErr" class="alert alert-danger">Les deux mots de passe ne corresponde pas.</div>
                 </div>
                 <div class="modal-footer">
                     <a href="<?= $router->pathFor('home') ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
@@ -81,12 +81,19 @@
         clearTimeout(timer3);
         password.className = 'form-control';
         password.setCustomValidity('');
+        confirm.className = 'form-control';
+        confirm.setCustomValidity('');
+        confirmErr.style.display = "none";
         timer3 = setTimeout(checkPassword, finishTyping);
+        timer3 = setTimeout(checkConfirm, finishTyping);
     });
     confirm.addEventListener('input', function(e) {
         clearTimeout(timer4);
+        password.className = 'form-control';
+        password.setCustomValidity('');
         confirm.className = 'form-control';
         confirm.setCustomValidity('');
+        confirmErr.style.display = "none";
         timer4 = setTimeout(checkConfirm, finishTyping);
     });
 
@@ -139,10 +146,13 @@
     }
 
     function checkConfirm() {
-        if (password.value !== confirm.value) {
+        if (password.value !== confirm.value && confirm.value) {
+            password.className = 'form-control is-invalid';
+            password.setCustomValidity('');
+            passwordErr.innerText = '';
             confirm.className = 'form-control is-invalid';
             confirm.setCustomValidity('Les deux mots de passe ne corresponde pas.');
-            confirmErr.innerText = 'Les deux mots de passe ne corresponde pas.';
+            confirmErr.style.display = "block";
         }
     }
 
