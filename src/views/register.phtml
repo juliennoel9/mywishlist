@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label for="password">Mot de passe</label>
                         <input required type="password" minlength="8" placeholder="Mot de passe (minimum 8 caractères)" name="password" class="form-control" id="password" maxlength="50">
-                        <meter style="display: none" value="0" min="-0.2" max="4" id="password-strength-meter"></meter>
+                        <meter value="0" min="-0.2" max="4" id="password-strength-meter" style="display: none"></meter>
                         <div class="invalid-feedback" id="passwordErr">Invalide</div>
                     </div>
                     <div class="form-group">
@@ -141,12 +141,6 @@
             password.className = 'form-control is-invalid';
             password.setCustomValidity('Veuillez utiliser au moins 8 caractères.');
             passwordErr.innerText = 'Veuillez utiliser au moins 8 caractères.';
-            return;
-        }
-        if (password.value.length > 50) {
-            password.className = 'form-control is-invalid';
-            password.setCustomValidity('Vous ne pouvez pas utiliser plus de 50 caractères.');
-            passwordErr.innerText = 'Vous ne pouvez pas utiliser plus de 50 caractères.';
         }
     }
 
