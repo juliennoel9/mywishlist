@@ -37,7 +37,7 @@
                         <label for="confirmPassWord">Confirmez votre mot de passe</label>
                         <input required type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord" maxlength="50">
                     </div>
-                    <div id="confirmPassWordErr" class="alert alert-danger">Les deux mots de passe ne corresponde pas.</div>
+                    <div id="confirmPassWordErr" class="alert alert-danger" style="display: none">Les deux mots de passe ne corresponde pas.</div>
                 </div>
                 <div class="modal-footer">
                     <a href="<?= $router->pathFor('home') ?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
