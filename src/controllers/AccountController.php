@@ -79,25 +79,6 @@ class AccountController extends Controller {
     public function postEditAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
         if ($_POST['submit'] == 'deleteAccount') {
-            $lists = $account->lists();
-            foreach ($lists as $list) {
-                $items = $list->items();
-                foreach ($items as $item) {
-                    $item->delete();
-                }
-                $messages = $list->messages();
-                foreach ($messages as $message) {
-                    $message->delete();
-                }
-                $list->delete();
-            }
-            $allMessages = Message::all();
-            foreach ($allMessages as $message) {
-                if ($message->account_id == $account->id) {
-                    $message->account_id = null;
-                    $message->save();
-                }
-            }
             $account->delete();
             unset($_SESSION['login']);
             return $this->redirect($response, 'home');
