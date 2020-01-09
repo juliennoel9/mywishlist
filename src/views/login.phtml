@@ -11,12 +11,12 @@
                         <?php endif; ?>
                         <div class="form-group">
                             <label for="id">Email ou nom d'utilisateur</label>
-                            <input required type="text" name="id" class="form-control" placeholder="Email ou nom d'utilisateur" id="id" <?= isset($id) ? 'value='.$id : 'autofocus'?>>
+                            <input required type="text" name="id" maxlength="20" class="form-control" placeholder="Email ou nom d'utilisateur" id="id" <?= isset($id) ? 'value='.$id : 'autofocus'?>>
                             <div class="invalid-feedback" id="idErr">Invalide</div>
                         </div>
                         <div class="form-group">
                             <label for="password">Mot de passe</label>
-                            <input required type="password" name="password" class="form-control" placeholder="Mot de passe" id="password">
+                            <input required type="password" name="password" maxlength="50" class="form-control" placeholder="Mot de passe" id="password">
                         </div>
                         <div class="form-group">Vous n'avez pas encore de compte ? <a href="<?= $router->pathFor('register') ?>">S'inscrire</a></div>
                     </div>
@@ -51,15 +51,15 @@
     });
 
     function checkLogin() {
-        fetch('/check_login?login=' + login.value)
+        fetch('/live_check?login=' + login.value)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                if (!data.valide) {
+                if (!data.valid) {
                     login.className = 'form-control is-invalid';
-                    loginErr.innerText = data.msg;
-                    login.setCustomValidity(data.msg);
+                    loginErr.innerText = data.error;
+                    login.setCustomValidity(data.error);
                 }
             })
     }

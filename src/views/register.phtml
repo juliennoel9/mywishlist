@@ -103,31 +103,31 @@
     });
 
     function checkPseudo() {
-        fetch('/check_username?username=' + pseudo.value)
+        fetch('/live_check?username=' + pseudo.value)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                if (data.valide) {
+                if (data.valid) {
                     pseudo.className = 'form-control is-valid';
                 } else {
                     pseudo.className = 'form-control is-invalid';
-                    pseudoErr.innerText = data.msg;
-                    pseudo.setCustomValidity(data.msg);
+                    pseudoErr.innerText = data.error;
+                    pseudo.setCustomValidity(data.error);
                 }
             })
     }
 
     function checkEmail() {
-        fetch('/check_email?email=' + email.value)
+        fetch('/live_check?email=' + email.value)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                if (!data.valide) {
+                if (!data.valid) {
                     email.className = 'form-control is-invalid';
-                    emailErr.innerText = data.msg;
-                    email.setCustomValidity(data.msg);
+                    emailErr.innerText = data.error;
+                    email.setCustomValidity(data.error);
                 }
             })
     }
