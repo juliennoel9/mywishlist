@@ -13,6 +13,11 @@ class ItemController extends Controller {
     public function displayItem(Request $request, Response $response, array $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
         $item = Item::where('id', '=', $args['id'])->first();
+        $reserveName = "";
+        if (!is_null($item->account_id_reserv)){
+            $reserveAccount = Account::where('id', '=', $item->account_id_reserv)->first();
+            $reserveName = $reserveAccount->prenom.' '.$reserveAccount->nom;
+        }
         if (is_null($list) || is_null($item))
             throw new NotFoundException($request, $response);
 
@@ -22,14 +27,16 @@ class ItemController extends Controller {
                 "title" => "MyWishList - Item n°".$item->id,
                 "list" => $list,
                 "item" => $item,
-                "account" => $account
+                "account" => $account,
+                "reserveName" => $reserveName
             ]);
             return $response;
         } else {
             $this->container->view->render($response, 'item.phtml', [
                 "title" => "MyWishList - Item n°".$item->id,
                 "list" => $list,
-                "item" => $item
+                "item" => $item,
+                "reserveName" => $reserveName
             ]);
             return $response;
         }
@@ -152,8 +159,9 @@ class ItemController extends Controller {
     public function postReserveItem(Request $request, Response $response, array $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
         $item = Item::where('id', '=', $args['id'])->first();
+        $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
 
-        $item->nomReservation = htmlentities(trim($_POST['nom']));
+        $item->account_id_reserv = $account->id;
         $item->messageReservation = htmlentities(trim($_POST['message']));
 
         $item->save();

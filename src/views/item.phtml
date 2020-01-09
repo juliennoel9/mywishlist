@@ -10,15 +10,15 @@
 </section>
 
 <div class="container mt-4">
-    <?php if($item->nomReservation != null) : ?>
+    <?php if($item->account_id_reserv != null) : ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
             <?php if (strtotime($list->expiration) >= time()) : ?>
                 <div class="alert alert-success">Produit réservé</div>
             <?php else: ?>
-                <div class="alert alert-success">Produit réservé par : <?= $item->nomReservation ?> <br> Message : <?= $item->messageReservation ?></div>
+                <div class="alert alert-success">Produit réservé par : <?= $reserveName ?> <br> Message : <?= $item->messageReservation ?></div>
             <?php endif; ?>
         <?php else: ?>
-            <div class="alert alert-success">Produit réservé par : <?= $item->nomReservation ?></div>
+            <div class="alert alert-success">Produit réservé par : <?= $reserveName ?></div>
         <?php endif; ?>
     <?php endif; ?>
 
@@ -61,7 +61,7 @@
     </div>
 </div>
 
-<?php if ($item->nomReservation == '') : ?>
+<?php if ($item->account_id_reserv == '') : ?>
     <div class="modal-footer">
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  strtotime($list->expiration) >= time()) : ?>
             <button onclick="document.location='<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>';" type="button" class="btn btn-secondary">Modifier Item</button>

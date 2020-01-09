@@ -29,7 +29,7 @@
                                 <img class="w-75" src="/public/images/<?= $fileName ?>">
                                 <h3 class="card-title"><?= $item->nom ?></h3>
                                 <p class="card-text"><?= $item->description ?></p>
-                                <?php if ($item->nomReservation != null) : ?>
+                                <?php if ($item->account_id_reserv != null) : ?>
                                     <p class="text-success">Réservé</p>
                                 <?php else: ?>
                                     <p class="text-danger">Non réservé</p>
