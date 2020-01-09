@@ -4,6 +4,7 @@ use mywishlist\controllers\AccountController;
 use mywishlist\controllers\HomeController;
 use mywishlist\controllers\ItemController;
 use mywishlist\controllers\ListController;
+use mywishlist\validators\Validate;
 use Slim\Views\PhpRenderer;
 use Slim\Http\Response;
 use Slim\Http\Request;
@@ -207,21 +208,10 @@ $app->post('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Re
 
 
 /**
- * Validator
+ * Validator API
  */
-$app->get('/check_username', function (Request $request, Response $response, array $args) {
-    $controller = new AccountController($this);
-    return $controller->liveCheckUsername($request, $response, $args);
-});
-
-$app->get('/check_email', function (Request $request, Response $response, array $args) {
-    $controller = new AccountController($this);
-    return $controller->liveCheckEmail($request, $response, $args);
-});
-
-$app->get('/check_login', function (Request $request, Response $response, array $args) {
-    $controller = new AccountController($this);
-    return $controller->liveCheckLogin($request, $response, $args);
+$app->get('/live_check', function (Request $request, Response $response, array $args) {
+    return Validate::api($response);
 });
 
 /**
