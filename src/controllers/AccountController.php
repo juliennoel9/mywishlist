@@ -30,7 +30,7 @@ class AccountController extends Controller {
             return $response;
         }
         $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
-        return $this->redirect($response, 'account', ["account" => $account]);
+        return $this->redirect($response, 'home', ["account" => $account]);
     }
 
     public function getLogin(Request $request, Response $response, array $args) {
