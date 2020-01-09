@@ -8,9 +8,6 @@
                 <?php if (isset($msg)) : ?>
                     <?= $msg ?>
                 <?php endif; ?>
-                <?php if (pathinfo($_SERVER['HTTP_REFERER'])['filename']=='inscription') : ?>
-                    <div class="alert alert-success">Compte créé avec succès !</div>
-                <?php endif; ?>
                 <?php if (pathinfo($_SERVER['HTTP_REFERER'])['filename']=='moncompte') : ?>
                     <div class="alert alert-success">Modifications enregistrées.</div>
                 <?php endif; ?>
