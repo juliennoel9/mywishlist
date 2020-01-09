@@ -19,16 +19,10 @@ class AccountController extends Controller {
         $account->email = htmlentities(strtolower(trim($_POST['email'])));
         $account->prenom = htmlentities(trim($_POST['prenom']));
         $account->nom = htmlentities(trim($_POST['nom']));
-
-        $accountTest = Account::where('email', '=', $account->email)->orwhere('username', '=', $account->username)->first();
-        if (empty($accountTest)) {
-            $password = htmlentities($_POST['password']);
-            $account->hash = password_hash($password, PASSWORD_DEFAULT);
-            $account->save();
-        } else {
-            $this->container->view->render($response, 'register.phtml', ["title" => "MyWishList - Inscription", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou email déjà utilisé, réessayez.</div>"]);
-            return $response;
-        }
+        $password = htmlentities($_POST['password']);
+        $account->hash = password_hash($password, PASSWORD_DEFAULT);
+        $account->save();
+        $_SESSION['accountCreated']='accountCreated';
         $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
         return $this->redirect($response, 'home', ["account" => $account]);
     }
