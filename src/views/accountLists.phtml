@@ -26,7 +26,7 @@
     </div>
     <br>
     <div class="modal-footer">
-        <button onclick="document.location='<?= $router->pathFor('newList') ?>';" type="button" class="btn btn-success">Créer une nouvelle liste</button>
+        <a class="btn btn-success" href="<?= $router->pathFor('newList')?>" role="button">Créer une nouvelle liste</a>
     </div>
 <?php else: ?>
     <h1>Il faut être connecté pour accéder à cette page.</h1>

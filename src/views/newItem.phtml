@@ -31,7 +31,7 @@
     </div>
 
     <div class="modal-footer">
-        <a href="<?= $router->pathFor('list', ['token' => $list->token])?>"><button type="button" class="btn btn-secondary">Annuler</button></a>
+        <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
         <button type="submit" name="submit" class="btn btn-primary">Ajouter l'item</button>
     </div>
 </form>

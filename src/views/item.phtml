@@ -64,7 +64,7 @@
 <?php if ($item->account_id_reserv == '') : ?>
     <div class="modal-footer">
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  strtotime($list->expiration) >= time()) : ?>
-            <button onclick="document.location='<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>';" type="button" class="btn btn-secondary">Modifier Item</button>
+            <a class="btn btn-secondary" href="<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>" role="button">Modifier Item</a>
         <?php endif; ?>
 
         <?php if (isset($_SESSION['login'])) : ?>

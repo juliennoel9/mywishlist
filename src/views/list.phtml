@@ -89,9 +89,9 @@
 
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
             <?php if (strtotime($list->expiration) >= time()) : ?>
-                <button onclick="document.location='<?= $router->pathFor('newItem', ['token' => $list->token]) ?>';" type="button" class="btn btn-success">Ajouter Item</button>
+                <a class="btn btn-success" href="<?= $router->pathFor('newItem', ['token' => $list->token]) ?>" role="button">Ajouter Item</a>
             <?php endif; ?>
-            <button onclick="document.location='<?= $router->pathFor('editList', ['token' => $list->token]) ?>';" type="button" class="btn btn-secondary">Modifier Liste</button>
+            <a class="btn btn-secondary" href="<?= $router->pathFor('editList', ['token' => $list->token]) ?>" role="button">Modifier Liste</a>
         <?php endif; ?>
 
         <?php if (strtotime($list->expiration) >= time()) : ?>
