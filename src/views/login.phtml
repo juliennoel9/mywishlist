@@ -21,7 +21,7 @@
                         <div class="form-group">Vous n'avez pas encore de compte ? <a href="<?= $router->pathFor('register') ?>">S'inscrire</a></div>
                     </div>
                     <div class="modal-footer">
-                        <?php if(pathinfo($_SERVER['REQUEST_URI'])['filename']=='moncompte') : ?>
+                        <?php if(pathinfo($_SERVER['HTTP_REFERER'])['filename']=='moncompte' or pathinfo($_SERVER['HTTP_REFERER'])['filename']=='connexion') : ?>
                             <a class="btn btn-secondary" href="<?= $router->pathFor('home') ?>" role="button">Annuler</a>
                         <?php else: ?>
                             <a class="btn btn-secondary" href="<?= $_SERVER['HTTP_REFERER']?>" role="button">Annuler</a>
