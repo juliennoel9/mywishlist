@@ -1,18 +1,18 @@
 <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
     <form method="POST">
         <h1>Modifiez votre liste</h1><br>
-        <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
             <div class="form-group">
                 <label for="titre">Donnez un nouveau titre à la liste</label>
-                <input required type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= $list->titre ?>">
+                <input required type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= $list->titre ?>" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>>
             </div>
             <div class="form-group">
                 <label for="expiration">Indiquez une nouvelle date d'expiration</label>
-                <input required type="date" value="<?= date("Y-m-d", strtotime($list->expiration)) ?>" name="expiration" class="form-control" id="expiration">
+                <input required type="date" value="<?= date("Y-m-d", strtotime($list->expiration)) ?>" name="expiration" class="form-control" id="expiration" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>>
+                <div class="invalid-feedback" id="expirationErr">Invalide</div>
             </div>
             <div class="form-group">
                 <label for="description">Changez une description à la liste</label>
-                <textarea required class="form-control" name="description" id="description" rows="3"><?= $list->description ?></textarea>
+                <textarea required class="form-control" name="description" id="description" rows="3" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>><?= $list->description ?></textarea>
             </div>
             <div class="form-check">
                 <input type="checkbox" <?= $list->public === 1 ? 'checked=\"checked\"' : ''?> class="form-check-input" id="public" name="public">
@@ -22,29 +22,36 @@
                 <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
                 <button type="submit" class="btn btn-primary">Modifier la liste</button>
             </div>
-        <?php else: ?>
-            <div class="form-group">
-                <label for="titre">Donnez un nouveau titre à la liste</label>
-                <input disabled type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= $list->titre ?>">
-            </div>
-            <div class="form-group">
-                <label for="expiration">Indiquez une nouvelle date d'expiration</label>
-                <input disabled type="date" value="<?= date("Y-m-d", strtotime($list->expiration)) ?>" name="expiration" class="form-control" id="expiration">
-            </div>
-            <div class="form-group">
-                <label for="description">Changez une description à la liste</label>
-                <textarea disabled class="form-control" name="description" id="description" rows="3"><?= $list->description ?></textarea>
-            </div>
-            <div class="form-check">
-                <input type="checkbox" <?= $list->public === 1 ? 'checked=\"checked\"' : ''?> class="form-check-input" id="public" name="public">
-                <label class="form-check-label" for="public">Publique</label>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
-                <button type="submit" class="btn btn-primary">Modifier la liste</button>
-            </div>
-        <?php endif; ?>
     </form>
 <?php else: ?>
 <h1>Connectez-vous pour pouvoir modifier cette liste si elle vous appartient.</h1>
 <?php endif; ?>
+
+<script>
+    /* pour lancer le check apres 1 sec d'inactivité dans l'input */
+    let timer;
+    const finishTyping = 1000;
+    let date = document.getElementById('expiration');
+    let dateErr = document.getElementById('expirationErr');
+
+    date.addEventListener('input', function() {
+        clearTimeout(timer);
+        date.className = 'form-control';
+        date.setCustomValidity('');
+        timer = setTimeout(checkDate, finishTyping);
+    });
+
+    function checkDate() {
+        fetch('/live_check?date=' + encodeURIComponent(date.value))
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if (!data.valid) {
+                    date.className = 'form-control is-invalid';
+                    dateErr.innerText = data.error;
+                    date.setCustomValidity(data.error);
+                }
+            })
+    }
+</script>

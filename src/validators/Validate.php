@@ -7,6 +7,10 @@ use Slim\Http\Response;
 
 class Validate {
 
+    public static function matchRegex($pattern, $str) {
+        return preg_match($pattern, $str, $matches) === 1 && $matches[0] === $str;
+    }
+
     public static function username(string $input) : array {
         if (!self::matchRegex('/[a-zA-Z0-9_-]+/', $input)) {
             return ['valid' => false, 'error' => 'Utilisez uniquement des lettres (sans accents), chiffres, tirets et underscores.'];
@@ -74,8 +78,15 @@ class Validate {
         return ['valid' => true, 'error' => ''];
     }
 
-    public static function matchRegex($pattern, $str) {
-        return preg_match($pattern, $str, $matches) === 1 && $matches[0] === $str;
+    public static function date(string $input) : array {
+        $date = strtotime($input);
+        if (!$date) {
+            return ['valid' => false, 'error' => 'Entrez une date au format "YYYY-MM-JJ".'];
+        }
+        if ($date < strtotime("-1 days")) {
+            return ['valid' => false, 'error' => 'Cette date est déjà passée.'];
+        }
+        return ['valid' => true, 'error' => ''];
     }
 
     /**

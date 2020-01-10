@@ -8,6 +8,7 @@
         <div class="form-group">
             <label for="expiration">Indiquez une date d'expiration</label>
             <input required type="date" placeholder="Date expiration" name="expiration" class="form-control" id="expiration">
+            <div class="invalid-feedback" id="expirationErr">Invalide</div>
         </div>
         <div class="form-group">
             <label for="description">Ajoutez une description à la liste</label>
@@ -15,7 +16,7 @@
         </div>
         <div class="form-check">
             <input type="checkbox" class="form-check-input" id="public" name="public">
-            <label class="form-check-label" for="public">Public</label>
+            <label class="form-check-label" for="public">Publique</label>
         </div>
         <div class="modal-footer">
             <a class="btn btn-secondary" href="<?= $router->pathFor('publicLists') ?>" role="button">Annuler</a>
@@ -25,3 +26,32 @@
 <?php else: ?>
     <h1>Il faut être connecté pour accéder à cette page.</h1>
 <?php endif; ?>
+
+<script>
+    /* pour lancer le check apres 1 sec d'inactivité dans l'input */
+    let timer;
+    const finishTyping = 1000;
+    let date = document.getElementById('expiration');
+    let dateErr = document.getElementById('expirationErr');
+
+    date.addEventListener('input', function() {
+        clearTimeout(timer);
+        date.className = 'form-control';
+        date.setCustomValidity('');
+        timer = setTimeout(checkDate, finishTyping);
+    });
+
+    function checkDate() {
+        fetch('/live_check?date=' + encodeURIComponent(date.value))
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if (!data.valid) {
+                    date.className = 'form-control is-invalid';
+                    dateErr.innerText = data.error;
+                    date.setCustomValidity(data.error);
+                }
+            })
+    }
+</script>
