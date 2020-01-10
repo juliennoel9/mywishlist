@@ -51,7 +51,7 @@
     });
 
     function checkLogin() {
-        fetch('/live_check?login=' + login.value)
+        fetch('/live_check?login=' + encodeURIComponent(login.value))
             .then(response => {
                 return response.json();
             })

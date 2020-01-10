@@ -11,17 +11,19 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="identifiant">Nom d'utilisateur</label>
-                        <input required type="text" placeholder="Nom d'utilisateur" name="identifiant" class="form-control" id="identifiant" maxlength="20" autofocus>
+                        <input required type="text" placeholder="Nom d'utilisateur" name="identifiant" class="form-control" id="identifiant" maxlength="30" autofocus>
                         <div class="invalid-feedback" id="identifiantErr">Invalide</div>
                     </div>
                     <div class="form-group">
                         <label for="prenom">Prénom</label>
-                        <input required type="text" placeholder="Prénom" name="prenom" class="form-control" id="prenom" maxlength="30">
+                        <input required type="text" placeholder="Prénom" name="prenom" class="form-control" id="prenom" maxlength="40">
+                        <div class="invalid-feedback" id="prenomErr">Invalide</div>
 
                     </div>
                     <div class="form-group">
                         <label for="nom">Nom</label>
-                        <input required type="text" placeholder="Nom" name="nom" class="form-control" id="nom" maxlength="30">
+                        <input required type="text" placeholder="Nom" name="nom" class="form-control" id="nom" maxlength="40">
+                        <div class="invalid-feedback" id="nomErr">Invalide</div>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -56,10 +58,14 @@
 <script src="/public/js/zxcvbn.js"></script>
 <script>
     /* pour lancer le check apres 1 sec d'inactivité dans l'input */
-    let timer1, timer2, timer3, timer4;
+    let timer1, timer2, timer3, timer4, timer5, timer6;
     const finishTyping = 1000;
     let pseudo = document.getElementById('identifiant');
     let pseudoErr = document.getElementById('identifiantErr');
+    let firstName = document.getElementById('prenom');
+    let firstNameErr = document.getElementById('prenomErr');
+    let lastName = document.getElementById('nom');
+    let lastNameErr = document.getElementById('nomErr');
     let email = document.getElementById('email');
     let emailErr = document.getElementById('emailErr');
     let password = document.getElementById('password');
@@ -74,14 +80,26 @@
         pseudo.setCustomValidity('');
         timer1 = setTimeout(checkPseudo, finishTyping);
     });
-    email.addEventListener('input', function() {
+    firstName.addEventListener('input', function() {
         clearTimeout(timer2);
+        firstName.className = 'form-control';
+        firstName.setCustomValidity('');
+        timer2 = setTimeout(checkFirstName, finishTyping);
+    });
+    lastName.addEventListener('input', function() {
+        clearTimeout(timer3);
+        lastName.className = 'form-control';
+        lastName.setCustomValidity('');
+        timer3 = setTimeout(checkLastName, finishTyping);
+    });
+    email.addEventListener('input', function() {
+        clearTimeout(timer4);
         email.className = 'form-control';
         email.setCustomValidity('');
-        timer2 = setTimeout(checkEmail, finishTyping);
+        timer4 = setTimeout(checkEmail, finishTyping);
     });
     password.addEventListener('input', function() {
-        clearTimeout(timer3);
+        clearTimeout(timer5);
         meter.style.display = this.value ? "inline" : "none";
         meter.value = zxcvbn(this.value).score;
         password.className = 'form-control';
@@ -89,21 +107,21 @@
         confirm.className = 'form-control';
         confirm.setCustomValidity('');
         confirmErr.style.display = "none";
-        timer3 = setTimeout(checkPassword, finishTyping);
-        timer3 = setTimeout(checkConfirm, finishTyping);
+        timer5 = setTimeout(checkPassword, finishTyping);
+        timer5 = setTimeout(checkConfirm, finishTyping);
     });
     confirm.addEventListener('input', function() {
-        clearTimeout(timer4);
+        clearTimeout(timer6);
         password.className = 'form-control';
         password.setCustomValidity('');
         confirm.className = 'form-control';
         confirm.setCustomValidity('');
         confirmErr.style.display = "none";
-        timer4 = setTimeout(checkConfirm, finishTyping);
+        timer6 = setTimeout(checkConfirm, finishTyping);
     });
 
     function checkPseudo() {
-        fetch('/live_check?username=' + pseudo.value)
+        fetch('/live_check?username=' + encodeURIComponent(pseudo.value))
             .then(response => {
                 return response.json();
             })
@@ -118,8 +136,36 @@
             })
     }
 
+    function checkFirstName() {
+        fetch('/live_check?firstName=' + encodeURIComponent(firstName.value))
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if (!data.valid) {
+                    firstName.className = 'form-control is-invalid';
+                    firstNameErr.innerText = data.error;
+                    firstName.setCustomValidity(data.error);
+                }
+            })
+    }
+
+    function checkLastName() {
+        fetch('/live_check?lastName=' + encodeURIComponent(lastName.value))
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if (!data.valid) {
+                    lastName.className = 'form-control is-invalid';
+                    lastNameErr.innerText = data.error;
+                    lastName.setCustomValidity(data.error);
+                }
+            })
+    }
+
     function checkEmail() {
-        fetch('/live_check?email=' + email.value)
+        fetch('/live_check?email=' + encodeURIComponent(email.value))
             .then(response => {
                 return response.json();
             })
