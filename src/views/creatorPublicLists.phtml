@@ -7,7 +7,7 @@
                     <div class="card-body text-center pb-1">
                         <h1 class="card-title"><?= $list->titre ?></h1>
                         <p class="card-text lead"><?= $list->description ?></p>
-                        <?php if (strtotime($list->expiration) > time()) : ?>
+                        <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
                             <p class="text-success">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
                         <?php else: ?>
                             <p class="text-danger">Expirée depuis le : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>

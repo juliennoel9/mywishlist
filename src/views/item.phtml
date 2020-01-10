@@ -12,7 +12,7 @@
 <div class="container mt-4">
     <?php if($item->account_id_reserv != null) : ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
-            <?php if (strtotime($list->expiration) >= time()) : ?>
+            <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
                 <div class="alert alert-success">Produit réservé</div>
             <?php else: ?>
                 <div class="alert alert-success">Produit réservé par : <?= $reserveName ?> <br> Message : <?= $item->messageReservation ?></div>
@@ -63,7 +63,7 @@
 
 <?php if ($item->account_id_reserv == '') : ?>
     <div class="modal-footer">
-        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  strtotime($list->expiration) >= time()) : ?>
+        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  strtotime($list->expiration) > strtotime("-1 days")) : ?>
             <a class="btn btn-secondary" href="<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>" role="button">Modifier Item</a>
         <?php endif; ?>
 

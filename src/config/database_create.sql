@@ -31,7 +31,7 @@ CREATE TABLE `message` (
 `account_id` INT(11),
 `nomMessage` VARCHAR(61) NOT NULL,
 `message` TEXT NOT NULL,
-`date` DATETIME NOT NULL,
+`date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -41,7 +41,7 @@ CREATE TABLE `liste` (
   `user_id` INT(11) NOT NULL,
   `titre` VARCHAR(255) NOT NULL,
   `description` TEXT,
-  `expiration` TIMESTAMP NOT NULL,
+  `expiration` DATE NOT NULL,
   `token` VARCHAR(255) COLLATE utf8mb4_bin NOT NULL,
   `public` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`num`)
