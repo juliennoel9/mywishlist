@@ -87,7 +87,7 @@ class Validate {
      */
     public static function api(Response $response) {
         $response = $response->withHeader('Content-type', 'application/json');
-        $type = array_key_first($_GET);
+        $type = array_keys($_GET)[0];
         if (!$type) {
             return $response->write(json_encode(['valid' => false, 'error' => 'Incorrect API use.']));
         }
