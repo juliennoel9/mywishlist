@@ -59,7 +59,7 @@ class ListController extends Controller {
         }
         $list->titre = htmlentities(trim($_POST['titre']));
         $list->description = htmlentities(trim($_POST['description']));
-        $list->expiration = htmlentities($_POST['expiration']);
+        $list->expiration = date("Y-m-d", strtotime($_POST['expiration']));
         $token = Liste::generateToken();
         $list->token = $token;
         $list->public = isset($_POST['public']) ? 1 : 0;
@@ -90,7 +90,7 @@ class ListController extends Controller {
         if (strtotime($list->expiration) > strtotime("-1 days")) {
             $list->titre = htmlentities(trim($_POST['titre']));
             $list->description = htmlentities(trim($_POST['description']));
-            $list->expiration = htmlentities($_POST['expiration']);
+            $list->expiration = date("Y-m-d", strtotime($_POST['expiration']));
             $list->public = isset($_POST['public']) ? 1 : 0;
             $list->save();
         } else {
