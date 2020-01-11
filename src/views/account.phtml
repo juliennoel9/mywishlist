@@ -8,8 +8,9 @@
                 <?php if (isset($msg)) : ?>
                     <?= $msg ?>
                 <?php endif; ?>
-                <?php if (pathinfo($_SERVER['HTTP_REFERER'])['filename']=='moncompte') : ?>
+                <?php if (isset($_SESSION['accountEdit'])) : ?>
                     <div class="alert alert-success">Modifications enregistrées.</div>
+                    <?php unset($_SESSION['accountEdit']); ?>
                 <?php endif; ?>
 
                 <div class="form-group">

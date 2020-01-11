@@ -75,6 +75,7 @@ class AccountController extends Controller {
 
     public function postEditAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+        $oldAccount = clone $account;
         $args['account'] = $account;
         if ($_POST['submit'] == 'deleteAccount') {
             $account->delete();
@@ -105,7 +106,9 @@ class AccountController extends Controller {
                 unset($_SESSION['login']);
                 $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
                 $args['title'] = 'MyWishList - Mon compte';
-                $args['msg'] = '<div class="alert alert-success">Modifications enregistrées.</div>';
+                if ($oldAccount != $account){
+                    $_SESSION['accountEdit']='accountEdit';
+                }
                 return $this->redirect($response, 'account', $args);
             }
         }
