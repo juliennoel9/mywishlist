@@ -34,6 +34,8 @@
         <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
         <button type="submit" name="submit" class="btn btn-primary">Ajouter l'item</button>
     </div>
+    <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+    <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
 </form>
 
 <script>

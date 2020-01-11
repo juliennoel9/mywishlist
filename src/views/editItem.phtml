@@ -39,6 +39,8 @@
 
             <button type="submit" name="submit" class="btn btn-primary" value="edit">Modifier l'item</button>
         </div>
+        <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+        <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
     </form>
 <?php else: ?>
     <h1>Connectez-vous pour pouvoir modifier cet item s'il vous appartient et si la date d'expiration de la liste à laquelle il appartient n'est pas déjà passée.</h1>

@@ -22,6 +22,8 @@
             <a class="btn btn-secondary" href="<?= $router->pathFor('publicLists') ?>" role="button">Annuler</a>
             <button type="submit" class="btn btn-primary">Créer la liste</button>
         </div>
+        <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+        <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
     </form>
 <?php else: ?>
     <h1>Il faut être connecté pour accéder à cette page.</h1>

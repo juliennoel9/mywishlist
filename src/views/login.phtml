@@ -30,6 +30,8 @@
                     </div>
                 </div>
             </div>
+        <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+        <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
     </form>
 <?php else: ?>
     <h1>Vous êtes déjà connecté. Cette page n'est pas disponible.</h1>

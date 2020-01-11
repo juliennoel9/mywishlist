@@ -58,7 +58,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="oldPassword">Ancien mot de passe</label>
-                            <input required minlength="8" type="password" name="oldPassword" class="form-control" placeholder="Ancien mot de passe" id="oldPassword">
+                            <input required type="password" name="oldPassword" class="form-control" placeholder="Ancien mot de passe" id="oldPassword">
                         </div>
                         <div class="form-group">
                             <label for="newPassword">Mot de passe</label>
@@ -93,7 +93,7 @@
                         <div>Êtes-vous sûr de vouloir supprimer définitivement votre compte ?<br><br></div>
                         <div>Cela entraînera : la suppression des listes que vous avez créées, des items et images qu'elles contiennent, des participations (uniquement avant échéance de la liste) ainsi que la suppression de tous les messages.<br><br></div>
                         <div class="alert alert-danger">Attention, cette action est irréversible !</div>
-                    </>
+                    </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
                         <button type="submit" name="submit" value="deleteAccount" class="btn btn-danger">Supprimer définitivement mon compte</button>
@@ -101,6 +101,8 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+        <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
     </form>
 <?php else: ?>
     <h1>Il faut être connecté pour accéder à cette page.</h1>

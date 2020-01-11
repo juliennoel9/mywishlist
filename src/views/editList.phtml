@@ -22,6 +22,8 @@
                 <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
                 <button type="submit" class="btn btn-primary">Modifier la liste</button>
             </div>
+        <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+        <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
     </form>
 <?php else: ?>
 <h1>Connectez-vous pour pouvoir modifier cette liste si elle vous appartient.</h1>

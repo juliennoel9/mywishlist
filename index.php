@@ -32,6 +32,11 @@ $config = [
  */
 $app = new Slim\App($config);
 $container = $app->getContainer();
+$container['csrf'] = function() {
+    $guard = new \Slim\Csrf\Guard();
+    $guard->setPersistentTokenMode(true);
+    return $guard;
+};
 
 $container['view'] = function($container) {
     $vars = [
@@ -44,6 +49,22 @@ $container['view'] = function($container) {
     return $renderer;
 };
 
+/**
+ * Middleware CSRF
+ */
+$app->add($container->get('csrf'));
+function getCSRF(Request $request, $csrf) {
+    $nameKey = $csrf->getTokenNameKey();
+    $valueKey = $csrf->getTokenValueKey();
+    $name = $request->getAttribute($nameKey);
+    $value = $request->getAttribute($valueKey);
+    return [
+        'nameKey' => $nameKey,
+        'valueKey' => $valueKey,
+        'name'=> $name,
+        'value' => $value
+    ];
+}
 
 /**
  * Middleware HTTPS
@@ -88,7 +109,8 @@ $app->get('/deconnexion', function (Request $request, Response $response, array 
 /**
  * Account
  */
-$app->get('/inscription[/]', function (Request $request, Response $response, array $args){
+$app->get('/inscription[/]', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new AccountController($this);
     return $controller->getRegister($request, $response, $args);
 })->setName('register');
@@ -98,7 +120,8 @@ $app->post('/inscription[/]', function (Request $request, Response $response, ar
     return $controller->postRegister($request, $response, $args);
 });
 
-$app->get('/connexion[/]', function (Request $request, Response $response, array $args){
+$app->get('/connexion[/]', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new AccountController($this);
     return $controller->getLogin($request, $response, $args);
 })->setName('login');
@@ -109,6 +132,7 @@ $app->post('/connexion[/]', function (Request $request, Response $response, arra
 });
 
 $app->get('/moncompte[/]', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new AccountController($this);
     return $controller->getAccount($request, $response, $args);
 })->setName('account');
@@ -128,11 +152,13 @@ $app->get('/listesPubliques[/]', function (Request $request, Response $response,
 })->setName('publicLists');
 
 $app->get('/l/{token:[a-zA-Z0-9]+}[/]', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new ListController($this);
     return $controller->displayList($request, $response, $args);
 })->setName('list');
 
 $app->get('/nouvelleListe[/]', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new ListController($this);
     return $controller->getNewList($request, $response, $args);
 })->setName('newList');
@@ -143,6 +169,7 @@ $app->post('/nouvelleListe[/]', function (Request $request, Response $response, 
 });
 
 $app->get('/modifierListe/{token:[a-zA-Z0-9]+}[/]', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new ListController($this);
     return $controller->getEditList($request, $response, $args);
 })->setName('editList');
@@ -177,6 +204,7 @@ $app->get('/{creator:[a-zA-Z0-9_-]+}/listes[/]', function (Request $request, Res
  * Items
  */
 $app->get('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new ItemController($this);
     return $controller->displayItem($request, $response, $args);
 })->setName('item');
@@ -187,6 +215,7 @@ $app->post('/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function($request, $respo
 })->setName('reserveItem');
 
 $app->get('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function($request, $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new ItemController($this);
     return $controller->getNewItem($request, $response, $args);
 })->setName('newItem');
@@ -197,6 +226,7 @@ $app->post('/ajouterItem/{token:[a-zA-Z0-9]+}[/]', function (Request $request, R
 });
 
 $app->get('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
     $controller = new ItemController($this);
     return $controller->getEditItem($request, $response, $args);
 })->setName('editItem');
