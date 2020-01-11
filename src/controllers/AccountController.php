@@ -100,7 +100,7 @@ class AccountController extends Controller {
                 unset($_SESSION['login']);
                 $args['title'] = 'MyWishList - Connexion';
                 $args['msg'] = '<div class="alert alert-success">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>';
-                return $this->redirect($response, 'login', $args);
+                return $this->container->view->render($response, 'login.phtml', $args);
             } else {
                 unset($_SESSION['login']);
                 $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
