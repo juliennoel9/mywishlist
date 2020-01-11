@@ -58,6 +58,7 @@ class AccountController extends Controller {
             $args['title'] = 'MyWishList - Connexion';
             $args['msg'] = "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>";
             $args['id'] = $id;
+            $args['csrf'] = getCSRF($request, $this->container->csrf);
             $this->container->view->render($response, 'login.phtml', $args);
             return $response;
         }
