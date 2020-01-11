@@ -12,8 +12,10 @@ use Slim\Http\Request;
 class ListController extends Controller {
 
     public function displayPublicLists(Request $request, Response $response, array $args) {
-        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', strtotime("-1 days")))->where('public', true)->orderBy('expiration', 'asc')->get();;
-        $this->container->view->render($response, 'publicLists.phtml', ["title" => "MyWishList - Listes", "lists" => $lists]);
+        $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', strtotime("-1 days")))->where('public', true)->orderBy('expiration', 'asc')->get();
+        $args['title'] = 'MyWishList - Listes';
+        $args['lists'] = $lists;
+        $this->container->view->render($response, 'publicLists.phtml', $args);
         return $response;
     }
 
@@ -25,27 +27,19 @@ class ListController extends Controller {
         $messages = $list->messages();
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-            $this->container->view->render($response, 'list.phtml', [
-                "title" => 'MyWishList - Liste n°'.$list->num,
-                "list" => $list,
-                "items" => $items,
-                "messages" => $messages,
-                "account" => $account
-            ]);
-            return $response;
-        } else {
-            $this->container->view->render($response, 'list.phtml', [
-                "title" => 'MyWishList - Liste n°'.$list->num,
-                "list" => $list,
-                "items" => $items,
-                "messages" => $messages
-            ]);
-            return $response;
+            $args['account'] = $account;
         }
+        $args['title'] = "MyWishList - Liste n°$list->num";
+        $args['list'] = $list;
+        $args['items'] = $items;
+        $args['messages'] = $messages;
+        $this->container->view->render($response, 'list.phtml', $args);
+        return $response;
     }
 
     public function getNewList(Request $request, Response $response, array $args) {
-        $this->container->view->render($response, 'newList.phtml', ["title" => "MyWishList - Nouvelle Liste"]);
+        $args['title'] = 'MyWishList - Nouvelle Liste';
+        $this->container->view->render($response, 'newList.phtml', $args);
         return $response;
     }
 
@@ -66,23 +60,20 @@ class ListController extends Controller {
         $list->save();
 
         $newList = Liste::where('token', '=', $token)->first();
-
-        return $this->redirect($response, 'list', [
-            'token' => $newList->token
-        ]);
+        $args['token'] = $newList->token;
+        return $this->redirect($response, 'list', $args);
     }
 
     public function getEditList(Request $request, Response $response, array $args) {
+        $list = Liste::where('token', '=', $args['token'])->first();
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-            $list = Liste::where('token', '=', $args['token'])->first();
-            $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list, "account" => $account]);
-            return $response;
-        } else {
-            $list = Liste::where('token', '=', $args['token'])->first();
-            $this->container->view->render($response, 'editList.phtml', ["title" => "MyWishList - Modification Liste", "list" => $list]);
-            return $response;
+            $args['account'] = $account;
         }
+        $args['title'] = 'Modification Liste';
+        $args['list'] = $list;
+        $this->container->view->render($response, 'editList.phtml', $args);
+        return $response;
     }
 
     public function postEditList(Request $request, Response $response, array $args) {
@@ -97,9 +88,8 @@ class ListController extends Controller {
             $list->public = isset($_POST['public']) ? 1 : 0;
             $list->save();
         }
-        return $this->redirect($response, 'list', [
-            'token' => $list->token
-        ]);
+        $args['token'] = $list->token;
+        return $this->redirect($response, 'list', $args);
     }
 
     public function postNewListMessage(Request $request, Response $response, array $args) {
@@ -114,28 +104,21 @@ class ListController extends Controller {
         $message->message = htmlentities(trim($_POST['message']));
         $message->date = date('Y-m-d H:i:s');
         $message->save();
-        return $this->redirect($response, 'list', [
-            'token' => $list->token
-        ]);
+        $args['token'] = $list->token;
+        return $this->redirect($response, 'list', $args);
     }
 
     public function displayAccountLists(Request $request, Response $response, array $args) {
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $lists = Liste::where('user_id', '=', $account->id)->orderBy('expiration', 'asc')->get();
+            $args['account'] = $account;
+            $args['lists'] = $lists;
 
-            $this->container->view->render($response, 'accountLists.phtml', [
-                "title" => 'MyWishList - Mes listes',
-                "lists" => $lists,
-                "account" => $account
-            ]);
-            return $response;
-        } else {
-            $this->container->view->render($response, 'accountLists.phtml', [
-                "title" => 'MyWishList - Mes listes'
-            ]);
-            return $response;
         }
+        $args['title'] = 'MyWishList - Mes listes';
+        $this->container->view->render($response, 'accountLists.phtml', $args);
+        return $response;
     }
 
     public function displayCreators(Request $request, Response $response, array $args) {
@@ -145,24 +128,24 @@ class ListController extends Controller {
             $account = Account::where('id', '=', $list->user_id)->first();
             $accounts += [$account->username => $account];
         }
-
-        $this->container->view->render($response, 'creators.phtml', [
-            "title" => 'MyWishList - Créateurs',
-            "lists" => $lists,
-            "accounts" => $accounts
-        ]);
+        $args['title'] = 'MyWishList - Créateurs';
+        $args['lists'] = $lists;
+        $args['accounts'] = $accounts;
+        $this->container->view->render($response, 'creators.phtml', $args);
         return $response;
     }
 
     public function displayCreatorPublicLists(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', $args['creator'])->first();
+        $args['account'] = $account;
         if ($account != null) {
             $lists = Liste::select('*')->where('expiration', '>=', date('Y-m-d H:i:s', strtotime("-1 days")))->orderBy('expiration', 'asc')->where('user_id', '=', $account->id)->where('public', '=', 1)->get();
-            $this->container->view->render($response, 'creatorPublicLists.phtml', ["title" => "MyWishList - Listes publiques de ".$account->username, "lists" => $lists, "account" => $account]);
-            return $response;
+            $args['title'] = "MyWishList - Listes publiques de $account->username";
+            $args['lists'] = $lists;
         } else {
-            $this->container->view->render($response, 'creatorPublicLists.phtml', ["title" => "MyWishList - Listes publiques", "account" => $account]);
-            return $response;
+            $args['title'] = 'MyWishList - Listes publiques';
         }
+        $this->container->view->render($response, 'creatorPublicLists.phtml', $args);
+        return $response;
     }
 }

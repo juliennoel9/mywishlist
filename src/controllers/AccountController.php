@@ -8,7 +8,8 @@ use Slim\Http\Request;
 
 class AccountController extends Controller {
     public function getRegister(Request $request, Response $response, array $args) {
-        $this->container->view->render($response, 'register.phtml', ["title" => "MyWishList - Inscription"]);
+        $args['title'] = 'MyWishList - Inscription';
+        $this->container->view->render($response, 'register.phtml', $args);
         return $response;
     }
 
@@ -23,14 +24,16 @@ class AccountController extends Controller {
         $account->save();
         $_SESSION['accountCreated']='accountCreated';
         $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
-        return $this->redirect($response, 'home', ["account" => $account]);
+        $args['account'] = $account;
+        return $this->redirect($response, 'home', $args);
     }
 
     public function getLogin(Request $request, Response $response, array $args) {
         if (isset($_SERVER['HTTP_REFERER'])) {
             $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
         }
-        $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion"]);
+        $args['title'] = 'MyWishList - Connexion';
+        $this->container->view->render($response, 'login.phtml', $args);
         return $response;
     }
 
@@ -52,7 +55,10 @@ class AccountController extends Controller {
                 return $this->redirect($response, 'home');
             }
         } else {
-            $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Connexion", "msg" => "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>", "id" => $id]);
+            $args['title'] = 'MyWishList - Connexion';
+            $args['msg'] = "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>";
+            $args['id'] = $id;
+            $this->container->view->render($response, 'login.phtml', $args);
             return $response;
         }
     }
@@ -60,17 +66,16 @@ class AccountController extends Controller {
     public function getAccount(Request $request, Response $response, array $args) {
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-            $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account]);
-            return $response;
-        } else {
-            $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte"]);
-            return $response;
+            $args['account'] = $account;
         }
-
+        $args['title'] = 'MyWishList - Mon compte';
+        $this->container->view->render($response, 'account.phtml', $args);
+        return $response;
     }
 
     public function postEditAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+        $args['account'] = $account;
         if ($_POST['submit'] == 'deleteAccount') {
             $account->delete();
             unset($_SESSION['login']);
@@ -83,7 +88,9 @@ class AccountController extends Controller {
                 if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash)) {
                     $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
                 } else {
-                    $this->container->view->render($response, 'account.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-danger\">Ancien mot de passe incorrect, réessayez.</div>"]);
+                    $args['title'] = 'MyWishList - Mon compte';
+                    $args['msg'] = '<div class="alert alert-danger">Ancien mot de passe incorrect, réessayez.</div>';
+                    $this->container->view->render($response, 'account.phtml', $args);
                     return $response;
                 }
             }
@@ -91,12 +98,15 @@ class AccountController extends Controller {
 
             if ($_POST['submit'] == 'editPassword') {
                 unset($_SESSION['login']);
-                $this->container->view->render($response, 'login.phtml', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>"]);
-                return $response;
+                $args['title'] = 'MyWishList - Connexion';
+                $args['msg'] = '<div class="alert alert-success">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>';
+                return $this->redirect($response, 'login', $args);
             } else {
                 unset($_SESSION['login']);
                 $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
-                return $this->redirect($response, 'account', ["title" => "MyWishList - Mon compte", "account" => $account, "msg" => "<div class=\"alert alert-success\">Modifications enregistrées.</div>"]);
+                $args['title'] = 'MyWishList - Mon compte';
+                $args['msg'] = '<div class="alert alert-success">Modifications enregistrées.</div>';
+                return $this->redirect($response, 'account', $args);
             }
         }
     }

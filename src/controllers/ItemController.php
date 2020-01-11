@@ -23,28 +23,21 @@ class ItemController extends Controller {
 
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-            $this->container->view->render($response, 'item.phtml', [
-                "title" => "MyWishList - Item n°".$item->id,
-                "list" => $list,
-                "item" => $item,
-                "account" => $account,
-                "reserveName" => $reserveName
-            ]);
-            return $response;
-        } else {
-            $this->container->view->render($response, 'item.phtml', [
-                "title" => "MyWishList - Item n°".$item->id,
-                "list" => $list,
-                "item" => $item,
-                "reserveName" => $reserveName
-            ]);
-            return $response;
+            $args['account'] = $account;
         }
+        $args['title'] = "MyWishList - Item n° $item->id";
+        $args['list'] = $list;
+        $args['item'] = $item;
+        $args['reserveName'] = $reserveName;
+        $this->container->view->render($response, 'item.phtml', $args);
+        return $response;
     }
 
     public function getNewItem(Request $request, Response $response, array $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
-        $this->container->view->render($response, 'newItem.phtml', ["title" => "MyWishList - Nouvel Item", "list" => $list]);
+        $args['title'] = 'MyWishList - Nouvel Item';
+        $args['list'] = $list;
+        $this->container->view->render($response, 'newItem.phtml', $args);
         return $response;
     }
 
@@ -86,29 +79,29 @@ class ItemController extends Controller {
         }
         $item->tarif = htmlentities(trim($_POST['tarif']));
         $item->save();
-        return $this->redirect($response, 'list', [
-            'token' => $list->token
-        ]);
+        $args['token'] = $list->token;
+        return $this->redirect($response, 'list', $args);
     }
 
     public function getEditItem(Request $request, Response $response, array $args) {
+        $list = Liste::where('token', '=', $args['token'])->first();
+        $item = Item::where('id', '=', $args['id'])->first();
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-            $list = Liste::where('token', '=', $args['token'])->first();
-            $item = Item::where('id', '=', $args['id'])->first();
-            $this->container->view->render($response, 'editItem.phtml', ["title" => "MyWishList - Modification Item", "list" => $list, "item" => $item, "account" => $account]);
-            return $response;
-        } else {
-            $list = Liste::where('token', '=', $args['token'])->first();
-            $item = Item::where('id', '=', $args['id'])->first();
-            $this->container->view->render($response, 'editItem.phtml', ["title" => "MyWishList - Modification Item", "list" => $list, "item" => $item]);
-            return $response;
+            $args['account'] = $account;
         }
+        $args['title'] = 'MyWishList - Modification Item';
+        $args['list'] = $list;
+        $args['item'] = $item;
+        $this->container->view->render($response, 'editItem.phtml', $args);
+        return $response;
     }
 
     public function postEditItem(Request $request, Response $response, array $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
         $item = Item::where('id', '=', $args['id'])->first();
+        $args['token'] = $list->token;
+
 
         if ($_POST['submit'] == 'edit') {
             $item->nom = htmlentities(trim($_POST['nom']));
@@ -144,15 +137,11 @@ class ItemController extends Controller {
 
             $item->url = isset($_POST['url']) ? htmlentities(trim($_POST['url'])) : '';
             $item->save();
-            return $this->redirect($response, 'item', [
-                'token' => $list->token,
-                'id' => $item->id,
-            ]);
+            $args['id'] = $item->id;
+            return $this->redirect($response, 'item', $args);
         } elseif ($_POST['submit'] == 'delete') {
             $item->delete();
-            return $this->redirect($response, 'list', [
-                'token' => $list->token
-            ]);
+            return $this->redirect($response, 'list', $args);
         }
     }
 
@@ -165,9 +154,8 @@ class ItemController extends Controller {
         $item->messageReservation = htmlentities(trim($_POST['message']));
 
         $item->save();
-        return $this->redirect($response, 'item', [
-            'token' => $list->token,
-            'id' => $item->id,
-        ]);
+        $args['token'] = $list->token;
+        $args['id'] = $item->id;
+        return $this->redirect($response, 'item', $args);
     }
 }
