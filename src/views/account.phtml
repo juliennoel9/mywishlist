@@ -1,50 +1,48 @@
 <?php if (isset($_SESSION['login'])) : ?>
-    <form method="POST" id="account">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Mon compte</h5>
             </div>
-            <div class="modal-body">
-                <?php if (isset($msg)) : ?>
-                    <?= $msg ?>
-                <?php endif; ?>
-                <?php if (isset($_SESSION['accountEdit'])) : ?>
-                    <div class="alert alert-success">Modifications enregistrées.</div>
-                    <?php unset($_SESSION['accountEdit']); ?>
-                <?php endif; ?>
+            <form method="POST" action="<?= $router->pathFor('editAccount') ?>">
+                <div class="modal-body">
+                    <?php if (isset($_SESSION['redirect']['msg'])) {
+                        echo $_SESSION['redirect']['msg'];
+                        unset($_SESSION['redirect']['msg']);
+                    } ?>
+                    <div class="form-group">
+                        <label for="prenom">Prénom</label>
+                        <input required type="text" name="prenom" class="form-control" placeholder="Prénom" id="prenom" value="<?= $account->prenom ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input required type="text" name="nom" class="form-control" placeholder="Nom" id="nom" value="<?= $account->nom ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Nom d'utilisateur</label>
+                        <input disabled type="text" name="username" class="form-control" placeholder="Nom d'utilisateur" id="username" value="<?= $account->username ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input required type="email" name="email" class="form-control" placeholder="Email" id="email" value="<?= $account->email ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="prenom">Prénom</label>
-                    <input required type="text" name="prenom" class="form-control" placeholder="Prénom" id="prenom" value="<?= $account->prenom ?>">
-                </div>
-                <div class="form-group">
-                    <label for="nom">Nom</label>
-                    <input required type="text" name="nom" class="form-control" placeholder="Nom" id="nom" value="<?= $account->nom ?>">
-                </div>
-                <div class="form-group">
-                    <label for="username">Nom d'utilisateur</label>
-                    <input disabled type="text" name="username" class="form-control" placeholder="Nom d'utilisateur" id="username" value="<?= $account->username ?>">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input required type="email" name="email" class="form-control" placeholder="Email" id="email" value="<?= $account->email ?>">
-                </div>
+                    <div class="form-group">
+                        <!-- Trigger modal password -->
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalPassword">Changer mot de passe</button>
+                    </div>
 
-                <div class="form-group">
-                    <!-- Trigger modal password -->
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalPassword">Changer mot de passe</button>
+                    <div class="form-group">
+                        <!-- Trigger modal suppression compte -->
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteAccount">Supprimer mon compte</button>
+                    </div>
+                    <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+                    <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
                 </div>
-
-                <div class="form-group">
-                    <!-- Trigger modal suppression compte -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteAccount">Supprimer mon compte</button>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary" href="<?= $router->pathFor('home')?>" role="button">Retour</a>
+                    <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
                 </div>
-
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-secondary" href="<?= $router->pathFor('home')?>" role="button">Retour</a>
-                <button type="submit" name="submit" value="edit" class="btn btn-success">Enregistrer les modifications</button>
-            </div>
+            </form>
         </div>
 
         <!-- Modal password -->
@@ -56,26 +54,30 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="oldPassword">Ancien mot de passe</label>
-                            <input type="password" name="oldPassword" class="form-control" placeholder="Ancien mot de passe" id="oldPassword">
+                        <form method="POST" action="<?= $router->pathFor('changePassword') ?>">
+                            <div class="form-group">
+                                <label for="oldPassword">Ancien mot de passe</label>
+                                <input required type="password" name="oldPassword" class="form-control" placeholder="Ancien mot de passe" id="oldPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">Mot de passe</label>
+                                <input required type="password" name="newPassword" class="form-control" placeholder="Nouveau mot de passe (minimum 8 caractères)" id="newPassword" minlength="8" maxlength="50">
+                                <meter value="0" min="-0.2" max="4" id="password-strength-meter" style="display: none"></meter>
+                                <div class="invalid-feedback" id="passwordErr">Invalide</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassWord">Confirmez votre mot de passe</label>
+                                <input required type="password" name="confirmPassWord" class="form-control" placeholder="Confirmez votre mot de passe" id="confirmPassWord" minlength="8" maxlength="50">
+                            </div>
+                            <div id="confirmPassWordErr" class="alert alert-danger" style="display: none">Les deux mots de passe ne correspondent pas.</div>
                         </div>
-                        <div class="form-group">
-                            <label for="newPassword">Mot de passe</label>
-                            <input minlength="8" type="password" name="newPassword" class="form-control" placeholder="Nouveau mot de passe (minimum 8 caractères)" id="newPassword" maxlength="50">
-                            <meter value="0" min="-0.2" max="4" id="password-strength-meter" style="display: none"></meter>
-                            <div class="invalid-feedback" id="passwordErr">Invalide</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-warning">Changer le mot de passe</button>
                         </div>
-                        <div class="form-group">
-                            <label for="confirmPassWord">Confirmez votre mot de passe</label>
-                            <input type="password" minlength="8" placeholder="Confirmez votre mot de passe" name="confirmPassWord" class="form-control" id="confirmPassWord" maxlength="50">
-                        </div>
-                        <div id="confirmPassWordErr" class="alert alert-danger" style="display: none">Les deux mots de passe ne correspondent pas.</div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                        <button type="submit" name="submit" value="editPassword" class="btn btn-warning">Changer le mot de passe</button>
-                    </div>
+                        <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+                        <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
+                    </form>
                 </div>
             </div>
         </div>
@@ -85,25 +87,31 @@
         <div class="modal fade" role="dialog" id="modalDeleteAccount">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Supprimer mon compte</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div>Êtes-vous sûr de vouloir supprimer définitivement votre compte ?<br><br></div>
-                        <div>Cela entraînera : la suppression des listes que vous avez créées, des items et images qu'elles contiennent, des participations (uniquement avant échéance de la liste) ainsi que la suppression de tous les messages.<br>De plus, cela annulera toutes les réservations que vous aurez effectué aupparavant.<br><br></div>
-                        <div class="alert alert-danger">Attention, cette action est irréversible !</div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                        <button type="submit" name="submit" value="deleteAccount" class="btn btn-danger">Supprimer définitivement mon compte</button>
-                    </div>
+                    <form method="POST" action="<?= $router->pathFor('deleteAccount') ?>">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Supprimer mon compte</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div>Êtes-vous sûr de vouloir supprimer définitivement votre compte ?<br><br></div>
+                            <div>Cela entraînera : la suppression des listes que vous avez créées, des items et images qu'elles contiennent, des participations (uniquement avant échéance de la liste) ainsi que la suppression de tous les messages.<br>De plus, cela annulera toutes les réservations que vous aurez effectué aupparavant.<br><br></div>
+                            <div class="alert alert-danger">Attention, cette action est irréversible !</div>
+                            <div class="form-group">
+                                <label for="password">Mot de passe</label>
+                                <input required type="password" name="password" class="form-control" placeholder="Mot de passe" id="password">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-danger">Supprimer définitivement mon compte</button>
+                                <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+                                <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
-        <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
-    </form>
+
 <?php else: ?>
     <h1>Il faut être connecté pour accéder à cette page.</h1>
 <?php endif; ?>
