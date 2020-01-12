@@ -66,12 +66,14 @@ class ListController extends Controller {
 
     public function getEditList(Request $request, Response $response, array $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
+        $items = $list->items();
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $args['account'] = $account;
         }
         $args['title'] = 'Modification Liste';
         $args['list'] = $list;
+        $args['items'] = $items;
         $this->container->view->render($response, 'editList.phtml', $args);
         return $response;
     }

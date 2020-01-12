@@ -20,9 +20,19 @@
         </div>
         <div class="modal-footer">
             <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
-
-            <!-- Trigger modal delete -->
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Supprimer la liste</button>
+            <?php
+                $notReserved = true;
+                foreach ($items as $item) :
+                    if ($item->account_id_reserv != null) :
+                        $notReserved = false;
+                        break;
+                    endif;
+                endforeach;
+            ?>
+            <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  ( strtotime($list->expiration) < strtotime("-1 days") or $notReserved ) ) : ?>
+                <!-- Trigger modal delete -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Supprimer la liste</button>
+            <?php endif; ?>
 
             <button type="submit" name="submit" class="btn btn-primary" value="edit">Modifier la liste</button>
         </div>
