@@ -137,10 +137,20 @@ $app->get('/moncompte[/]', function (Request $request, Response $response, array
     return $controller->getAccount($request, $response, $args);
 })->setName('account');
 
-$app->post('/moncompte[/]', function (Request $request, Response $response, array $args) {
+$app->post('/editAccount', function (Request $request, Response $response, array $args) {
     $controller = new AccountController($this);
     return $controller->postEditAccount($request, $response, $args);
-});
+})->setName('editAccount');
+
+$app->post('/changePassword', function (Request $request, Response $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->postChangePassword($request, $response, $args);
+})->setName('changePassword');
+
+$app->post('/deleteAccount', function (Request $request, Response $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->postDeleteAccount($request, $response, $args);
+})->setName('deleteAccount');
 
 
 /**

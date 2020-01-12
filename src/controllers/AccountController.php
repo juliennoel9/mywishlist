@@ -76,42 +76,41 @@ class AccountController extends Controller {
 
     public function postEditAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        $oldAccount = clone $account;
-        $args['account'] = $account;
-        if ($_POST['submit'] == 'deleteAccount') {
+        $account->email = htmlentities(strtolower(trim($_POST['email'])));
+        $account->prenom = htmlentities(trim($_POST['prenom']));
+        $account->nom = htmlentities(trim($_POST['nom']));
+        $account->save();
+        unset($_SESSION['login']);
+        $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
+        $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Les modifications ont bien été enregistrées.</div>';
+        return $this->redirect($response, 'account');
+    }
+
+    public function postChangePassword(Request $request, Response $response, array $args) {
+        $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+        if (password_verify(htmlentities($_POST['oldPassword']), $account->hash)) {
+            $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
+            $account->save();
+            unset($_SESSION['login']);
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>';
+            $_SESSION['redirect']['username'] = $account->username;
+            return $this->redirect($response, 'login');
+        } else {
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Ancien mot de passe incorrect, réessayez.</div>';
+            return $this->redirect($response, 'account');
+        }
+    }
+
+    public function postDeleteAccount(Request $request, Response $response, array $args) {
+        $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+        if (password_verify(htmlentities($_POST['password']), $account->hash)) {
             $account->delete();
             unset($_SESSION['login']);
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Votre compte a bien été supprimé.</div>';
             return $this->redirect($response, 'home');
         } else {
-            $account->email = htmlentities(strtolower(trim($_POST['email'])));
-            $account->prenom = htmlentities(trim($_POST['prenom']));
-            $account->nom = htmlentities(trim($_POST['nom']));
-            if ($_POST['submit'] == 'editPassword') {
-                if (isset($account) and password_verify(htmlentities($_POST['oldPassword']), $account->hash)) {
-                    $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
-                } else {
-                    $args['title'] = 'MyWishList - Mon compte';
-                    $args['msg'] = '<div class="alert alert-danger">Ancien mot de passe incorrect, réessayez.</div>';
-                    $this->container->view->render($response, 'account.phtml', $args);
-                    return $response;
-                }
-            }
-            $account->save();
-
-            if ($_POST['submit'] == 'editPassword') {
-                unset($_SESSION['login']);
-                $args['title'] = 'MyWishList - Connexion';
-                $args['msg'] = '<div class="alert alert-success">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>';
-                return $this->container->view->render($response, 'login.phtml', $args);
-            } else {
-                unset($_SESSION['login']);
-                $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
-                $args['title'] = 'MyWishList - Mon compte';
-                if ($oldAccount != $account){
-                    $_SESSION['accountEdit']='accountEdit';
-                }
-                return $this->redirect($response, 'account', $args);
-            }
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Ancien mot de passe incorrect, réessayez.</div>';
+            return $this->redirect($response, 'account');
         }
     }
 
