@@ -10,7 +10,7 @@ class Controller {
         $this->container = $container;
     }
 
-    public function redirect(Response $response, $name, array $argsURI = []) {
-        return $response->withRedirect($this->container->router->pathFor($name, $argsURI));
+    public function redirect(Response $response, string $name, array $path = [], array $param = []) {
+        return $response->withRedirect($this->container->router->pathFor($name, $path, $param));
     }
 }
