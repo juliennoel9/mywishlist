@@ -55,12 +55,9 @@ class AccountController extends Controller {
                 return $this->redirect($response, 'home');
             }
         } else {
-            $args['title'] = 'MyWishList - Connexion';
-            $args['msg'] = "<div class=\"alert alert-danger\">Nom d'utilisateur ou mot de passe incorrect, réessayez.</div>";
-            $args['id'] = $id;
-            $args['csrf'] = getCSRF($request, $this->container->csrf);
-            $this->container->view->render($response, 'login.phtml', $args);
-            return $response;
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Nom d\'utilisateur ou mot de passe incorrect, réessayez.</div>';
+            $_SESSION['redirect']['username'] = $account->username;
+            return $this->redirect($response, 'login');
         }
     }
 
