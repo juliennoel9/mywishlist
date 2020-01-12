@@ -76,13 +76,15 @@ class AccountController extends Controller {
 
     public function postEditAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        $account->email = htmlentities(strtolower(trim($_POST['email'])));
-        $account->prenom = htmlentities(trim($_POST['prenom']));
-        $account->nom = htmlentities(trim($_POST['nom']));
-        $account->save();
-        unset($_SESSION['login']);
-        $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
-        $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Les modifications ont bien été enregistrées.</div>';
+        if ($account->email != $_POST['email'] || $account->prenom != $_POST['prenom'] || $account->nom != $_POST['nom']) {
+            $account->email = htmlentities(strtolower(trim($_POST['email'])));
+            $account->prenom = htmlentities(trim($_POST['prenom']));
+            $account->nom = htmlentities(trim($_POST['nom']));
+            $account->save();
+            unset($_SESSION['login']);
+            $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Les modifications ont bien été enregistrées.</div>';
+        }
         return $this->redirect($response, 'account');
     }
 
