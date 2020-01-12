@@ -6,10 +6,10 @@
             <?php foreach ($lists as $list) : ?>
                 <div class="card mt-4 bg-light">
                     <div class="card-body text-center pb-1">
-                    <?php if (!$list->public) : ?>
-                        <p class="float-left">&#x1F512</p>
-                    <?php endif; ?>
                         <h1 class="card-title"><?= $list->titre ?></h1>
+                    <?php if (!$list->public) : ?>
+                        <h4 class="float-left">&#x1F512</h4>
+                    <?php endif; ?>
                         <p class="card-text lead"><?= $list->description ?></p>
                         <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
                             <p class="text-success">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>

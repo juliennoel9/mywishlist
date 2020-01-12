@@ -1,15 +1,16 @@
 <section class="jumbotron text-center mt-4 pt-3 pb-2">
-<div class="container">
-        <?php if (!$list->public) : ?>
-            <p class="float-left">&#x1F512</p>
-        <?php endif; ?>
+    <div class="container">
         <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
+        <?php if (!$list->public) : ?>
+            <h4 class="float-left">&#x1F512</h4>
+        <?php endif; ?>
         <p class="lead text-muted"><?= $list->description ?></p>
         <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
     </div>
 </section>
 
 <div class="container mt-4">
+    <a type="button" class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token]) ?>">Retour à la liste</a><br><br>
     <?php if($item->account_id_reserv != null) : ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
             <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
