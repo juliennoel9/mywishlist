@@ -6,11 +6,16 @@
                         <h3 class="modal-title">Connexion</h3>
                     </div>
                     <div class="modal-body">
-                        <?php if (isset($msg)) : ?>
-                            <?= $msg ?>
-                        <?php endif; ?>
+                        <?php if (isset($_SESSION['redirect']['msg'])) {
+                            echo $_SESSION['redirect']['msg'];
+                            unset($_SESSION['redirect']['msg']);
+                        } ?>
                         <div class="form-group">
                             <label for="id">Email ou nom d'utilisateur</label>
+                            <?php if (isset($_SESSION['redirect']['username'])) {
+                                $id = $_SESSION['redirect']['username'];
+                                unset($_SESSION['redirect']['username']);
+                            } ?>
                             <input required type="text" name="id" maxlength="100" class="form-control" placeholder="Email ou nom d'utilisateur" id="id" <?= isset($id) ? 'value='.$id : 'autofocus'?>>
                             <div class="invalid-feedback" id="idErr">Invalide</div>
                         </div>

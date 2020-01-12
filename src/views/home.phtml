@@ -2,6 +2,10 @@
     <div class="alert alert-success">Compte créé avec succès !</div>
     <?php unset($_SESSION['accountCreated']); ?>
 <?php endif; ?>
+<?php if (isset($_SESSION['redirect']['msg'])) {
+    echo $_SESSION['redirect']['msg'];
+    unset($_SESSION['redirect']['msg']);
+} ?>
 <p>
     <h1 class="text-center">Bienvenue sur MyWishList !</br></br></h1>
     <p class="text-center">Ce projet a été réalisé dans le cadre du module de Programmation Web/Serveur à l'IUT Nancy-Charlemagne.</p>
