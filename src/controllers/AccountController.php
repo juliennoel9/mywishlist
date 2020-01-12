@@ -111,7 +111,7 @@ class AccountController extends Controller {
             $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Votre compte a bien été supprimé.</div>';
             return $this->redirect($response, 'home');
         } else {
-            $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Ancien mot de passe incorrect, réessayez.</div>';
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Mot de passe incorrect, réessayez.</div>';
             return $this->redirect($response, 'account');
         }
     }
