@@ -35,16 +35,40 @@
         <div class="modal-footer">
             <a class="btn btn-secondary" href="<?= $router->pathFor('item', ['token' => $list->token, 'id' => $item->id])?>" role="button">Annuler</a>
 
-            <button type="submit" name="submit" class="btn btn-danger" value="delete">Supprimer Item</button>
+            <!-- Trigger modal delete -->
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Supprimer l'item</button>
 
             <button type="submit" name="submit" class="btn btn-primary" value="edit">Modifier l'item</button>
         </div>
+
+        <!-- Modal delete -->
+        <div class="modal fade" role="dialog" id="modalDelete">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Supprimer l'item</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div>Êtes-vous sûr de vouloir supprimer l'item ?<br><br></div>
+                        <div>Cela entraînera la suppression de l'item au sein de la liste.<br><br></div>
+                        <div class="alert alert-danger">Attention, cette action est irréversible !</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                        <button type="submit" name="submit" value="delete" class="btn btn-danger">Supprimer l'item</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
         <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
     </form>
 <?php else: ?>
     <h1>Connectez-vous pour pouvoir modifier cet item s'il vous appartient et si la date d'expiration de la liste à laquelle il appartient n'est pas déjà passée.</h1>
 <?php endif; ?>
+
 
 <script>
     $(function () {
