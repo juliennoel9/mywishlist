@@ -1,28 +1,53 @@
 <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
     <form method="POST">
         <h1>Modifiez votre liste</h1><br>
-            <div class="form-group">
-                <label for="titre">Donnez un nouveau titre à la liste</label>
-                <input required type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= $list->titre ?>" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>>
+        <div class="form-group">
+            <label for="titre">Donnez un nouveau titre à la liste</label>
+            <input required type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= $list->titre ?>" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>>
+        </div>
+        <div class="form-group">
+            <label for="expiration">Indiquez une nouvelle date d'expiration</label>
+            <input required type="date" value="<?= date("Y-m-d", strtotime($list->expiration)) ?>" name="expiration" class="form-control" id="expiration" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>>
+            <div class="invalid-feedback" id="expirationErr">Invalide</div>
+        </div>
+        <div class="form-group">
+            <label for="description">Changez une description à la liste</label>
+            <textarea required class="form-control" name="description" id="description" rows="3" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>><?= $list->description ?></textarea>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" <?= $list->public === 1 ? 'checked=\"checked\"' : ''?> class="form-check-input" id="public" name="public">
+            <label class="form-check-label" for="public">Publique</label>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
+
+            <!-- Trigger modal delete -->
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Supprimer la liste</button>
+
+            <button type="submit" name="submit" class="btn btn-primary" value="edit">Modifier la liste</button>
+        </div>
+
+        <!-- Modal delete -->
+        <div class="modal fade" role="dialog" id="modalDelete">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Supprimer la liste</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div>Êtes-vous sûr de vouloir supprimer la liste ?<br><br></div>
+                        <div>Cela entraînera la suppression la liste ainsi que de tous les items au sein de la liste.<br><br></div>
+                        <div class="alert alert-danger">Attention, cette action est irréversible !</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                        <button type="submit" name="submit" value="delete" class="btn btn-danger">Supprimer la liste</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="expiration">Indiquez une nouvelle date d'expiration</label>
-                <input required type="date" value="<?= date("Y-m-d", strtotime($list->expiration)) ?>" name="expiration" class="form-control" id="expiration" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>>
-                <div class="invalid-feedback" id="expirationErr">Invalide</div>
-            </div>
-            <div class="form-group">
-                <label for="description">Changez une description à la liste</label>
-                <textarea required class="form-control" name="description" id="description" rows="3" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>><?= $list->description ?></textarea>
-            </div>
-            <div class="form-check">
-                <input type="checkbox" <?= $list->public === 1 ? 'checked=\"checked\"' : ''?> class="form-check-input" id="public" name="public">
-                <label class="form-check-label" for="public">Publique</label>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
-                <button type="submit" name="submit" class="btn btn-danger" value="delete">Supprimer Item</button>
-                <button type="submit" name="submit" class="btn btn-primary" value="edit">Modifier la liste</button>
-            </div>
+        </div>
+
         <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
         <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
     </form>
