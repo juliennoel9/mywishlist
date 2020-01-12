@@ -20,7 +20,8 @@
             </div>
             <div class="modal-footer">
                 <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token])?>" role="button">Annuler</a>
-                <button type="submit" class="btn btn-primary">Modifier la liste</button>
+                <button type="submit" name="submit" class="btn btn-danger" value="delete">Supprimer Item</button>
+                <button type="submit" name="submit" class="btn btn-primary" value="edit">Modifier la liste</button>
             </div>
         <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
         <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">

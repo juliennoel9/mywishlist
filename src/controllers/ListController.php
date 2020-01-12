@@ -78,18 +78,23 @@ class ListController extends Controller {
 
     public function postEditList(Request $request, Response $response, array $args) {
         $list = Liste::where('token', '=', $args['token'])->first();
-        if (strtotime($list->expiration) > strtotime("-1 days")) {
-            $list->titre = htmlentities(trim($_POST['titre']));
-            $list->description = htmlentities(trim($_POST['description']));
-            $list->expiration = date("Y-m-d", strtotime($_POST['expiration']));
-            $list->public = isset($_POST['public']) ? 1 : 0;
-            $list->save();
-        } else {
-            $list->public = isset($_POST['public']) ? 1 : 0;
-            $list->save();
+        if ($_POST['submit'] == 'edit') {
+            if (strtotime($list->expiration) > strtotime("-1 days")) {
+                $list->titre = htmlentities(trim($_POST['titre']));
+                $list->description = htmlentities(trim($_POST['description']));
+                $list->expiration = date("Y-m-d", strtotime($_POST['expiration']));
+                $list->public = isset($_POST['public']) ? 1 : 0;
+                $list->save();
+            } else {
+                $list->public = isset($_POST['public']) ? 1 : 0;
+                $list->save();
+            }
+            $args['token'] = $list->token;
+            return $this->redirect($response, 'list', $args);
+        } elseif ($_POST['submit'] == 'delete') {
+            $list->delete();
+            return $this->redirect($response, 'accountLists', $args);
         }
-        $args['token'] = $list->token;
-        return $this->redirect($response, 'list', $args);
     }
 
     public function postNewListMessage(Request $request, Response $response, array $args) {
