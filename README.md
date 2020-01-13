@@ -51,7 +51,7 @@ Depuis un navigateur, rendez vous sur http://localhost:numPort
 ### Extensions
 - [x] *Créer un compte* (Julien, Louis)
 - [x] *S'authentifier* (Julien, Louis)
-- [x] *Modifier son compte* (Julien)
+- [x] *Modifier son compte* (Julien, Louis)
 - [x] *Rendre une liste publique* (Julien, Louis)
 - [x] *Afficher les listes de souhaits publiques* (Julien, Louis)
 - [ ] *Créer une cagnotte sur un item*
@@ -67,9 +67,11 @@ Depuis un navigateur, rendez vous sur http://localhost:numPort
 - [X] *Supprimer une liste* (Julien)
 
 ## Liens utiles
-**Google Sheet** - Fonctionnalités, routes et méthodes - [Google Sheet](https://docs.google.com/spreadsheets/d/1NkXoVzma5kQGag3LFqx1n8IFDDFTjCObA5FDB259kMA/edit?usp=sharing)
+**[Google Sheet](https://docs.google.com/spreadsheets/d/1NkXoVzma5kQGag3LFqx1n8IFDDFTjCObA5FDB259kMA/edit?usp=sharing)** - Fonctionnalités, routes et méthodes
 
-**Trello** - Fonctionnalités et répartitions des tâches - [Trello](https://trello.com/b/V2bNWbbd/mywishlist)
+**[Trello](https://trello.com/b/V2bNWbbd/mywishlist)** - Fonctionnalités et répartitions des tâches
+
+**[MyWishList](https://mywishlist.nekzuris.com/)** - Site Web
 
 ## Contributeurs
 **NOËL Julien** - [juliennoel9](https://github.com/juliennoel9/mywishlist/commits?author=juliennoel9)
