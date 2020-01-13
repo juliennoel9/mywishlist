@@ -32,10 +32,16 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Mot de passe</label>
-                        <input required type="password" minlength="8" placeholder="Mot de passe (minimum 8 caractères)" name="password" class="form-control" id="password" maxlength="50">
+                        <div class="input-group">
+                            <input required type="password" minlength="8" placeholder="Mot de passe (minimum 8 caractères)" name="password" class="form-control" id="password" maxlength="50">
+                            <div class="input-group-append">
+                                <button class="input-group-text" onclick="togglePassword()" type="button" style="outline: none" tabindex="-1"><i id="icon" class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
                         <meter value="0" min="-0.2" max="4" id="password-strength-meter" style="display: none"></meter>
                         <div class="font-weight-bold" id="password-security" style="display: none">Niveau de sécurité : </div>
                         <div class="invalid-feedback" id="passwordErr">Invalide</div>
+
                     </div>
                     <div class="form-group">
                         <label for="confirmPassWord">Confirmez votre mot de passe</label>
@@ -77,13 +83,14 @@
     let confirmErr = document.getElementById('confirmPassWordErr');
     let meter = document.getElementById('password-strength-meter');
     let security = document.getElementById('password-security');
+    let icon = document.getElementById('icon');
     const strength = {
         0: {text : 'Très faible', color : 'darkred'},
         1: {text : 'Faible', color : 'orangered'},
         2: {text : 'Moyen', color : 'orange'},
         3: {text : 'Fort', color : 'yellowgreen'},
         4: {text : 'Très fort', color : 'limegreen'}
-    }
+    };
 
     pseudo.addEventListener('input', function() {
         clearTimeout(timer1);
@@ -208,6 +215,16 @@
             confirm.className = 'form-control is-invalid';
             confirm.setCustomValidity('Les deux mots de passe ne correspondent pas.');
             confirmErr.style.display = "block";
+        }
+    }
+
+    function togglePassword() {
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            password.type = 'password';
+            icon.className = 'fas fa-eye';
         }
     }
 </script>
