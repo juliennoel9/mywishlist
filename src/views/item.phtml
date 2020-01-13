@@ -10,7 +10,7 @@
 </section>
 
 <div class="container mt-4">
-    <a type="button" class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token]) ?>">Retour à la liste</a><br><br>
+    <a class="btn btn-secondary" href="<?= $router->pathFor('list', ['token' => $list->token]) ?>" role="button">Retour à la liste</a><br><br>
     <?php if($item->account_id_reserv != null) : ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id) : ?>
             <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
