@@ -5,8 +5,11 @@
             <h4 class="float-left">&#x1F512</h4>
         <?php endif; ?>
         <p class="lead text-muted"><?= htmlspecialchars($list->description) ?></p>
-        <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
-    </div>
+        <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
+            <p class="text-success">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+        <?php else: ?>
+            <p class="text-danger">Expirée depuis le : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
+        <?php endif; ?>    </div>
 </section>
 
 <div class="container mt-4">
