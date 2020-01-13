@@ -51,8 +51,8 @@ class ListController extends Controller {
         } else {
             $list->user_id = null;
         }
-        $list->titre = htmlentities(trim($_POST['titre']));
-        $list->description = htmlentities(trim($_POST['description']));
+        $list->titre = trim($_POST['titre']);
+        $list->description = trim($_POST['description']);
         $list->expiration = date("Y-m-d", strtotime($_POST['expiration']));
         $token = Liste::generateToken();
         $list->token = $token;
@@ -82,8 +82,8 @@ class ListController extends Controller {
         $list = Liste::where('token', '=', $args['token'])->first();
         if ($_POST['submit'] == 'edit') {
             if (strtotime($list->expiration) > strtotime("-1 days")) {
-                $list->titre = htmlentities(trim($_POST['titre']));
-                $list->description = htmlentities(trim($_POST['description']));
+                $list->titre = trim($_POST['titre']);
+                $list->description = trim($_POST['description']);
                 $list->expiration = date("Y-m-d", strtotime($_POST['expiration']));
                 $list->public = isset($_POST['public']) ? 1 : 0;
                 $list->save();
@@ -107,8 +107,8 @@ class ListController extends Controller {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $message->account_id = $account->id;
         }
-        $message->nomMessage = htmlentities(trim($_POST['nom']));
-        $message->message = htmlentities(trim($_POST['message']));
+        $message->nomMessage = trim($_POST['nom']);
+        $message->message = trim($_POST['message']);
         $message->date = date('Y-m-d H:i:s');
         $message->save();
         $args['token'] = $list->token;

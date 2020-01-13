@@ -45,8 +45,8 @@ class ItemController extends Controller {
         $list = Liste::where('token', '=', $args['token'])->first();
         $item = new Item();
         $item->liste_id = $list->num;
-        $item->nom = htmlentities(trim($_POST['nom']));
-        $item->descr = htmlentities(trim($_POST['descr']));
+        $item->nom = trim($_POST['nom']);
+        $item->descr = trim($_POST['descr']);
 
         //Image upload
         $fileName = $_FILES['img']['name'];
@@ -75,9 +75,9 @@ class ItemController extends Controller {
         }
 
         if (isset($_POST['url'])) {
-            $item->url = htmlentities(trim($_POST['url']));
+            $item->url = trim($_POST['url']);
         }
-        $item->tarif = htmlentities(trim($_POST['tarif']));
+        $item->tarif = trim($_POST['tarif']);
         $item->save();
         $args['token'] = $list->token;
         return $this->redirect($response, 'list', $args);
@@ -104,9 +104,9 @@ class ItemController extends Controller {
 
 
         if ($_POST['submit'] == 'edit') {
-            $item->nom = htmlentities(trim($_POST['nom']));
-            $item->descr = htmlentities(trim($_POST['description']));
-            $item->tarif = htmlentities(trim($_POST['tarif']));
+            $item->nom = trim($_POST['nom']);
+            $item->descr = trim($_POST['description']);
+            $item->tarif = trim($_POST['tarif']);
 
             if (isset($_POST['delete'])) {
                 $item->img = 'noimage.png';
@@ -135,7 +135,7 @@ class ItemController extends Controller {
                 }
             }
 
-            $item->url = isset($_POST['url']) ? htmlentities(trim($_POST['url'])) : '';
+            $item->url = isset($_POST['url']) ? trim($_POST['url']) : '';
             $item->save();
             $args['id'] = $item->id;
             return $this->redirect($response, 'item', $args);
@@ -151,7 +151,7 @@ class ItemController extends Controller {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
 
         $item->account_id_reserv = $account->id;
-        $item->messageReservation = htmlentities(trim($_POST['message']));
+        $item->messageReservation = trim($_POST['message']);
 
         $item->save();
         $args['token'] = $list->token;

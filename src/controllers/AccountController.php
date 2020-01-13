@@ -15,12 +15,11 @@ class AccountController extends Controller {
 
     public function postRegister(Request $request, Response $response, array $args) {
         $account = new Account();
-        $account->username = htmlentities(trim($_POST['identifiant']));
-        $account->email = htmlentities(strtolower(trim($_POST['email'])));
-        $account->prenom = htmlentities(trim($_POST['prenom']));
-        $account->nom = htmlentities(trim($_POST['nom']));
-        $password = htmlentities($_POST['password']);
-        $account->hash = password_hash($password, PASSWORD_DEFAULT);
+        $account->username = trim($_POST['identifiant']);
+        $account->email = strtolower(trim($_POST['email']));
+        $account->prenom = trim($_POST['prenom']);
+        $account->nom = trim($_POST['nom']);
+        $account->hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $account->save();
         $_SESSION['accountCreated']='accountCreated';
         $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
@@ -38,12 +37,10 @@ class AccountController extends Controller {
     }
 
     public function postLogin(Request $request, Response $response, array $args) {
-        $id = htmlentities(trim($_POST['id']));
-        $password = htmlentities($_POST['password']);
-
+        $id = trim($_POST['id']);
         $account = Account::where('email', '=', $id)->orwhere('username', '=', $id)->first();
 
-        if (isset($account) and password_verify($password, $account->hash)) {
+        if (isset($account) and password_verify($_POST['password'], $account->hash)) {
             $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
             if (isset($_SESSION['previousPage'])) {
                 if (pathinfo($_SESSION['previousPage'])['filename']=='inscription' or pathinfo($_SESSION['previousPage'])['filename']=='connexion') {
@@ -74,9 +71,9 @@ class AccountController extends Controller {
     public function postEditAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
         if ($account->email != $_POST['email'] || $account->prenom != $_POST['prenom'] || $account->nom != $_POST['nom']) {
-            $account->email = htmlentities(strtolower(trim($_POST['email'])));
-            $account->prenom = htmlentities(trim($_POST['prenom']));
-            $account->nom = htmlentities(trim($_POST['nom']));
+            $account->email = strtolower(trim($_POST['email']));
+            $account->prenom = trim($_POST['prenom']);
+            $account->nom = trim($_POST['nom']);
             $account->save();
             unset($_SESSION['login']);
             $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
@@ -87,8 +84,8 @@ class AccountController extends Controller {
 
     public function postChangePassword(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        if (password_verify(htmlentities($_POST['oldPassword']), $account->hash)) {
-            $account->hash = password_hash(htmlentities($_POST['newPassword']), PASSWORD_DEFAULT);
+        if (password_verify($_POST['oldPassword'], $account->hash)) {
+            $account->hash = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
             $account->save();
             unset($_SESSION['login']);
             $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Le mot de passe a bien été modifié, veuillez vous reconnecter.</div>';
@@ -102,7 +99,7 @@ class AccountController extends Controller {
 
     public function postDeleteAccount(Request $request, Response $response, array $args) {
         $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-        if (password_verify(htmlentities($_POST['password']), $account->hash)) {
+        if (password_verify($_POST['password'], $account->hash)) {
             $account->delete();
             unset($_SESSION['login']);
             $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Votre compte a bien été supprimé.</div>';

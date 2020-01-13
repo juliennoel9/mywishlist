@@ -1,11 +1,11 @@
 <div class="body mt-5">
     <section class="jumbotron text-center mt-4 pt-3 pb-2">
         <div class="container">
-            <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
+            <h1 class="jumbotron-heading"><?= htmlspecialchars($list->titre) ?></h1>
             <?php if (!$list->public) : ?>
                 <h4 class="float-left">&#x1F512</h4>
             <?php endif; ?>
-            <p class="lead text-muted"><?= $list->description ?></p>
+            <p class="lead text-muted"><?= htmlspecialchars($list->description) ?></p>
             <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
                 <p class="text-success">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
             <?php else: ?>
@@ -27,8 +27,8 @@
                         <div class="card mt-4 bg-light" style="height: 95%">
                             <div class="card-body text-center pb-1">
                                 <img class="w-75" src="/public/images/<?= $fileName ?>">
-                                <h3 class="card-title"><?= $item->nom ?></h3>
-                                <p class="card-text"><?= $item->description ?></p>
+                                <h3 class="card-title"><?= htmlspecialchars($item->nom) ?></h3>
+                                <p class="card-text"><?= htmlspecialchars($item->description) ?></p>
                                 <?php if ($item->account_id_reserv != null) : ?>
                                     <p class="text-success">Réservé</p>
                                 <?php else: ?>
@@ -55,8 +55,8 @@
             <div class="modal-title"><h3>Messages des participants</h3></div>
             <div class="modal-body">
                 <?php foreach ($messages as $message) : ?>
-                    <h5><?= $message->nomMessage ?> le <?= date("d/m/Y", strtotime($message->date)) ?> à <?= date("H:i", strtotime($message->date)) ?></h5>
-                    <p><?= $message->message ?></p>
+                    <h5><?= htmlspecialchars($message->nomMessage) ?> le <?= date("d/m/Y", strtotime($message->date)) ?> à <?= date("H:i", strtotime($message->date)) ?></h5>
+                    <p><?= htmlspecialchars($message->message) ?></p>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -113,7 +113,7 @@
                                         <div class="form-group">
                                             <label for="nom">Nom</label>
                                             <?php if (isset($_SESSION['login'])) : ?>
-                                                <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= unserialize($_SESSION['login'])['prenom'] ?> <?= unserialize($_SESSION['login'])['nom'] ?>" id="nom">
+                                                <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= htmlspecialchars(unserialize($_SESSION['login'])['prenom']) ?> <?= htmlspecialchars(unserialize($_SESSION['login'])['nom']) ?>" id="nom">
                                             <?php else : ?>
                                                 <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" id="nom">
                                             <?php endif; ?>
@@ -151,7 +151,7 @@
                                     <div class="form-group">
                                         <label for="nom">Nom</label>
                                         <?php if (isset($_SESSION['login'])) : ?>
-                                            <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= unserialize($_SESSION['login'])['prenom'] ?> <?= unserialize($_SESSION['login'])['nom'] ?>" id="nom">
+                                            <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= htmlspecialchars(unserialize($_SESSION['login'])['prenom']) ?> <?= htmlspecialchars(unserialize($_SESSION['login'])['nom']) ?>" id="nom">
                                         <?php else : ?>
                                             <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" id="nom">
                                         <?php endif; ?>

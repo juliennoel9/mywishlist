@@ -1,10 +1,10 @@
 <section class="jumbotron text-center mt-4 pt-3 pb-2">
     <div class="container">
-        <h1 class="jumbotron-heading"><?= $list->titre ?></h1>
+        <h1 class="jumbotron-heading"><?= htmlspecialchars($list->titre) ?></h1>
         <?php if (!$list->public) : ?>
             <h4 class="float-left">&#x1F512</h4>
         <?php endif; ?>
-        <p class="lead text-muted"><?= $list->description ?></p>
+        <p class="lead text-muted"><?= htmlspecialchars($list->description) ?></p>
         <p class="lead text-muted">Liste valide jusqu'au : <?= date("d/m/Y", strtotime($list->expiration)) ?></p>
     </div>
 </section>
@@ -16,10 +16,10 @@
             <?php if (strtotime($list->expiration) > strtotime("-1 days")) : ?>
                 <div class="alert alert-success">Produit réservé</div>
             <?php else: ?>
-                <div class="alert alert-success">Produit réservé par : <?= $reserveName ?> <br> Message : <?= $item->messageReservation ?></div>
+                <div class="alert alert-success">Produit réservé par : <?= htmlspecialchars($reserveName) ?> <br> Message : <?= htmlspecialchars($item->messageReservation) ?></div>
             <?php endif; ?>
         <?php else: ?>
-            <div class="alert alert-success">Produit réservé par : <?= $reserveName ?></div>
+            <div class="alert alert-success">Produit réservé par : <?= htmlspecialchars($reserveName) ?></div>
         <?php endif; ?>
     <?php endif; ?>
 
@@ -40,7 +40,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalIMG"><?= $item->nom ?></h5>
+                    <h5 class="modal-title" id="modalIMG"><?= htmlspecialchars($item->nom) ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -53,8 +53,8 @@
     </div>
 
     <div class="text-center">
-        <h5 class="text-uppercase font-weight-bold m-auto text-center"><strong><?= $item->nom ?></strong></h5>
-        <p><?= $item->descr ?></p>
+        <h5 class="text-uppercase font-weight-bold m-auto text-center"><strong><?= htmlspecialchars($item->nom) ?></strong></h5>
+        <p><?= htmlspecialchars($item->descr) ?></p>
         <p><strong><?= $item->tarif ?> €</strong></p>
         <?php if ($item->url != '') : ?>
             <p>Informations supplémentaires :<br><a href="<?= $item->url ?>"><?= $item->url ?></a></p>
@@ -86,7 +86,7 @@
                                     <div class="form-group">
                                         <label for="nom">Nom</label>
                                         <?php if (isset($_SESSION['login'])) : ?>
-                                            <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= unserialize($_SESSION['login'])['prenom'] ?> <?= unserialize($_SESSION['login'])['nom'] ?>" id="nom">
+                                            <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" value="<?= htmlspecialchars(unserialize($_SESSION['login'])['prenom']) ?> <?= htmlspecialchars(unserialize($_SESSION['login'])['nom']) ?>" id="nom">
                                         <?php else : ?>
                                             <input required type="text" name="nom" class="form-control" placeholder="Prénom Nom" id="nom">
                                         <?php endif; ?>

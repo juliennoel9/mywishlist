@@ -3,7 +3,7 @@
         <h1>Modifiez votre liste</h1><br>
         <div class="form-group">
             <label for="titre">Donnez un nouveau titre à la liste</label>
-            <input required type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= $list->titre ?>" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>>
+            <input required type="text" placeholder="Titre" name="titre" class="form-control" id="titre" value="<?= htmlspecialchars($list->titre) ?>" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>>
         </div>
         <div class="form-group">
             <label for="expiration">Indiquez une nouvelle date d'expiration</label>
@@ -12,7 +12,7 @@
         </div>
         <div class="form-group">
             <label for="description">Changez une description à la liste</label>
-            <textarea required class="form-control" name="description" id="description" rows="3" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>><?= $list->description ?></textarea>
+            <textarea required class="form-control" name="description" id="description" rows="3" <?= strtotime($list->expiration) > strtotime("-1 days") ? '' : 'disabled' ?>><?= htmlspecialchars($list->description) ?></textarea>
         </div>
         <div class="form-check">
             <input type="checkbox" <?= $list->public === 1 ? 'checked=\"checked\"' : ''?> class="form-check-input" id="public" name="public">
