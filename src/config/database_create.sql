@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `cagnotte`;
 CREATE TABLE `cagnotte` (
 `item_id` INT(11) NOT NULL,
 `account_id` INT(11) NOT NULL,
-`tarif` DECIMAL(10,2) NOT NULL,
+`montant` DECIMAL(10,2) NOT NULL,
 PRIMARY KEY (`item_id`, `account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
