@@ -66,9 +66,9 @@
         <?php if ($item->cagnotte) : ?>
             <div class="card w-50 mx-auto">
                 <h5 class="font-weight-bold mb-0">Cagnotte</h5>
-                <p class="mb-0"><?= $valueCagnotte ?>€ récolté sur <?= $item->tarif ?>€</p>
+                <p class="mb-0"><?= $valueCagnotte ?>€ récolté<?= $valueCagnotte > 1 ? 's' : '' ?> sur <?= $item->tarif ?>€</p>
                 <meter class="w-75 mx-auto my-2" value="<?= $valueCagnotte ?>" min="0" max="<?= $item->tarif ?>" id="password-strength-meter"></meter>
-                <?php if (isset($_SESSION['user']) and $_SESSION['user']['id'] != $list->user_id) : ?>
+                <?php if (isset($_SESSION['user']) and $_SESSION['user']['id'] != $list->user_id and $valueCagnotte < $item->tarif) : ?>
                     <form method="POST" action="<?= $router->pathFor('fillCagnotte', ['token' => $list->token, 'id' => $item->id]) ?>">
                         <div class="form-group">
                             <label for="montant">Participer à la cagnotte</label>
