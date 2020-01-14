@@ -1,5 +1,6 @@
 INSERT INTO `account` (`username`, `email`, `hash`, `nom`, `prenom`) VALUES
-('root', 'root@root.com', '$2y$10$zUnLFNxa0iP4svm5PMKvHu8u7Z8LWsedo0udjxQqfcJJa8h1CKRE2', 'root', 'root');
+('root', 'root@root.com', '$2y$10$zUnLFNxa0iP4svm5PMKvHu8u7Z8LWsedo0udjxQqfcJJa8h1CKRE2', 'root', 'root'),
+('test', 'test@test.com', '$2y$10$oGt5yvyqrTzAPJN8/SCf.eK5YgKbrzJhvnfPzYuIFElDU61OnzYj2', 'test', 'test');
 
 INSERT INTO `liste` (`user_id`, `titre`, `description`, `expiration`, `token`, `public`) VALUES
 (1, 'Pour fêter le bac !', 'Pour un week-end à Nancy qui nous fera oublier les épreuves. ', '2020-06-27', 'HOf3UXyX', TRUE),
@@ -26,3 +27,8 @@ INSERT INTO `item` (`liste_id`, `nom`, `descr`, `img`, `url`, `tarif`) VALUES
 (3, 'Livres', 'Livre bricolage avec petits-enfants + Roman', 'bricolage.jpg', '', 24.00),
 (3, 'Jeu contacts', 'Jeu pour échange de contacts', 'contact.png', '', 5.00),
 (3, 'Concert', 'Un concert à Nancy', 'concert.jpg', '', 17.00);
+UPDATE `item` SET `cagnotte` = TRUE WHERE `id` <= 3;
+
+INSERT INTO `cagnotte` (`item_id`, `account_id`, `montant`) VALUES
+(2, 2, 10.50),
+(3, 2, 5.0);

@@ -21,6 +21,7 @@ CREATE TABLE `item` (
   `tarif` DECIMAL(10,2),
   `account_id_reserv` INT(11),
   `messageReservation` TEXT,
+  `cagnotte` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
