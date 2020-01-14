@@ -3,6 +3,7 @@
 namespace mywishlist\controllers;
 
 use mywishlist\models\Account;
+use mywishlist\models\Cagnotte;
 use mywishlist\models\Item;
 use mywishlist\models\Liste;
 use Slim\Exception\NotFoundException;
@@ -24,6 +25,9 @@ class ItemController extends Controller {
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $args['account'] = $account;
+        }
+        if ($item->cagnotte) {
+            $args['valueCagnotte'] = Cagnotte::where('item_id', '=', $item->id)->sum('montant');
         }
         $args['title'] = "MyWishList - Item n° $item->id";
         $args['list'] = $list;
@@ -156,6 +160,40 @@ class ItemController extends Controller {
         $item->save();
         $args['token'] = $list->token;
         $args['id'] = $item->id;
+        return $this->redirect($response, 'item', $args);
+    }
+
+    public function createCagnotteItem(Request $request, Response $response, array $args) {
+        if (isset($_SESSION['login'])) {
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+            $list = Liste::where('token', '=', $args['token'])->first();
+            $item = Item::where('id', '=', $args['id'])->first();
+            if ($list->user_id==$account->id and strtotime($list->expiration) > strtotime("-1 days")) {
+                $item->cagnotte = true;
+                $item->save();
+            }
+        }
+        return $this->redirect($response, 'item', $args);
+    }
+
+    public function fillCagnotteItem(Request $request, Response $response, array $args) {
+        $item = Item::where('id', '=', $args['id'])->first();
+        if (isset($_SESSION['login']) and isset($item) and $item->cagnotte) {
+            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
+            if ($account->id != $item->list()->num) {
+                $cagnotte = Cagnotte::where('account_id', $account->id)->where('item_id', $item->id)->first();
+                if ($cagnotte) {
+                    $cagnotte->montant += $_POST['montant'];
+                    $cagnotte->save();
+                } else {
+                    $cagnotte = new Cagnotte();
+                    $cagnotte->item_id = $item->id;
+                    $cagnotte->account_id = $account->id;
+                    $cagnotte->montant = $_POST['montant'];
+                    $cagnotte->save();
+                }
+            }
+        }
         return $this->redirect($response, 'item', $args);
     }
 }

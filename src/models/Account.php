@@ -12,4 +12,8 @@ class Account extends Model {
     public function lists() {
         return $this->hasMany('\mywishlist\models\Liste', 'user_id')->get();
     }
+
+    public function toArray() {
+        return $this->getAttributes();
+    }
 }

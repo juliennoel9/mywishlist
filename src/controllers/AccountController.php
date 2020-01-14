@@ -42,6 +42,8 @@ class AccountController extends Controller {
 
         if (isset($account) and password_verify($_POST['password'], $account->hash)) {
             $_SESSION['login'] = serialize(['email' => $account->email, 'username' => $account->username, 'prenom' => $account->prenom, 'nom' => $account->nom]);
+            $_SESSION['user'] = $account->toArray();
+
             if (isset($_SESSION['previousPage'])) {
                 if (pathinfo($_SESSION['previousPage'])['filename']=='inscription' or pathinfo($_SESSION['previousPage'])['filename']=='connexion') {
                     return $this->redirect($response, 'home');
@@ -112,6 +114,7 @@ class AccountController extends Controller {
 
     public function getLogout(Request $request, Response $response, array $args) {
         unset($_SESSION['login']);
+        unset($_SESSION['user']);
         session_destroy();
         return $this->redirect($response, 'home');
     }

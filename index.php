@@ -246,6 +246,16 @@ $app->post('/modifierItem/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Re
     return $controller->postEditItem($request, $response, $args);
 });
 
+$app->get('/creerCagnotte/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Request $request, Response $response, array $args) {
+    $controller = new ItemController($this);
+    return $controller->createCagnotteItem($request, $response, $args);
+})->setName('createCagnotte');
+
+$app->post('/fillCagnotte/l/{token:[a-zA-Z0-9]+}/i/{id:[0-9]+}[/]', function (Request $request, Response $response, array $args) {
+    $controller = new ItemController($this);
+    return $controller->fillCagnotteItem($request, $response, $args);
+})->setName('fillCagnotte');
+
 
 /**
  * Validator API
