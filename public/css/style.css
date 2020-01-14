@@ -3,7 +3,7 @@
     scrollbar-color: rgba(130, 130, 130, .6) rgba(79, 87, 94, 1);
 }
 
-meter {
+#password-strength-meter {
     margin: 0;
     width: 100%;
     height: 0.5em;
@@ -13,22 +13,22 @@ meter {
     background: rgba(0, 0, 0, 0.1) none;
 }
 
-meteefsr::-webkit-meter-bar {
+#password-strength-meter::-webkit-meter-bar {
     background: none;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-meter[value="0"]::-webkit-meter-optimum-value { background: darkred; }
-meter[value="1"]::-webkit-meter-optimum-value { background: orangered; }
-meter[value="2"]::-webkit-meter-optimum-value { background: orange; }
-meter[value="3"]::-webkit-meter-optimum-value { background: yellowgreen; }
-meter[value="4"]::-webkit-meter-optimum-value { background: limegreen; }
+#password-strength-meter[value="0"]::-webkit-meter-optimum-value { background: darkred; }
+#password-strength-meter[value="1"]::-webkit-meter-optimum-value { background: orangered; }
+#password-strength-meter[value="2"]::-webkit-meter-optimum-value { background: orange; }
+#password-strength-meter[value="3"]::-webkit-meter-optimum-value { background: yellowgreen; }
+#password-strength-meter[value="4"]::-webkit-meter-optimum-value { background: limegreen; }
 
-meter[value="0"]::-moz-meter-bar { background: darkred; }
-meter[value="1"]::-moz-meter-bar { background: orangered; }
-meter[value="2"]::-moz-meter-bar { background: orange; }
-meter[value="3"]::-moz-meter-bar { background: yellowgreen; }
-meter[value="4"]::-moz-meter-bar { background: limegreen; }
+#password-strength-meter[value="0"]::-moz-meter-bar { background: darkred; }
+#password-strength-meter[value="1"]::-moz-meter-bar { background: orangered; }
+#password-strength-meter[value="2"]::-moz-meter-bar { background: orange; }
+#password-strength-meter[value="3"]::-moz-meter-bar { background: yellowgreen; }
+#password-strength-meter[value="4"]::-moz-meter-bar { background: limegreen; }
 
 
 .form-control.is-pending {
