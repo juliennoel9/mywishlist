@@ -54,8 +54,8 @@ Depuis un navigateur, rendez vous sur http://localhost:numPort
 - [x] *Modifier son compte* (Julien, Louis)
 - [x] *Rendre une liste publique* (Julien, Louis)
 - [x] *Afficher les listes de souhaits publiques* (Julien, Louis)
-- [ ] *Créer une cagnotte sur un item*
-- [ ] *Participer à une cagnotte*
+- [x] *Créer une cagnotte sur un item* (Louis)
+- [x] *Participer à une cagnotte* (Louis)
 - [x] *Uploader une image* (Julien)
 - [x] *Créer un compte participant* (Julien, Louis)
 - [x] *Afficher la liste des créateurs* (Julien)
