@@ -29,7 +29,13 @@
                     endif;
                 endforeach;
             ?>
-            <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and  ( strtotime($list->expiration) < strtotime("-1 days") or $notReserved ) ) : ?>
+            <?php
+            $cagnottes = 0;
+            foreach ($list->items() as $item) {
+                $cagnottes += $item->cagnottes()->count();
+            }
+            ?>
+            <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and ( strtotime($list->expiration) < strtotime("-1 days") or $notReserved ) and $cagnottes == 0) : ?>
                 <!-- Trigger modal delete -->
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">Supprimer la liste</button>
             <?php endif; ?>

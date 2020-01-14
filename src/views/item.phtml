@@ -90,7 +90,7 @@
 <div class="modal-footer">
     <a class="btn btn-secondary mr-auto" href="<?= $router->pathFor('list', ['token' => $list->token]) ?>" role="button">Retour à la liste</a>
     <?php if ($item->account_id_reserv == '') : ?>
-        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and strtotime($list->expiration) > strtotime("-1 days")) : ?>
+        <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and strtotime($list->expiration) > strtotime("-1 days") and $item->cagnottes()->count() == 0) : ?>
             <?php if (!$item->cagnotte): ?>
                 <a class="btn btn-success" href="<?= $router->pathFor('createCagnotte', ['token' => $list->token, 'id' => $item->id]) ?>" role="button">Créer une cagnotte</a>
             <?php endif; ?>

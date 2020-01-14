@@ -12,4 +12,8 @@ class Item extends Model {
     public function list() {
         return $this->belongsTo('\mywishlist\models\Liste', 'liste_id');
     }
+
+    public function cagnottes() {
+        return $this->hasMany('\mywishlist\models\Cagnotte', 'item_id')->get();
+    }
 }

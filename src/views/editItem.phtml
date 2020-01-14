@@ -1,4 +1,4 @@
-<?php if (isset($_SESSION['login']) and $list->user_id==$account->id and strtotime($list->expiration) > strtotime("-1 days")) : ?>
+<?php if (isset($_SESSION['login']) and $list->user_id==$account->id and strtotime($list->expiration) > strtotime("-1 days") and $item->cagnottes()->count() == 0) : ?>
     <form method="POST" enctype="multipart/form-data">
         <h1>Modifiez votre item</h1><br>
         <div class="form-group">
@@ -66,7 +66,7 @@
         <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
     </form>
 <?php else: ?>
-    <h1>Connectez-vous pour pouvoir modifier cet item s'il vous appartient et si la date d'expiration de la liste à laquelle il appartient n'est pas déjà passée.</h1>
+    <h1>Connectez-vous pour pouvoir modifier cet item s'il vous appartient et si la date d'expiration de la liste à laquelle il appartient n'est pas déjà passée et que la cagnotte est vide.</h1>
 <?php endif; ?>
 
 
