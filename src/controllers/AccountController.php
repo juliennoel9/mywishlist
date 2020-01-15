@@ -46,7 +46,7 @@ class AccountController extends Controller {
 
             if (isset($_SESSION['previousPage'])) {
                 $page = pathinfo($_SESSION['previousPage'])['filename'];
-                $file = substr($page, 0, strpos($page, "?"));
+                $file = strpos($page, "?") > 0 ? substr($page, 0, strpos($page, "?")) : $page;
                 if (in_array($file, ['inscription', 'connexion', 'resetPassword', 'newPassword'])) {
                     return $this->redirect($response, 'home');
                 } else {
