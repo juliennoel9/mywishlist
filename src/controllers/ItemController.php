@@ -165,11 +165,12 @@ class ItemController extends Controller {
     }
 
     public function createCagnotteItem(Request $request, Response $response, array $args) {
-        if (isset($_SESSION['login'])) {
-            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-            $list = Liste::where('token', '=', $args['token'])->first();
-            $item = Item::where('id', '=', $args['id'])->first();
-            if ($list->user_id==$account->id and strtotime($list->expiration) > strtotime("-1 days")) {
+        $args['token'] = $_POST['token'];
+        $args['id'] = $_POST['id'];
+        if (isset($_SESSION['user'])) {
+            $list = Liste::where('token', '=', $_POST['token'])->first();
+            $item = Item::where('id', '=', $_POST['id'])->first();
+            if ($list->user_id==$_SESSION['user']['id'] and strtotime($list->expiration) > strtotime("-1 days")) {
                 $item->cagnotte = true;
                 $item->save();
             }
@@ -177,19 +178,34 @@ class ItemController extends Controller {
         return $this->redirect($response, 'item', $args);
     }
 
+    public function deleteCagnotteItem(Request $request, Response $response, array $args) {
+        $args['token'] = $_POST['token'];
+        $args['id'] = $_POST['id'];
+        if (isset($_SESSION['user'])) {
+            $list = Liste::where('token', '=', $_POST['token'])->first();
+            $item = Item::where('id', '=', $_POST['id'])->first();
+            if ($list->user_id==$_SESSION['user']['id'] and strtotime($list->expiration) > strtotime("-1 days") and $item->cagnottes()->count() == 0) {
+                $item->cagnotte = false;
+                $item->save();
+            }
+        }
+        return $this->redirect($response, 'item', $args);
+    }
+
     public function fillCagnotteItem(Request $request, Response $response, array $args) {
-        $item = Item::where('id', '=', $args['id'])->first();
-        if (isset($_SESSION['login']) and isset($item) and $item->cagnotte) {
-            $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
-            if ($account->id != $item->list()->num) {
-                $cagnotte = Cagnotte::where('account_id', $account->id)->where('item_id', $item->id)->first();
+        $args['token'] = $_POST['token'];
+        $args['id'] = $_POST['id'];
+        $item = Item::where('id', '=', $_POST['id'])->first();
+        if (isset($_SESSION['user']) and isset($item) and $item->cagnotte) {
+            if ($_SESSION['user']['id'] != $item->list()->num) {
+                $cagnotte = Cagnotte::where('account_id', $_SESSION['user']['id'])->where('item_id', $item->id)->first();
                 if ($cagnotte) {
                     $cagnotte->montant += $_POST['montant'];
                     $cagnotte->save();
                 } else {
                     $cagnotte = new Cagnotte();
                     $cagnotte->item_id = $item->id;
-                    $cagnotte->account_id = $account->id;
+                    $cagnotte->account_id = $_SESSION['user']['id'];
                     $cagnotte->montant = $_POST['montant'];
                     $cagnotte->save();
                 }

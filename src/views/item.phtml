@@ -73,7 +73,7 @@
                             <p class="mb-0"><?= $valueCagnotte ?> € récolté<?= $valueCagnotte > 1 ? 's' : '' ?> sur <?= $item->tarif ?> €</p>
                             <meter class="w-75 mx-auto my-2" value="<?= $valueCagnotte ?>" min="0" max="<?= $item->tarif ?>" id="password-strength-meter"></meter>
                             <?php if (isset($_SESSION['user']) and $_SESSION['user']['id'] != $list->user_id and $valueCagnotte < $item->tarif) : ?>
-                                <form method="POST" action="<?= $router->pathFor('fillCagnotte', ['token' => $list->token, 'id' => $item->id]) ?>">
+                                <form method="POST" action="<?= $router->pathFor('fillCagnotte') ?>">
                                     <div class="form-group">
                                         <?php if ($userDonation > 0) {
                                             echo "<p>(vous avez déjà donné $userDonation €)</p>";
@@ -93,6 +93,8 @@
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary mb-2">Envoyer l'argent</button>
+                                    <input type="hidden" name="token" value="<?= $list->token ?>">
+                                    <input type="hidden" name="id" value="<?= $item->id ?>">
                                     <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
                                     <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
                                 </form>
@@ -110,8 +112,17 @@
     <?php if ($item->account_id_reserv == '') : ?>
         <?php if (isset($_SESSION['login']) and $list->user_id==$account->id and strtotime($list->expiration) > strtotime("-1 days") and $item->cagnottes()->count() == 0) : ?>
             <?php if (!$item->cagnotte): ?>
-                <a class="btn btn-success" href="<?= $router->pathFor('createCagnotte', ['token' => $list->token, 'id' => $item->id]) ?>" role="button">Créer une cagnotte</a>
+                <form method="POST" action="<?= $router->pathFor('createCagnotte')?>">
+                    <button type="submit" class="btn btn-success">Créer une cagnotte</button>
+            <?php else : ?>
+                <form method="POST" action="<?= $router->pathFor('deleteCagnotte')?>">
+                    <button type="submit" class="btn btn-danger">Supprimer la cagnotte</button>
             <?php endif; ?>
+                    <input type="hidden" name="token" value="<?= $list->token ?>">
+                    <input type="hidden" name="id" value="<?= $item->id ?>">
+                    <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+                    <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
+                </form>
             <a class="btn btn-primary" href="<?= $router->pathFor('editItem', ['token' => $list->token, 'id' => $item->id]) ?>" role="button">Modifier Item</a>
         <?php endif; ?>
 
