@@ -1,5 +1,5 @@
 INSERT INTO `account` (`username`, `email`, `hash`, `nom`, `prenom`) VALUES
-('root', 'root@root.com', '$2y$10$kA.O2/jDufjhshNYUunx.O6BCi2yN2yAlot8ItKosIMbebqP2ix3a', 'root', 'root'),
+('root', 'root@root.com', '$2y$10$zUnLFNxa0iP4svm5PMKvHu8u7Z8LWsedo0udjxQqfcJJa8h1CKRE2', 'root', 'root'),
 ('test', 'test@test.com', '$2y$10$oGt5yvyqrTzAPJN8/SCf.eK5YgKbrzJhvnfPzYuIFElDU61OnzYj2', 'test', 'test');
 
 INSERT INTO `liste` (`user_id`, `titre`, `description`, `expiration`, `token`, `public`) VALUES
