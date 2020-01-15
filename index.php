@@ -1,7 +1,6 @@
 <?php
 
 use mywishlist\controllers\AccountController;
-use mywishlist\controllers\HomeController;
 use mywishlist\controllers\ItemController;
 use mywishlist\controllers\ListController;
 use mywishlist\validators\Validate;
@@ -91,12 +90,11 @@ $container['notFoundHandler'] = function ($container) {
  * Main pages
  */
 $app->get('/', function (Request $request, Response $response, array $args) {
-    $controller = new HomeController($this);
-    return $controller->displayHome($request, $response, $args);
+    $this->view->render($response, 'home.phtml', ['title' => 'MyWishList - Accueil']);
 })->setName('home');
 
 $app->get('/apropos[/]', function (Request $request, Response $response, array $args) {
-    $this->view->render($response, 'about.phtml', ["title" => "MyWishList - A Propos"]);
+    $this->view->render($response, 'about.phtml', ["title" => "MyWishList - À Propos"]);
 })->setName('about');
 $app->redirect('/about[/]', $container->router->pathFor('about'));
 
