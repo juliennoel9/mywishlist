@@ -33,11 +33,6 @@
         }
     ?>
 
-    <!-- Trigger modal image -->
-    <a data-toggle="modal" data-target="#modalIMG">
-        <img class="rounded float-left img-thumbnail" width=40% src="/public/images/<?= $fileName ?>">
-    </a>
-
     <!-- Modal image -->
     <div class="modal fade" id="modalIMG" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -55,38 +50,61 @@
         </div>
     </div>
 
-    <div class="text-center">
-        <h5 class="text-uppercase font-weight-bold m-auto text-center"><strong><?= htmlspecialchars($item->nom) ?></strong></h5>
-        <p><?= htmlspecialchars($item->descr) ?></p>
-        <p><strong><?= $item->tarif ?> €</strong></p>
-        <?php if ($item->url != '') : ?>
-            <p>Informations supplémentaires :<br><a href="<?= $item->url ?>"><?= $item->url ?></a></p>
-        <?php endif ?>
-
-        <?php if ($item->cagnotte) : ?>
-            <div class="card w-50 mx-auto">
-                <h5 class="font-weight-bold mb-0">Cagnotte</h5>
-                <p class="mb-0"><?= $valueCagnotte ?>€ récolté<?= $valueCagnotte > 1 ? 's' : '' ?> sur <?= $item->tarif ?>€</p>
-                <meter class="w-75 mx-auto my-2" value="<?= $valueCagnotte ?>" min="0" max="<?= $item->tarif ?>" id="password-strength-meter"></meter>
-                <?php if (isset($_SESSION['user']) and $_SESSION['user']['id'] != $list->user_id and $valueCagnotte < $item->tarif) : ?>
-                    <form method="POST" action="<?= $router->pathFor('fillCagnotte', ['token' => $list->token, 'id' => $item->id]) ?>">
-                        <div class="form-group">
-                            <label for="montant">Participer à la cagnotte</label>
-                            <input required class="form-control d-inline w-25" type="number" step="0.01" min="0.01" max="<?= $item->tarif - $valueCagnotte ?>" placeholder="montant" name="montant" id="montant">
-                            <div class="invalid-feedback" id="montantErr">Invalide</div>
-                        </div>
-                        <button type="submit" class="btn btn-primary mb-2">Envoyer l'argent</button>
-                        <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
-                        <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
-                    </form>
-                <?php endif; ?>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-5 col-xl-5 text-center">
+                <!-- Trigger modal image -->
+                <a data-toggle="modal" data-target="#modalIMG">
+                    <img class="rounded img-thumbnail h-100" src="/public/images/<?= $fileName ?>">
+                </a>
             </div>
-            <br><br>
-        <?php endif; ?>
+            <div class="col-12 col-lg-7 col-xl-7">
+                <div class="text-center">
+                    <h5 class="text-uppercase font-weight-bold m-auto text-center"><strong><?= htmlspecialchars($item->nom) ?></strong></h5>
+                    <p><?= htmlspecialchars($item->descr) ?></p>
+                    <p><strong><?= $item->tarif ?> €</strong></p>
+                    <?php if ($item->url != '') : ?>
+                        <p>Informations supplémentaires :<br><a href="<?= $item->url ?>"><?= $item->url ?></a></p>
+                    <?php endif ?>
 
+                    <?php if ($item->cagnotte) : ?>
+                        <div class="card mx-auto">
+                            <h5 class="font-weight-bold mb-0">Cagnotte</h5>
+                            <p class="mb-0"><?= $valueCagnotte ?> € récolté<?= $valueCagnotte > 1 ? 's' : '' ?> sur <?= $item->tarif ?> €</p>
+                            <meter class="w-75 mx-auto my-2" value="<?= $valueCagnotte ?>" min="0" max="<?= $item->tarif ?>" id="password-strength-meter"></meter>
+                            <?php if (isset($_SESSION['user']) and $_SESSION['user']['id'] != $list->user_id and $valueCagnotte < $item->tarif) : ?>
+                                <form method="POST" action="<?= $router->pathFor('fillCagnotte', ['token' => $list->token, 'id' => $item->id]) ?>">
+                                    <div class="form-group">
+                                        <?php if ($userDonation > 0) {
+                                            echo "<p>(vous avez déjà donné $userDonation €)</p>";
+                                        }
+                                        ?>
+                                        <label for="montant">Participer à la cagnotte</label>
+
+                                        <div class="form-row justify-content-center">
+                                            <div class="col-10 col-md-6">
+                                                <div class="input-group">
+                                                    <input required class="form-control" type="number" step="0.01" min="0.01" max="<?= $item->tarif - $valueCagnotte ?>" placeholder="montant" name="montant" id="montant">
+                                                    <div class="input-group-append">
+                                                        <button class="input-group-text">€</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mb-2">Envoyer l'argent</button>
+                                    <input type="hidden" name="<?= $csrf['nameKey'] ?>" value="<?= $csrf['name'] ?>">
+                                    <input type="hidden" name="<?= $csrf['valueKey'] ?>" value="<?= $csrf['value'] ?>">
+                                </form>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
+<br>
 <div class="modal-footer">
     <a class="btn btn-secondary mr-auto" href="<?= $router->pathFor('list', ['token' => $list->token]) ?>" role="button">Retour à la liste</a>
     <?php if ($item->account_id_reserv == '') : ?>

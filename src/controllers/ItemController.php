@@ -25,6 +25,7 @@ class ItemController extends Controller {
         if (isset($_SESSION['login'])) {
             $account = Account::where('username', '=', unserialize($_SESSION['login'])['username'])->first();
             $args['account'] = $account;
+            $args['userDonation'] = Cagnotte::where('account_id', $account->id)->where('item_id', $item->id)->sum('montant');
         }
         if ($item->cagnotte) {
             $args['valueCagnotte'] = Cagnotte::where('item_id', '=', $item->id)->sum('montant');
