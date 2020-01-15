@@ -19,7 +19,7 @@
                             <input required type="text" name="id" maxlength="100" class="form-control" placeholder="Email ou nom d'utilisateur" id="id" <?= isset($id) ? 'value='.htmlspecialchars($id) : 'autofocus'?>>
                             <div class="invalid-feedback" id="idErr">Invalide</div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-0">
                             <label for="password">Mot de passe</label>
                             <div class="input-group">
                                 <input required type="password" name="password" maxlength="50" class="form-control" placeholder="Mot de passe" id="password">
@@ -28,12 +28,13 @@
                                 </div>
                             </div>
                         </div>
+                        <small><a href="<?= $router->pathFor('resetPassword') ?>">Mot de passe perdu ?</a></small>
                         <div class="form-group">Vous n'avez pas encore de compte ? <a href="<?= $router->pathFor('register') ?>">S'inscrire</a></div>
                     </div>
                     <div class="modal-footer">
-                        <?php if(pathinfo($_SERVER['HTTP_REFERER'])['filename']=='moncompte' or pathinfo($_SERVER['HTTP_REFERER'])['filename']=='connexion') : ?>
+                        <?php if(!isset($_SERVER['HTTP_REFERER']) or pathinfo($_SERVER['HTTP_REFERER'])['filename']=='moncompte' or pathinfo($_SERVER['HTTP_REFERER'])['filename']=='connexion') : ?>
                             <a class="btn btn-secondary" href="<?= $router->pathFor('home') ?>" role="button">Annuler</a>
-                        <?php else: ?>
+                        <?php elseif (isset($_SERVER['HTTP_REFERER'])): ?>
                             <a class="btn btn-secondary" href="<?= $_SERVER['HTTP_REFERER']?>" role="button">Annuler</a>
                         <?php endif; ?>
                         <button type="submit" class="btn btn-success">Connexion</button>

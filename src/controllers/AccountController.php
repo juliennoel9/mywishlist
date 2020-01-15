@@ -45,7 +45,9 @@ class AccountController extends Controller {
             $_SESSION['user'] = $account->toArray();
 
             if (isset($_SESSION['previousPage'])) {
-                if (pathinfo($_SESSION['previousPage'])['filename']=='inscription' or pathinfo($_SESSION['previousPage'])['filename']=='connexion') {
+                $page = pathinfo($_SESSION['previousPage'])['filename'];
+                $file = substr($page, 0, strpos($page, "?"));
+                if (in_array($file, ['inscription', 'connexion', 'resetPassword', 'newPassword'])) {
                     return $this->redirect($response, 'home');
                 } else {
                     return $response->withStatus(302)->withHeader('Location', $_SESSION['previousPage']);
@@ -118,5 +120,61 @@ class AccountController extends Controller {
         session_destroy();
         return $this->redirect($response, 'home');
     }
+
+    public function getResetPassword(Request $request, Response $response, array $args) {
+        unset($_SESSION['login']);
+        unset($_SESSION['user']);
+        $args['title'] = 'MyWishList - Mot de passe perdu';
+        $this->container->view->render($response, 'resetPassword.phtml', $args);
+        return $response;
+    }
+
+    public function resetPassword(Request $request, Response $response, array $args) {
+        $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Impossible d\'envoyer l\'email de réinitialisation.</div>';
+        $account = Account::where('email', $_POST['login'])->orwhere('username', $_POST['login'])->first();
+        if ($account) {
+            $token = Account::generateResetToken($account);
+            $lien = "https://" . $_SERVER['HTTP_HOST'] . "/newPassword?id=$account->id&token=" . urlencode($token);
+            $to = $account->email;
+            $subject = 'Réinitalisation mot de passe MyWishList';
+            $message = "Lien de réinitialisation : $lien\n\n
+            Si cette demande ne vient pas de vous, ignorez ce message.";
+            $headers = array(
+                'From' => 'MyWishList',
+                'X-Mailer' => 'PHP/' . phpversion()
+            );
+            if (mail($to, $subject, $message, $headers)) {
+                $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Si l\'email du compte existe, un lien de réinitialisation à été envoyé. (Pensez à vérifier vos SPAM)</div>';
+            }
+        }
+        return $this->redirect($response, 'login');
+    }
+
+    public function getNewPassword(Request $request, Response $response, array $args) {
+        unset($_SESSION['login']);
+        unset($_SESSION['user']);
+        $account = Account::where('id', $_GET['id'])->first();
+        if ($account and strtotime($account->token_expire) > time() and password_verify(urldecode($_GET['token']), $account->token_hash)) {
+            $args['username'] = $account->username;
+            $this->container->view->render($response, 'newPassword.phtml', $args);
+            return $response;
+        }
+        $_SESSION['redirect']['msg'] = '<div class="alert alert-danger">Lien de réinitialisation invalide.</div>';
+        return $this->redirect($response, 'login');
+    }
+
+    public function newPassword(Request $request, Response $response, array $args) {
+        $account = Account::where('id', $_POST['id'])->first();
+        if ($account and strtotime($account->token_expire) > time() and password_verify(urldecode($_POST['token']), $account->token_hash)) {
+            $account->hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $account->token_hash = null;
+            $account->token_expire = null;
+            $account->save();
+            $_SESSION['redirect']['msg'] = '<div class="alert alert-success">Votre mot de passe à bien été réinitialisé.</div>';
+        }
+        return $this->redirect($response, 'login');
+    }
+
+
 
 }

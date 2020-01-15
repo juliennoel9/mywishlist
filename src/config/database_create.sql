@@ -56,6 +56,8 @@ CREATE TABLE `account` (
   `hash` VARCHAR(256) NOT NULL,
   `nom` VARCHAR(30) NOT NULL,
   `prenom` VARCHAR(30) NOT NULL,
+  `token_hash` VARCHAR(256),
+  `token_expire` TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

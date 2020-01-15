@@ -152,6 +152,28 @@ $app->post('/deleteAccount', function (Request $request, Response $response, arr
     return $controller->postDeleteAccount($request, $response, $args);
 })->setName('deleteAccount');
 
+$app->get('/resetPassword', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
+    $controller = new AccountController($this);
+    return $controller->getResetPassword($request, $response, $args);
+})->setName('resetPassword');
+
+$app->post('/resetPassword', function (Request $request, Response $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->resetPassword($request, $response, $args);
+});
+
+$app->get('/newPassword', function (Request $request, Response $response, array $args) {
+    $args['csrf'] = getCSRF($request, $this->csrf);
+    $controller = new AccountController($this);
+    return $controller->getNewPassword($request, $response, $args);
+})->setName('newPassword');
+
+$app->post('/newPassword', function (Request $request, Response $response, array $args) {
+    $controller = new AccountController($this);
+    return $controller->newPassword($request, $response, $args);
+});
+
 
 /**
  * Lists

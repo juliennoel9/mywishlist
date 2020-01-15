@@ -16,4 +16,12 @@ class Account extends Model {
     public function toArray() {
         return $this->getAttributes();
     }
+
+    public function generateResetToken(Account $account) {
+        $token = bin2hex(random_bytes(16));
+        $account->token_hash = password_hash($token, PASSWORD_DEFAULT);
+        $account->token_expire = date("Y-m-d H:i:s", strtotime('+1 hour'));
+        $account->save();
+        return $token;
+    }
 }
