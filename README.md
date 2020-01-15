@@ -64,7 +64,9 @@ Depuis un navigateur, rendez vous sur http://localhost:numPort
 - [x] *Page d'erreur 404* (Louis)
 - [x] *Vérifier la disponibilité des identifiants avant l'inscription* (Louis)
 - [x] *Vérifier que l'utilisateur existe avant qu'il se connecte* (Louis)
-- [X] *Supprimer une liste* (Julien)
+- [x] *Supprimer une liste* (Julien)
+- [x] *Supprimer une cagnotte sur un item* (Louis)
+- [x] *Réinitialiser le mot de passe de son compte ("mot de passe oublié")* (Louis)
 
 ## Liens utiles
 **[Google Sheet](https://docs.google.com/spreadsheets/d/1NkXoVzma5kQGag3LFqx1n8IFDDFTjCObA5FDB259kMA/edit?usp=sharing)** - Fonctionnalités, routes et méthodes
