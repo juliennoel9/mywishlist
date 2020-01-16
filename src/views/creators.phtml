@@ -7,7 +7,7 @@
                     <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                         <div class="card mt-4 bg-light">
                             <div class="card-body text-center pb-1">
-                                <img class="w-25" src="/public/images/user.png">
+                                <img class="w-25" src="<?= $rootUri ?>/public/images/user.png">
                                 <h3 class="card-title"><?= $account->username ?></h3>
                                 <a href='<?= $router->pathFor('creatorPublicLists', ['creator' => $account->username]) ?>' class="stretched-link"></a>
                             </div>

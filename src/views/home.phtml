@@ -6,26 +6,32 @@
     echo $_SESSION['redirect']['msg'];
     unset($_SESSION['redirect']['msg']);
 } ?>
-<p>
-    <h1 class="text-center">Bienvenue sur MyWishList !</br></br></h1>
-    <p class="text-center">Ce projet a été réalisé dans le cadre du module de Programmation Web/Serveur à l'IUT Nancy-Charlemagne.</p><br>
 
-    <p class="text-justify">Ce site vous permet de créer, de partager et de gérer des listes de cadeaux à l’occasion d'un événement particulier
-        (anniversaire, fin d'année, mariage, retraite…) et de la partager à l’ensemble des personnes concernées. Ces personnes
-        peuvent alors consulter cette liste et s'engager à offrir un ou plusieurs élément de la liste. Cet élément est alors
-        marqué comme réservé dans cette liste pour qu’il ne soit pas offert deux fois.<br>
-        <p class="text-center">Nous vous recommandons de <a href="<?= $router->pathFor('register')?>">créer un compte</a> pour profiter pleinement de MyWishList.</p>
-        <p class="text-center">Pour créer une liste de souhait, <a href="<?= $router->pathFor('login')?>">connectez-vous</a> à votre compte.</p>
-        Rendez-vous ensuite sur la page de création de listes et spécifier un titre, une date d’expiration et une description. Puis ajouter
-        les cadeaux que vous souhaitez avec une image, une description et un prix. Cette liste peut être modifiée à tout moment tant que la
-        date d'expiration n'est pas dépassée.<br>
-        Une fois une liste créée, un utilisateur connecté ayant accès à la liste (excepté l’auteur de la liste) peut réserver un produit et
-        ajouter un message avec sa réservation. Un produit réservé ne peut plus être modifié ou supprimé par le créateur de la liste. Il est
-        également possible d'écrire un commentaire public sur une liste.<br>
-        Une fois la date d'expiration dépassée, le créateur de la liste a accès au nom et message des personnes ayant réservé des produits
-        de sa liste.<br><br>
+<h1 class="text-center">Bienvenue sur MyWishList !</br></br></h1>
+<p class="text-center">Ce projet a été réalisé dans le cadre du module de Programmation Web/Serveur à l'IUT Nancy-Charlemagne.</p><br>
 
-    <p class="text-center">Pour en savoir plus, rendez-vous dans la section <a href="<?= $router->pathFor('about')?>">A propos</a>!</p>
+<p class="text-justify">
+    Ce site vous permet de créer, de partager et de gérer des listes de cadeaux à l’occasion d'un événement particulier
+    (anniversaire, fin d'année, mariage, retraite…) et de la partager à l’ensemble des personnes concernées. Ces personnes
+    peuvent alors consulter cette liste et s'engager à offrir un ou plusieurs élément de la liste. Cet élément est alors
+    marqué comme réservé dans cette liste pour qu’il ne soit pas offert deux fois.<br>
 </p>
-
-
+<p class="text-center">
+    Nous vous recommandons de <a href="<?= $router->pathFor('register') ?>">créer un compte</a> pour profiter pleinement de MyWishList.
+</p>
+<p class="text-center">
+    Pour créer une liste de souhait, <a href="<?= $router->pathFor('login') ?>">connectez-vous</a> à votre compte.
+</p>
+<p class="text-justify">
+    Rendez-vous ensuite sur la page de création de listes et spécifier un titre, une date d’expiration et une description. Puis ajouter
+    les cadeaux que vous souhaitez avec une image, une description et un prix. Cette liste peut être modifiée à tout moment tant que la
+    date d'expiration n'est pas dépassée.<br>
+    Une fois une liste créée, un utilisateur connecté ayant accès à la liste (excepté l’auteur de la liste) peut réserver un produit et
+    ajouter un message avec sa réservation. Un produit réservé ne peut plus être modifié ou supprimé par le créateur de la liste. Il est
+    également possible d'écrire un commentaire public sur une liste.<br>
+    Une fois la date d'expiration dépassée, le créateur de la liste a accès au nom et message des personnes ayant réservé des produits
+    de sa liste.<br><br>
+</p>
+<p class="text-center">
+    Pour en savoir plus, rendez-vous dans la section <a href="<?= $router->pathFor('about') ?>">A propos</a>!
+</p>
