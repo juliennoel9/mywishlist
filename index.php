@@ -21,7 +21,7 @@ date_default_timezone_set('Europe/Paris');
  */
 $config = [
     'settings' => [
-        'displayErrorDetails' => true,
+        'displayErrorDetails' => false,
     ],
 ];
 

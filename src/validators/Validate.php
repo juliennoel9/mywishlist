@@ -98,10 +98,10 @@ class Validate {
      */
     public static function api(Response $response) {
         $response = $response->withHeader('Content-type', 'application/json');
-        $type = array_keys($_GET)[0];
-        if (!$type) {
+        if (!isset(array_keys($_GET)[0])) {
             return $response->write(json_encode(['valid' => false, 'error' => 'Incorrect API use.']));
         }
+        $type = array_keys($_GET)[0];
         if (!method_exists(Validate::class, $type)) {
             return $response->write(json_encode(['valid' => false, 'error' => "Method $type() doesn't exist."]));
         }

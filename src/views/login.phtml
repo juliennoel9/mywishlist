@@ -64,7 +64,7 @@
     });
 
     function checkLogin() {
-        fetch('/live_check?login=' + encodeURIComponent(login.value))
+        fetch('<?= $rootUri ?>/live_check?login=' + encodeURIComponent(login.value))
             .then(response => {
                 return response.json();
             })

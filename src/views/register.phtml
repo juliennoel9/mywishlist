@@ -144,7 +144,7 @@
     });
 
     function checkPseudo() {
-        fetch('/live_check?username=' + encodeURIComponent(pseudo.value))
+        fetch('<?= $rootUri ?>/live_check?username=' + encodeURIComponent(pseudo.value))
             .then(response => {
                 return response.json();
             })
@@ -160,7 +160,7 @@
     }
 
     function checkFirstName() {
-        fetch('/live_check?firstName=' + encodeURIComponent(firstName.value))
+        fetch('<?= $rootUri ?>/live_check?firstName=' + encodeURIComponent(firstName.value))
             .then(response => {
                 return response.json();
             })
@@ -174,7 +174,7 @@
     }
 
     function checkLastName() {
-        fetch('/live_check?lastName=' + encodeURIComponent(lastName.value))
+        fetch('<?= $rootUri ?>/live_check?lastName=' + encodeURIComponent(lastName.value))
             .then(response => {
                 return response.json();
             })
@@ -188,7 +188,7 @@
     }
 
     function checkEmail() {
-        fetch('/live_check?email=' + encodeURIComponent(email.value))
+        fetch('<?= $rootUri ?>/live_check?email=' + encodeURIComponent(email.value))
             .then(response => {
                 return response.json();
             })

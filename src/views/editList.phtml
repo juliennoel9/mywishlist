@@ -86,7 +86,7 @@
     });
 
     function checkDate() {
-        fetch('/live_check?date=' + encodeURIComponent(date.value))
+        fetch('<?= $rootUri ?>/live_check?date=' + encodeURIComponent(date.value))
             .then(response => {
                 return response.json();
             })
